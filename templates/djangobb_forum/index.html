@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load forum_extras %}
+{% load i18n %}
+
+{% block title %}行者社区 - 行者骑行软件{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="span10">
+        <ul class="breadcrumb">
+            <li>
+                行者社区
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% for iter in cats %}
+{% for forum in iter.forums %}
+<div class="row">
+    <div class="span10">
+        <h4>{% link forum %}&nbsp;<small>{{ forum.description }}</small></h4>
+    </div>
+</div>
+{% endfor %}
+{% endfor %}
+
+{% endblock %}
+

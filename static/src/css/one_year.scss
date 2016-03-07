@@ -1,0 +1,1013 @@
+$colorBlue: #0098CF;
+$colorLightblue:#97DAEB;
+$colorYellow: #EAA900;
+
+// 下滑箭头动画
+@-webkit-keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) rotate(-135deg)
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px) rotate(-135deg)
+    }
+}
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) rotate(-135deg)
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px) rotate(-135deg)
+    }
+}
+
+@-webkit-keyframes rotate {
+    0% {
+        -webkit-transform: rotate(0deg)
+    }
+    100% {
+        -webkit-transform: rotate(360deg)
+    }
+}
+
+@keyframes rotate {
+    0% {
+        -webkit-transform: rotate(0deg)
+    }
+    100% {
+        -webkit-transform: rotate(360deg)
+    }
+}
+
+
+.arrow {
+    display: none;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -9px;
+    border-top: 1px solid rgba(255,255,255,.8);
+    border-left: 1px solid rgba(255,255,255,.8);
+    z-index: 9999;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    animation: fadeInUp 1.5s .2s ease infinite;
+}
+
+
+
+/*!
+Animate.css - http://daneden.me/animate
+Licensed under the MIT license - http://opensource.org/licenses/MIT
+
+Copyright (c) 2015 Daniel Eden
+*/
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+.animated.hinge {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+}
+
+.animated.bounceIn,
+.animated.bounceOut {
+  -webkit-animation-duration: .75s;
+  animation-duration: .75s;
+}
+
+@-webkit-keyframes shake {
+  from, to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+@keyframes shake {
+  from, to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+.shake {
+  -webkit-animation-name: shake;
+  animation-name: shake;
+}
+
+// fadeInLeft
+@-webkit-keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+.fadeInLeft {
+  -webkit-animation-name: fadeInLeft;
+  animation-name: fadeInLeft;
+}
+
+
+@-webkit-keyframes bounceInUp {
+  0%, 60%, 75%, 90%, 100% {
+    -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 3000px, 0);
+    transform: translate3d(0, 3000px, 0);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, -20px, 0);
+  }
+
+  75% {
+    -webkit-transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
+
+  90% {
+    -webkit-transform: translate3d(0, -5px, 0);
+    transform: translate3d(0, -5px, 0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes bounceInUp {
+  0%, 60%, 75%, 90%, 100% {
+    -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 3000px, 0);
+    transform: translate3d(0, 3000px, 0);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, -20px, 0);
+  }
+
+  75% {
+    -webkit-transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
+
+  90% {
+    -webkit-transform: translate3d(0, -5px, 0);
+    transform: translate3d(0, -5px, 0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.bounceInUp {
+  -webkit-animation-name: bounceInUp;
+  animation-name: bounceInUp;
+}
+
+
+@-webkit-keyframes zoomIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(.3, .3, .3);
+    transform: scale3d(.3, .3, .3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(.3, .3, .3);
+    transform: scale3d(.3, .3, .3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.zoomIn {
+  -webkit-animation-name: zoomIn;
+  animation-name: zoomIn;
+}
+                 
+
+@font-face {
+    font-family: 'iconfont';
+    src: url('http://cdn.bi-ci.com/img/one_year/iconfont.woff') format('woff'), /* chrome、firefox */
+        url('http://cdn.bi-ci.com/img/one_year/iconfont.ttf') format('truetype'); /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+}
+
+
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;}
+
+
+.ico-bicycle {
+    color: #0098CE;
+}
+
+.ico-run {
+    color: #99DAEA; 
+}
+
+.ico-ti {
+    color: #EAA900;
+}
+
+.ico-walk {
+    color: #EAA900;
+}
+
+.ico-man {
+    color: #0098CE;
+}
+
+.ico-sk {
+    color: #EAA900;
+}
+
+.ico-pa {
+    color: #EAA900;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* 默认是iphone6 */
+
+html {
+    font-size: 50px;
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+@media screen and (max-width:359px) and (orientation:portrait) {
+    html {
+        font-size: 46.667px;
+    }
+}
+
+
+/* 常见的安卓机 */
+
+@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {
+    html {
+        font-size: 48px;
+    }
+}
+
+
+/* 某些冷门的安卓机 如nexus4 */
+
+@media screen and (min-width:384px) and (max-width:399px) and (orientation:portrait) {
+    html {
+        font-size: 51.333px;
+    }
+}
+
+
+/* 某些冷门的安卓机 如nexus6 */
+
+@media screen and (min-width:400px) and (max-width:413px) and (orientation:portrait) {
+    html {
+        font-size: 53.333px;
+    }
+}
+
+
+/* iphone6 plus */
+
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait) {
+    html {
+        font-size: 55.2px;
+    }
+}
+
+
+/* 以下是其它设备 */
+
+@media screen and (min-width:432px) and (max-width:479px) and (orientation:portrait) {
+    html {
+        font-size: 57.6px;
+    }
+}
+
+@media screen and (min-width:480px)and (max-width:639px) and (orientation:portrait) {
+    html {
+        font-size: 64px;
+    }
+}
+
+@media screen and (min-width:640px) and (orientation:portrait) {
+    html {
+        font-size: 85.333px;
+    }
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+body {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 0.28rem;
+    color: #fff;
+}
+
+canvas {
+    display: inline-block;
+    vertical-align: baseline;
+}
+
+a {
+    background-color: transparent;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+.num,
+.ani-num {
+  font-family: "Din Alternate","Helvetica Neue",Helvetica,sans-serif;
+}
+
+img {
+    max-width: 100%;
+    border: 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.swiper-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #001649 url(http://cdn.bi-ci.com/img/one_year/oneyear-bg.png) center no-repeat;
+    background-size: cover;
+    h2 {
+        margin: .3rem 0 .4rem;
+        font-weight: normal;
+        font-size: .32rem;
+        text-align: center;
+        color: $colorLightblue;
+    }
+}
+
+.hide {
+    display: none;
+}
+
+.container {
+    margin: 0 .4rem;
+}
+
+.row {
+    width: 100%;
+    .col50 {
+        float: left;
+        width: 40%;
+        margin: 5%;
+    }
+}
+
+.page1 {
+    background-image: url(http://cdn.bi-ci.com/img/one_year/cover-bg.png);
+    h1 {
+        visibility: hidden;
+    }
+}
+
+.page2 {
+    .bar-charts-wrap {
+        width: 66%;
+        float: left;
+        overflow: hidden;
+        margin-right: 4%;
+        margin-bottom: .4rem;
+        .bar {
+            height: .28rem;
+            position: relative;
+            margin-bottom: .28rem;
+            &:after {
+                content: '';
+                height: .28rem;
+                position: absolute;
+                bottom: -0.28rem;
+                left: 0;
+                width: 100%;
+            }
+        }
+        .bar-bicycle {
+            background-color: $colorBlue;
+            &:after {
+                background-color: #005BA7;
+            }
+        }
+        .bar-run {
+            background-color: $colorLightblue;
+            &:after {
+                background-color: #58BAD9;
+            }
+        }
+        .bar-walk {
+            background-color: $colorYellow;
+            &:after {
+                background-color: #D77000;
+            }
+        }
+    }
+    .bar-num-wrap {
+        width: 30%;
+        float: left;
+        text-align: left;
+        margin-bottom: .4rem;
+        .iconfont {
+            font-size: .28rem;
+            position: relative;
+            left: -0.08rem;
+        }
+        >div {
+            height: .56rem;
+            line-height: .56rem;
+            font-size: .32rem;
+        }
+    }
+
+    .legend {
+        position: absolute;
+        left: 0;right: 0; bottom: 0;
+        width: 2.8rem;
+        margin: auto;
+        li {
+            float: left;
+            font-size: .24rem;
+            text-align: center;
+            width: 33.3%;
+            .iconfont {
+                margin-right: .04rem;
+                font-size: .24rem;
+            }
+        }
+    }
+
+
+    .doughtnut {
+        width: 100%;
+        overflow: hidden;
+    }
+    .doughtnutBox {
+        position: relative;
+        width: 50%;
+        height: 3rem;
+        margin-bottom: .3rem;
+        overflow: hidden;
+        float: left;
+        canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin:auto;
+            width: 3rem;
+            height: 3rem;
+            z-index: 5;
+        }
+    }
+    .head {
+        position: absolute;
+        top: 5%;
+        text-align: center;
+        color: #97daeb;
+        margin: 0;
+        font-weight: 200;
+        font-size: .24rem;
+    }
+    .opacitybox {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        z-index: 8;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+    }
+    .total {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+        width: 62%;
+        height: 32%;
+        word-wrap: break-word;
+        color: #fff;
+        text-align: center;
+        font-size: .2rem;
+        line-height:1.2;
+        strong {
+            font-size: .28rem;
+        }
+    }
+    .cricleborder {
+        position: absolute;
+        width: 2.26rem;
+        height: 2.26rem;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        border: 1px solid #2D4C80;
+        border-radius: 50%;
+        z-index: 1;
+        &:after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            border-color: #2D4C80;
+            border-width: 1px 0 0 1px;
+            top: 3.4%;
+            left: 8%;
+            background-color: rgba(0, 22, 72, 1);
+            width: 22%;
+            height: 19%;
+            z-index: 2;
+            border-radius: 2px;
+            margin: 0;
+        }
+    }
+}
+
+.page3 {
+    h2 {
+        margin-bottom: .1rem;
+    }
+    h3 {
+        font-size: .28rem;
+        margin: 0 0 .24rem;
+        strong {
+            color: $colorYellow;
+            font-size: .48rem;
+        }
+    }
+    .wrap-radar {
+        margin: 0 auto;
+        position: relative;
+        width: 5rem;
+        height: 4.7rem;
+        .iconfont {
+            position: absolute;
+            font-size: .24rem;
+        }
+        .ico-1 {
+            margin: auto;
+            top: 0.02rem;
+            left: -0.85rem;
+            right: 0;
+        }
+        .ico-2 {
+            top: 1.54rem;
+            right: -0.26rem;
+        }
+        .ico-3 {
+            bottom: 0.18rem;
+            right: 0.5rem;
+        }
+        .ico-4 {
+            bottom: .18rem;
+            left: .28rem;
+        }
+        .ico-5 {
+            top: 1.5rem;
+            left: -0.34rem;
+        }
+    }
+    .wrap-bar {
+        position: relative;
+        margin: 0 .4rem;
+        height: 4rem;
+        .totalmileage {
+            font-size: .3rem;
+            text-align: center;
+            margin: 0 auto .2rem;
+            strong {
+                margin: 0 0.04rem;
+                font-size: .48rem;
+                color: #FF4D00;
+            }
+        }
+    }
+}
+
+.page4.empty {
+    background-image: url(http://cdn.bi-ci.com/img/one_year/empty.png);
+    .part {
+        display: none;
+    }
+}
+
+.page5.empty {
+    background-image: url(http://cdn.bi-ci.com/img/one_year/empty.png);
+    .container {
+        display: none;
+    }
+}
+
+.page6.empty {
+    background-image: url(http://cdn.bi-ci.com/img/one_year/empty.png);
+    .container {
+        display: none;
+    }
+}
+
+.page4 {
+    .part {
+        .medal-container {
+            width: 6.8rem;
+            margin: 0 auto;
+            padding: 0;
+            img {
+                border-radius: 50%;
+                width: 80px;
+                height: 80px;
+                background-color: #FFF;
+                margin: .24rem;
+                padding: 2px;
+            }
+        }
+    }
+    .part2 {
+        text-align: center;
+        img {
+            width: 3.2rem;
+            margin-top: 1rem;
+        }
+        h3 {
+            color: $colorLightblue;
+            font-size: .5rem;
+            font-weight: normal;
+        }
+    }
+}
+
+.page5 {
+    h2 {
+        margin-bottom: 1rem;
+    }
+    .part {
+        width: 100%;
+        height: 1rem;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        li {
+            float: left;
+            height: 1rem;
+            line-height: 1.2;
+            text-align: left;
+            overflow: hidden;
+            white-space: nowrap;
+            strong {
+                font-family: "Din Alternate","Helvetica Neue",Helvetica,sans-serif;
+                color: $colorYellow;
+            }
+            &:nth-child(1) {
+                width: 38%;
+                margin-right: 2%;
+                font-size: .22rem;
+                strong {
+                    font-size: .52rem;
+                }
+            }
+            &:nth-child(2) {
+                width: 18%;
+                margin-right: 2%;
+                font-size: .36rem;
+            }
+            &:nth-child(3) {
+                width: 22%;
+                margin-right: 2%;
+                font-size: .28rem;
+                strong {
+                    margin-right: .1rem;
+                    font-size: .48rem;
+                    line-height: 1rem;
+                }
+            }
+            &:nth-child(4) {
+                width: 16%;
+                margin-right: 0;
+            }
+            .icon {
+                display: inline-block;
+                width: 1rem;
+                height: 1rem;
+                background-image: url(http://cdn.bi-ci.com/img/one_year/icons.png);
+                background-repeat: no-repeat;
+            }
+        }
+    }
+    .part1 {
+        .icon {
+            background-position: 0 0;
+            background-size: 100%;
+        }
+    }
+    .part2 {
+        .icon {
+            background-position: 0 -1rem;
+            background-size: 100%;
+        }
+    }
+    .part3 {
+        .icon {
+            background-position: 0 -2rem;
+            background-size: 100%;
+        }
+    }
+}
+
+.page6 {
+    h2 {
+        margin-bottom: .2rem;
+    }
+    .part1 {
+        height: 4rem;
+        text-align: center;
+        .icon {
+            display: inline-block;
+            width: .5rem;
+            height: .49rem;
+            background-image: url(http://cdn.bi-ci.com/img/one_year/icons.png);
+            background-repeat: no-repeat;
+            background-size: 1rem 4rem;
+        }
+        .col4 {
+            width: 35%;
+            float: left;
+        }
+        .col2 {
+            float: left;
+            width: 30%;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .num {
+            font-size: .32rem;
+            span {
+                font-size: .48rem;
+            }
+        }
+        p {
+            margin: 0;
+            font-size: .24rem;
+        }
+        .wrap1 {
+            margin-bottom: .5rem;
+            .icon {
+                background-position: 0 -3rem;
+            }
+        }
+        .wrap2 {
+            .icon {
+                background-position: 0 -3.53rem;
+            }
+        }
+        .wrap3 {
+            margin-bottom: .5rem;
+            .icon {
+                background-position: -0.5rem -3rem;
+            }
+        }
+        .wrap4 {
+            .icon {
+                background-position: -0.5rem -3.5rem;
+            }
+        }
+    }
+    .part2 {
+        float: left;
+        font-size: .24rem;
+        img {
+            width: 100%;
+        }
+        ul {
+            overflow: hidden;
+            padding: .2rem 0;
+            li {
+                overflow: hidden;
+                width: 50%;
+                float: left;
+                margin-bottom: .1rem;
+                text-align: left;
+            }
+        }
+    }
+}
+
+.page7.empty {
+    background-image: url(http://cdn.bi-ci.com/img/one_year/item7-empty.png);
+    .part {
+        display: none;
+    }
+}
+
+.page7 {
+    img {
+        max-width: 6rem;
+        margin: .2rem auto;
+    }
+    p {
+        margin: .2rem 0;
+        font-size: .32rem;
+        text-align: center;
+        strong {
+            font-size: .32rem;
+            color: $colorYellow;
+        }
+    }
+}
+
+
+.page8 {
+    h2 {
+        margin-bottom: .5rem;
+    }
+    h3 {
+        font-weight: normal;
+        font-size: .36rem;
+    }
+    img {
+        position: absolute;
+        bottom: 1.4rem;
+        left: 0;
+        right: 0;
+        width: 80%;
+        margin: auto;
+    }
+    .num {
+      color: $colorYellow;
+    }
+    .city {
+        margin-bottom: .4rem;
+        line-height: 1.5;
+        text-align: center;
+    }
+}
+
+.page9 {
+    text-align: center;
+    .swiper-lazy-wrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center 0;
+      background-size: 100%;
+      a {
+        position: absolute;
+        top: 65%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        color: #fff;
+        font-size: .36rem;
+      }
+      .share-arrow {
+        position: absolute;
+        top: .04rem;
+        right: .4rem;
+      }
+    }
+    
+    .tit {
+        margin: 1.6rem auto .4rem;
+    }
+}
+
+.runbar {
+    background-color: #87d1e6;
+    height: 100%;
+}
+
+.walkbar {
+    background-color: #e29908;
+    height: 100%;
+}
+
+.runbar {
+    background-color: #87d1e6;
+    width: 100%;
+    height: 100%;
+}
+
+.walkbar {
+    background-color: #e29908;
+    width: 100%;
+    height: 100%;
+}

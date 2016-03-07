@@ -1,0 +1,143 @@
+{% extends "base-fluid.html" %}
+{% block title %}
+路书导航，骑行必备 - 行者路书 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/lushu.css" rel="stylesheet">
+<link href="/static/css/gmap-contextmenu.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+
+<div class="container">
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>提示！</strong>在地图上点击鼠标右键，设置路书的起点和终点，拖动路线即可设置途经点。<br>无法制作路书？<a target="_blank" class="alert-link" href="{% url 'lushu_help' %}">点击查看解决办法</a>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">制作路书，请先登录</h4>
+      </div>
+      <div class="modal-body">
+        <p>目前路书对服务器存储空间占用较多，所以暂时只对登录用户开放制作路书功能。</p>
+        <p><a class="btn btn-primary" href="{% url 'userena_signin' %}?next={% if new %}{% url 'lushu_create_new' %}{% else %}{% url 'lushu_create' %}{% endif %}">去登录</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-fluid">
+
+    <div class="clearfix">
+
+        <div style="display: none">
+            <form class="form-inline" id="searchContainer" style="margin-top:5px;">
+                <div class="well well-small">
+                    <input id="searchTxt" class="form-control" type="text" placeholder="输入地点">
+                    <a id="searchBtn" class="btn btn-primary">查找</a>
+                </div>
+            </form>
+        </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <div id="map_canvas"></div>
+        </div>
+        <div class="col-md-3">
+            <p class="text-warning">建议将超过500公里的路书分段制作！<i id="distanceTips" class="glyphicon glyphicon-question-sign" data-content="如果制作的路书距离过长，部分小内存手机可能无法导入。另外，超长的路书在手机上加载的时候也会花费较长时间。建议将超长路书分段制作，每段距离500公里左右。" data-original-title="关于超长路书"></i></p>
+            <p>全程距离：<span id="totalDistance"></span>公里<br />累计上升：<span id="totalElevationGain"></span>米</p>
+
+            <form id="saveForm" class="form-horizontal" method="post" action="">
+                    <p><input type="text" name="title" class="form-control" placeholder='路书标题'></p>
+                    <p><textarea rows="12" name="desc" class="form-control" placeholder="详细描述(可空)"></textarea></p>
+
+                    <input type="hidden" name="distance" />
+                    <input type="hidden" name="points" />
+                    <input type="hidden" name="waypoints" />
+                    <input type="hidden" name="gpxPoints" />
+
+                    <p><a id="export" class="btn btn-primary">保存</a></p>
+
+<!--                     <p><a id="circleLushuTips" data-content="<img src='/static/images/screenshot/lushu_circle.gif'>"  href="#" data-original-title="注意看下边gif动画">如何制作环形路书？</a></p>
+                    <p><a id="dragLushuTips" data-content="算上起点和终点，最多只能生成10个点，超过10个以后就没法拖动了，这个是谷歌地图的限制。<hr />拖动超过10个点的路书，可以分段制作。"  href="#" data-original-title="路线无法拖动">生成的路线无法拖动？</a></p> -->
+                    <p><a target="_blank" href="{% url 'lushu_help' %}">制作路书相关帮助</a></p>
+            </form>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span9">
+            <a id="toggleChart" style="margin-bottom: 160px; margin-right: 2px;" class="btn btn-small">隐藏</a>
+            <div id="chart" style="height:180px;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script type="text/javascript">
+
+    {% if not request.user.is_authenticated %}
+    $(function () {
+        $('#myModal').modal({
+            backdrop: true,
+            keyboard: false,
+            show: true
+        });
+        $('#myModal').on('click', function () {
+            location.href = "{% url 'userena_signin' %}?next={% if new %}{% url 'lushu_create_new' %}{% else %}{% url 'lushu_create' %}{% endif %}";
+        });
+    });
+    {% endif %}
+</script>
+    {% if new %}
+        {% google_map_api_new %}
+    {% else %}
+        {% google_map_api %}
+    {% endif %}
+    {% baidu_map_api %}
+<script type="text/javascript" src="/static/js/gmap-contexmenu.js"></script>
+<script type="text/javascript" src="/static/js/common.js"></script>
+<script  type="text/javascript">
+    var lushuId = 0;
+    var bound;
+    {% if lushu %}
+    lushuId = {{ lushu.id }};
+    var min_lat = {{ min_lat }};
+    var min_lng = {{ min_lng }};
+    var max_lat = {{ max_lat }};
+    var max_lng = {{ max_lng }};
+
+    if(min_lat * min_lng * max_lat * max_lng != 0) {
+        var sw = new google.maps.LatLng(min_lat, min_lng);
+        var ne = new google.maps.LatLng(max_lat, max_lng);
+        bound = new google.maps.LatLngBounds(sw, ne);
+    }
+
+    $("input[name='title']").val("{{ lushu.title }}");
+    $("textarea[name='desc']").val("{{ lushu.desc }}");
+    {% endif %}
+    var points = []; 
+    {% if points %}
+    points = [{% for p in points %}new google.maps.LatLng({{ p.latitude }},{{ p.longitude }}){% if not forloop.last %}, {% endif %}{% endfor %}];
+    {% endif %}
+    var waypoints = []; 
+    {% if waypoints %}
+    waypoints = [{% for p in waypoints %}{'latLng':new google.maps.LatLng({{ p.latitude }},{{ p.longitude }}), 'content': '{{p.content|safe}}'}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    {% endif %}
+</script>
+<script src="http://cdn.staticfile.org/highcharts/2.3.5/highcharts.min.js"></script>
+<script src="http://cdn.staticfile.org/highcharts/2.3.5/modules/exporting.min.js"></script>
+<script type="text/javascript" src="/static/js/of.min.js"></script>
+<script type="text/javascript" src="/static/dist/js/lushu-create.js"></script>
+{% endblock %}

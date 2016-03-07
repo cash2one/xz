@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %} 俱乐部排名 {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/explore.css"> {% endblock %} {% block content %} {% load filters %}
+<div class="container">
+    <nav class="explore-nav-header">
+        <div class="row">
+            <div class="col-md-6 alist"><a href="/clubs/hot">俱乐部热度榜</a></div>
+            <div class="col-md-6 alist active">俱乐部月度榜</div>
+        </div>
+    </nav>
+    <div class="row">
+        <i class="iconfont loading-icon" id="loadingicon">&#xe638;</i>
+        <div class="col-md-12 clubs-list">
+            <ol id="clubsListWrap">
+            </ol>
+        </div>
+    </div>
+<div id="Pagination" class="pagination-wrap"></div>
+</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/kkpager/kkpager.min.js"></script>
+<script>
+//init
+$(function() {
+
+    var clubsListWrap = $("#clubsListWrap");
+
+    function loadList(e) {
+        $.ajax({
+                url: '/api/v4/team_rank',
+                type: 'GET',
+                data: {
+                    limit: 20, // 每页获取长度
+                    page: e, // 页码
+                    timeType: 1 // 0/1/2 年度/月度/热度
+                }
+            })
+            .done(function(json) {
+                $("#loadingicon").hide();
+                console.log("success");
+                console.log(json);
+
+                var listdata = json.data;
+
+                for (var i = 0; i < listdata.length; i++) {
+                        n = e*20+i+1;
+                        clubsListWrap.append('<li class="item row">' +
+                            '<div class="left col-md-11">' +
+                            '<div class="club-avatar">' +
+                            '<img src="' + listdata[i].teamAvatar + '!avatar" alt="club avatar" width="56" height="56" onerror="this.src=\'http://cdn.bi-ci.com/dist_v2/image/xing-default-avatar.png\';this.onerror=null">' +
+                            '</div>' +
+                            '<div class="club-info">' +
+                            '<h3>' + listdata[i].teamTitle + '</h3>' +
+                            '<p><span><i class="iconfont">&#xe633;</i>' + mToKm(listdata[i].teamMonthMiles) + 'km</span><span><i class="iconfont">&#xe634;</i>' + listdata[i].teamUserCounts + '人</span><span><i class="iconfont">&#xe60b;</i>' + listdata[i].teamCityName + '</span></p>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="right col-md-1">' +
+                            '<span class="label label-default" data-badge="' + n + '">#' + n + '</span>' +
+                            '</div>' +
+                            '</li>')
+                };
+            })
+            .fail(function(data) {
+                console.log("error: " + data);
+            })
+    }
+
+
+    // 判断页码状态
+    if (window.location.search.length === 0) {
+        // 第一页
+        loadList(0);
+
+        // 生成分页器
+        kkpager.generPageHtml({
+            pagerid: 'Pagination', // 分页展示控件容器ID
+            pno: 1, //当前页码
+            total: 50, //总页码
+            totalRecords: 1000, //总数据条数
+            isShowCurrPage: false, // 显示当前页
+            isShowTotalPage: false, //总页数
+            isGoPage: false,
+            isShowFirstPageBtn: false, //显示首页按钮
+            getLink: function(e) {
+                return "?page=" + e;
+            }
+        });
+
+    } else{
+        // 非第一页
+        var pageno = window.location.search.slice(6);
+        loadList(pageno - 1);
+
+        // 生成分页器
+        kkpager.generPageHtml({
+            pagerid: 'Pagination', // 分页展示控件容器ID
+            pno: pageno, //当前页码
+            total: 50, //总页码
+            totalRecords: 1000, //总数据条数
+            isShowCurrPage: false, // 显示当前页
+            isShowTotalPage: false, //总页数
+            isGoPage: false,
+            isShowFirstPageBtn: false, //显示首页按钮
+            getLink: function(e) {
+                return "?page=" + e;
+            }
+        });
+
+    };
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,532 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ workout.user.username }} {{ workout.sport|sport_to_string }}{{ workout.distance|to_distance }}公里，时间{{ workout.duration|to_duration }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+    <style type="text/css">
+        .table th, .table td {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row" style="margin-top:10px">
+        <div class="span5">
+            <ul class="breadcrumb">
+                <!-- <li><a href="/">首页</a><span class="divider">/</span></li> -->
+                <li><a href="{% url 'user_new' workout.user.encode_id %}">{{ workout.user.username }}</a>&nbsp;&nbsp;{{ workout.sport|sport_to_string }}{{ workout.distance|to_distance }}公里，时间{{ workout.duration|to_duration }}，平均速度{{ workout.avg_speed }}公里/小时</li>
+            </ul>
+        </div>
+        <div class="pull-right btn-toolbar">
+            <div class="btn-group">
+                <a class="dropdown-toggle btn btn-primary btn-small" data-toggle="dropdown" href="#">
+                    导出
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" style="left:0px;">
+                    <li id="exportGpx"><a href="{% url 'workout_gpx' workout.id %}">GPX格式</a></li>
+                </ul>
+                </a>
+            </div>
+            <div class="btn-group">
+                <a class="dropdown-toggle btn btn-small" data-toggle="dropdown" href="#">
+                    分享
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+                            <a class="bds_tsina">新浪微博</a><br />
+                            <a class="bds_qzone">QQ空间</a><br />
+                            <span class="bds_more">更多</span>
+                        </div>
+                    </li>
+                </ul>
+                </a>
+            </div>
+            <div class="btn-group">
+                <a href="#" id="aOffset" class="btn btn-small">纠偏</a>
+            </div>
+            <div class="btn-group">
+                <a href="#" id="toggleWorkout" class="btn btn-small">{% if workout.hidden %}显示{% else %}隐藏{% endif %}</a>
+            </div>
+            <div class="btn-group">
+                <a href="#" id="toggleDeleteWorkout" class="btn btn-small">{% if workout.deleted %}恢复{% else %}删除{% endif %}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12" style="margin-top:-10px; margin-bottom: 10px;">{{ workout.title }}</div>
+    </div>
+    <div style="display: none">
+        <a style="margin-top:4px;" class="btn btn-small" id="changeMapSize" href="#">放大地图</a>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <div id="map_canvas" style="height:550px"></div>
+        </div>
+
+    </div>
+    <br />
+    <div class="row">
+        <div class="span12">
+            <table class="table table-condensed table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>运动</th><th>距离</th><th>时间</th><th>平均速度</th><th>最快速度</th><th>海拔</th><th>时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><img style="width:20px; height:20px;" src="/static/images/sport/sport{{ workout.sport }}.png" /></td>
+                    <td>{{ workout.distance|to_distance }} 公里</td>
+                    <td>{{ workout.duration|to_duration }}</td>
+                    <td>{{ avg_speed }} 公里/小时</td>
+                    <td>{{ max_speed }} 公里/小时</td>
+                    <td>{{ min_altitude }} — {{ max_altitude }} 米</td>
+                    <td>{{ workout.start_time|to_datetime|date:"Y-m-d H:i" }} — {{ workout.end_time|to_datetime|date:"Y-m-d H:i" }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <div id="chart" style="height:200px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="fixOffsetTips" style="display:none">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">关闭</a>
+            <h3>纠偏步骤：</h3>
+        </div>
+        <div class="modal-body" style="max-height: 500px;">
+            <p><span class="badge">1</span> 拖动地图上的开始图标<img src="/static/images/map/1.png" />到合适的位置。<p>
+            <p><span class="badge">2</span> 点击"纠偏"链接进行确认。</p>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+    {% baidu_map_api %}
+    <script  type="text/javascript">
+        var defaultLagLng = new BMap.Point(122.04547628, 37.51975069);
+        var points = [defaultLagLng];
+        var speedData = [];
+        var altitudeData = [];
+        {% if trackpoints %}
+            points = [{% for p in trackpoints %}new BMap.Point({{ p.longitude }},{{ p.latitude }}){% if not forloop.last %}, {% endif %}{% endfor %}];
+            speedData = [{% for p in trackpoints %}{{ p.speed }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+            altitudeData = [{% for p in trackpoints %}{{ p.altitude }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+            timeData = [{% for p in trackpoints %}{{ p.time }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+        {% endif %}
+    </script>
+
+    <script  type="text/javascript">
+    var map;
+    var bound;
+    var route;
+    var startMarker;
+    var stopMarker;
+    var curPosMarker;
+    var startPosition;
+    var stopPosition;
+    var gpsStartPosition = new BMap.Point({{ gpsStartPosition.longitude }},{{ gpsStartPosition.latitude }});
+    var is_authenticated = {{ user.is_authenticated|yesno:"true, false" }};
+    var is_owner = {{ is_owner|yesno:"true, false" }};
+    var is_admin = {{ is_admin|yesno:"true, false" }};
+
+    $(init);
+
+    function init() {
+        initMap();
+        $("#toggleWorkout").click(toggleWorkout);
+        $("#toggleDeleteWorkout").click(toggleDeleteWorkout);
+        $("#changeMapSize").click(changeMapSize);
+        $("#exportGpx").click(exportCheck);
+        $("#exportKml").click(exportCheck);
+        $("#aOffset").click(changeOffset);
+    }
+
+    function initMap() {
+        startPosition = points[0];
+        stopPosition = points[points.length - 1];
+
+        map = new BMap.Map("map_canvas");
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]}));
+        map.enableScrollWheelZoom();
+
+        map.centerAndZoom(points[0], 14);
+
+        var changeMapSizeControl = new ChangeMapSizeControl();
+        map.addControl(changeMapSizeControl);
+
+        var min_lat = {{ min_lat }};
+        var min_lng = {{ min_lng }};
+        var max_lat = {{ max_lat }};
+        var max_lng = {{ max_lng }};
+
+        if(min_lat * min_lng * max_lat * max_lng != 0) {
+            var sw = new BMap.Point(min_lng, min_lat);
+            var ne = new BMap.Point(max_lng, max_lat);
+            bound = new BMap.Bounds(sw, ne);
+        }
+
+        var polyline = new BMap.Polyline(points, {strokeColor: "#33B5E5", strokeWeight: 4, strokeOpacity: 1});
+        map.addOverlay(polyline);
+
+        startMarker = new google.maps.Marker({
+            position: startPosition,
+            map: map,
+            icon: "/static/images/map/1.png",
+            title:"开始",
+            draggable: true
+        });
+        stopMarker = new google.maps.Marker({
+            position: stopPosition,
+            map: map,
+            icon: "/static/images/map/2.png",
+            title:"停止"
+        });
+
+        google.maps.event.addListener(startMarker, 'dragend', onMarkerDragEnd);
+    }
+
+    function changeOffset() {
+        var gpsLat = gpsStartPosition.lat();
+        var gpsLng = gpsStartPosition.lng();
+        var lat = startPosition.lat();
+        var lng = startPosition.lng();
+        var newLat = startMarker.getPosition().lat();
+        var newLng = startMarker.getPosition().lng();
+        var gpsOffsetLat = newLat - gpsLat;
+        var gpsOffsetLng = newLng - gpsLng;
+        var offsetLat = newLat - lat;
+        var offsetLng = newLng - lng;
+
+        if(!is_authenticated){
+            alert("还没有登录哦^_^");
+        } else if(!is_owner && !is_admin) {
+            alert("只能纠偏自己上传的路线");
+        } else if(offsetLat == 0 && offsetLng == 0) {
+            $("#fixOffsetTips").modal();
+        } else if(Math.abs(gpsOffsetLat) > 0.01 || Math.abs(gpsOffsetLng) > 0.01) {
+            alert("请重新设置路线");
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/api/fix_offset",
+                data: {
+                    id: "{{ workout.id }}",
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    offset_lat: gpsOffsetLat,
+                    offset_lng: gpsOffsetLng
+                }
+            }).success(function(msg) {
+                        alert("纠偏成功");
+                    }).error(function(){
+                        alert("纠偏出错");
+                    });
+        }
+
+        return false;
+    }
+
+    function onMarkerDragEnd(e) {
+        var lat = startPosition.lat();
+        var lng = startPosition.lng();
+        var newLat = startMarker.getPosition().lat();
+        var newLng = startMarker.getPosition().lng();
+        var offsetLat = newLat - lat;
+        var offsetLng = newLng - lng;
+
+        route.setMap(null);
+
+        var newPoints = [];
+        for(var i = 0; i < points.length; i++) {
+            var p = points[i];
+            var newP = new google.maps.LatLng(p.lat() + offsetLat, p.lng() + offsetLng);
+            newPoints.push(newP);
+        }
+        route.setPath(newPoints);
+        route.setMap(map);
+
+        stopMarker.setPosition(new google.maps.LatLng(stopPosition.lat() + offsetLat, stopPosition.lng() + offsetLng));
+    }
+
+    function changeMapSize() {
+        var defaultHeight = 550;
+        var curHeight = $("#map_canvas").height();
+        var nextHeight = curHeight;
+        if(curHeight == defaultHeight) {
+            nextHeight = $(window).height() - 150;
+            if(nextHeight < 800) {
+                nextHeight = 800;
+            }
+        } else {
+            nextHeight += 200;
+        }
+        $("#map_canvas").height(nextHeight);
+        google.maps.event.trigger(map, 'resize');
+        return false;
+    }
+
+    function toggleWorkout() {
+        if(!is_authenticated){
+            alert("登录后才可以操作");
+        } else if(!is_owner) {
+            alert("只能对自己上传的路线进行操作");
+        } else if(confirm("确定要{% if workout.hidden %}显示{% else %}隐藏{% endif %}吗？")) {
+            $.ajax({
+                type: "POST",
+                url: "/api/toggle_workout",
+                data: {
+                    id: "{{ workout.id }}",
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }
+            }).success(function(msg) {
+                        location.href = "{% url 'user_new' workout.user.encode_id %}";
+                    }).error(function(){
+                        alert("出错了，刷新网页再试一下");
+                    });
+        }
+        return false;
+    }
+
+    function toggleDeleteWorkout() {
+        if(!is_authenticated){
+            alert("登录后才可以操作");
+        } else if(!is_owner && !is_admin) {
+            alert("只能对自己上传的路线进行操作");
+        } else if(confirm("确定要{% if workout.deleted %}恢复吗？{% else %}删除吗？删除后无法恢复！{% endif %}")) {
+            $.ajax({
+                type: "POST",
+                url: "/api/toggle_delete_workout",
+                data: {
+                    id: "{{ workout.id }}",
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }
+            }).success(function(msg) {
+                        location.href = "{% url 'user_new' workout.user.encode_id %}";
+                    }).error(function(){
+                        alert("出错了，刷新网页再试一下");
+                    });
+        }
+        return false;
+    }
+
+    function exportCheck() {
+        if(!is_authenticated){
+            alert("登录后才可以导出");
+            return false;
+        } else if(!is_owner && !is_admin && {{ request.user.valid_distance|to_points }} < 10) {
+            alert("至少10个积分才能导出别人的路线\r\n" + "当前积分：" + {{ request.user.valid_distance|to_points }});
+            return false;
+        }
+        return true;
+    }
+
+    function ChangeMapSizeControl() {
+        this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+        this.defaultOffset = new BMap.Size($("#map_canvas").width() / 2 - 150, 10);
+    }
+    ChangeMapSizeControl.prototype = new BMap.Control();
+    ChangeMapSizeControl.prototype.initialize = function (map) {
+        var div = $("#changeMapSize").get(0);
+        map.getContainer().appendChild(div);
+        return div;
+    }
+
+    </script>
+
+    {#<script src="http://libs.baidu.com/highcharts/2.2.5/highcharts.js"></script>#}
+    <!-- <script src="http://code.highcharts.com/highcharts.js"></script> -->
+    <script src="http://cdn.staticfile.org/highcharts/2.3.5/highcharts.min.js"></script>
+    <script src="http://cdn.staticfile.org/highcharts/2.3.5/modules/exporting.min.js"></script>
+    <script type="text/javascript">
+        function formatTime(ms) {
+            var data = new Date(ms);
+            return data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds();
+        }
+
+        Highcharts.setOptions({
+                    lang: {
+                        exportButtonTitle: "导出",
+                        printButtonTitle: "打印",
+                        downloadPNG: "导出PNG",
+                        downloadJPEG: "导出JPEG",
+                        downloadPDF: "导出PDF",
+                        downloadSVG: "",
+                        resetZoom: "恢复",
+                        resetZoomTitle: "恢复"
+                    }
+                }
+        );
+
+        var chart;
+        $(function () {
+
+            chart = new Highcharts.Chart({
+                chart: {
+                    zoomType: 'x',
+                    renderTo: 'chart'
+                },
+                title: {
+                    text: '速度和海拔'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    labels: {
+                        formatter: function() {
+                        }
+                    }
+                },
+                yAxis: [{
+                    title: {
+                        text: '速度',
+                        style: {
+                            color: '#369BD7'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            color: '#369BD7'
+                        },
+                        formatter: function() {
+                            return this.value + " km/h";
+                        }
+                    },
+                    min: 0
+                },{
+                    labels: {
+                        style: {
+                            color: '#a0a095'
+                        },
+                        formatter: function() {
+                            return this.value + " m";
+                        }
+                    },
+                    title: {
+                        text: '海拔',
+                        style: {
+                            color: '#a0a095'
+                        }
+                    },
+                    min: {{ min_altitude }},
+                    opposite: true
+                }],
+                tooltip: {
+                    formatter: function() {
+                        var speed = this.points[0];
+                        var altitude = this.points[1];
+                        return "速度：" + speed.y + "公里/小时<br />" + "海拔：" + altitude.y + " 米" + "<br />时间：" + formatTime(timeData[speed.x]);
+                    },
+                    shared: true,
+                    crosshairs: true
+                },
+                plotOptions : {
+                    series : {
+                        marker : {
+                            enabled : false
+                        },
+                        point: {
+                            events: {
+                                mouseOver: function() {
+                                    var curPos = points[this.x];
+                                    if (!curPosMarker) {
+                                        curPosMarker = new google.maps.Marker({
+                                            position: curPos,
+                                            map: map,
+                                            icon: "/static/images/map/marker.png"
+                                        });
+                                    } else {
+                                        curPosMarker.setPosition(curPos);
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    line: {
+                        lineWidth: 1.5,
+                        states: {
+                            hover: {
+                                lineWidth: 1.5
+                            }
+                        }
+                    },
+                    areaspline: {
+                        fillColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                            stops: [
+                                [0, Highcharts.getOptions().colors[0]],
+                                [1, 'rgba(2,0,0,0)']
+                            ]
+                        },
+                        lineWidth: 1,
+                        marker: {
+                            enabled: false,
+                            states: {
+                                hover: {
+                                    enabled: true,
+                                    radius: 5
+                                }
+                            }
+                        },
+                        shadow: false,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    name: '速度',
+                    color: '#33B5E5',
+                    type: 'line',
+                    shadow: false,
+                    zIndex: 1,
+                    data: speedData
+                },{
+                    name: '海拔',
+                    color: '#a0a095',
+                    type: 'areaspline',
+                    shadow: false,
+                    data: altitudeData,
+                    yAxis: 1,
+                    zIndex: 0
+                }]
+            });
+        });
+    </script>
+
+    <script type="text/javascript" id="bdshare_js" data="type=tools&amp;mini=1" ></script>
+    <script type="text/javascript" id="bdshell_js"></script>
+    <script type="text/javascript">
+        //&amp;uid=2882339
+        var bds_config = {'review': 'off'};
+        var share_content = "{{ workout.sport|sport_to_string }}{{ workout.distance|to_distance }}公里，时间{{ workout.duration|to_duration }}，平均速度{{ workout.avg_speed }}公里/小时，使用@行者骑行软件 记录，点击查看详细路线"
+        bds_config['bdText'] = share_content;
+        //bds_config['bdDesc'] = '行者骑行软件 http://www.imxingzhe.com'; //for renren and qzone
+        {% if workout.trackpoints and workout.trackpoints|length >= 2 %}
+            bds_config['bdPic'] = '{% google_static_map %}size=500x500&sensor=false&markers=color:red%7Clabel:1%7C{{ workout.trackpoints.0.latitude }},{{ workout.trackpoints.0.longitude }}&markers=color:red%7Clabel:2%7C{% with workout.trackpoints|last as l %}{{ l.latitude }},{{ l.longitude }}{% endwith %}&path=color:0x3F9FD9FF%7Cweight:4%7C{% for p in workout.trackpoints %}{{ p.latitude }},{{ p.longitude }}{% if not forloop.last %}%7C{% endif %}{% endfor %}';
+        {% endif %}
+        document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + new Date().getHours();
+    </script>
+
+{% endblock %}

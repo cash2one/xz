@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的赛事信息</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="/static/dist/css/competitions_h5.css">
+</head>
+
+<body>
+    <div class="page-group">
+        <div class="page page-current" id="pageMain">
+            <header class="bar bar-nav">
+                <a class="icon icon-me pull-right"></a>
+                <h1 class="title">我的赛事信息</h1>
+            </header>
+            <div class="content">
+                <div class="list-block">
+                    <ul>
+                        <li class="item-content item-link link-my-competitions">
+                            <div class="item-inner">
+                                <div class="item-title">我的赛事</div>
+                            </div>
+                        </li>
+                        <li class="item-content item-link">
+                            <div class="item-inner">
+                                <div class="item-title">常用报名人</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+            <div class="page" id="pageMyCompetitions">
+            <header class="bar bar-nav">
+                <a class="icon icon-left pull-left back"></a>
+                <h1 class="title">我报名的赛事</h1>
+            </header>
+            <div class="content">
+
+ <div class="card">
+    <div class="card-content">
+      <div class="list-block media-list">
+        <ul>
+          <li class="item-content">
+            <div class="item-media">
+              <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" width="44">
+            </div>
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title">此处应是组别</div>
+              </div>
+              <div class="item-subtitle">此处是组别</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span>开始时间：2015/01/15 16:00</span>
+      <span>5 人已报名</span>
+    </div>
+  </div>
+
+
+            </div>
+            </div>
+
+
+    </div>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script>
+    $(document).on('click', '.link-my-competitions', function() {
+        $.router.load("#pageMyCompetitions");
+    });
+    </script>
+</body>
+
+</html>

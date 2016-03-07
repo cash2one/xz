@@ -1,0 +1,91 @@
+.track_graph {
+    margin: 0 0 20px 30px;
+    position: relative;
+}
+.track_data {
+    float: left;
+    margin: 2px;
+    width: 80px;
+}
+.track_data_label {
+    border-style: solid;
+    border-width: 0 0 1px;
+    color: #AAAAAA;
+    font-size: 0.8em;
+}
+.track_data_number {
+    color: blue;
+    font-size: 1.1em;
+}
+.float-left {
+    float: left;
+}
+.highlighted {
+    background-color: #D6F1AF;
+}
+.track_description a:visited {
+    color: blue;
+    font-size: 1em;
+}
+.track_description a {
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+}
+.track_description a:hover {
+    color: red;
+    font-size: 1em;
+}
+.track_data {
+    margin: 1px;
+    padding: 3px;
+    width: 100px;
+}
+.track_data_label {
+    border-style: solid;
+    border-width: 0 0 1px;
+    color: #AAAAAA;
+    font-size: 0.8em;
+}
+.track_data_number {
+    color: blue;
+    font-size: 1.1em;
+}
+.track {
+    padding: 5px;
+}
+.track_author {
+    color: #BBBBBB;
+    font-size: 0.8em;
+    margin: 0;
+}
+.track_description {
+    color: #555555;
+    font-size: 0.8em;
+    margin: 0;
+}
+.track_description span.important {
+    font-size: 1em;
+}
+.horizontal_dotted {
+    background-image: url("/static/images/dots.gif");
+    height: 1px;
+    margin: 5px 0;
+    padding: 0;
+}
+.nav.nav-pills {
+    margin-bottom: 30px;
+}
+img.icon {
+    border: 0 none;
+    height: 16px;
+    vertical-align: -3px;
+    width: 16px;
+}
+img.bordered_icon {
+    border: 1px solid blue;
+    height: 16px;
+    padding: 2px;
+    vertical-align: -1px;
+    width: 16px;
+}

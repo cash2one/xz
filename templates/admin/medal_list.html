@@ -1,0 +1,72 @@
+{% extends "root_admin.html" %}
+{% block css %}
+<link href="/static/dist/css/add_medal.css" rel="stylesheet"> 
+<link href="//cdn.bootcss.com/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block container %}
+{% load filters %}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <header class="header">
+                <h1 class="page-header">勋章列表</h1>
+                <ol class="breadcrumb">
+                    <li><a href="#">后台首页</a></li>
+                    <li><a>勋章管理</a></li>
+                    <li class="active"><i class="fa fa-edit"></i>勋章列表</li>
+                </ol>    
+            </header>
+
+
+            <div class="block-shadow">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>勋章标题</th>
+                        <th>勋章描述</th>
+                        <th>勋章图片</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>类型</th>
+                        <th>删除</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medal in medals %}
+                    <tr>
+                        <th scope="row">{{ medal.medal_title }}</th>
+                        <td>{{ medal.medal_desc }}</td>
+                        <td><img src="{{ medal.pic }}!avatar"></td>
+                        <td>{{ medal.start_time | to_data_time_hour}}</td>
+                        <td>{{ medal.end_time | to_data_time_hour }}</td>
+                        <td>{{ medal.mtype }}</td>
+                        <td><a class="btn btn-default btn-delete" href="delete_medal/{{ medal.id }}/">删除</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="/static/dist/js/functions.js"></script>
+    <script>
+    var deleteBtn = $(".btn-delete");
+
+    deleteBtn.on('click', function(event) {
+        event.preventDefault();
+        var URL = $(this).attr('href');
+        var r = confirm("真的要删除？");
+        if (r == true) {
+            $.get(URL, function(data) {
+                window.location.href = '/medal_list';
+            });
+        } else{
+            return false;
+        };
+    });
+    </script>
+{% endblock %}

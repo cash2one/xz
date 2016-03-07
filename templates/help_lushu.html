@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}
+    制作和导出路书常见问题 - 行者路书 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row row-help">
+        {% include "help_nav.html" %}
+    <ol class="breadcrumb visible-xs">
+    <li><a href="/">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">路书相关问题</li>
+    </ol>
+
+        <div class="col-md-10 main">
+            <h2 id="editls">如何制作路书</h2>
+            <p>在 <a href="{% url 'lushu' %}">路书</a> 页面点击 <a href="{% url 'help_lushu' %}">制作路书</a> 按钮，在地图上制作路书，然后保存。</p>
+            <h3>如何制作环形路书？</h3>
+            <p><img src='/static/images/screenshot/lushu_circle.gif'></p>
+            <h3>生成的路线无法拖动？</h3>
+            <p>算上起点和终点，最多只能生成10个点，超过10个以后就没法拖动了，这个是谷歌地图的限制。拖动超过10个点的路书，可以分段制作。</p>
+            <hr>
+            <h2 id="inputls">在手机上导入路书</h2>
+            <p>打开行者手机端，找到"路书"，点击"下载"，输入上一步生成的编号，即可下载路书（保存在手机存储卡xingzhe/lushu目录下）。 下载完成后，点击"导入"。 选择成功导入的路书，找到"地图显示路书"选项，勾选"地图显示路书"。 返回行者"运动"->"地图"页面，你可以同时看到路书和您正在骑行的路线。这样就能保证您的骑行路线是按照路书进行的。 不止如此，行者还支持导入任何GPX格式的文件作为路书。
+            </p>
+            <hr>
+            <h2 id="usels">制作和导出路书常见问题及解决办法：</h2>
+            <p>行者使用的是谷歌地图来制作和显示路书，由于某些原因，最近几天谷歌出现故障，所以行者里无法制作和显示路书。其他地图不支持路书功能，只能等待谷歌恢复。</p>
+            <p>可以先尝试以下步骤解决：</p>
+            <p><span class="badge">1</span> <a href="/static/hosts">点击下载hosts文件</a></p>
+            <p><span class="badge">2</span> 把hosts文件复制到电脑的这个文件夹下 C:\Windows\System32\drivers\etc\ 如果提示是否覆盖文件，选择覆盖即可。</p>
+            <p><span class="badge">3</span> 刷新浏览器，应该就可以了。</p>
+            <p>备注：因为hosts文件是系统比较重要的文件，所以会被杀毒软件保护，导致复制失败。</p>
+            <p>出现这种情况，可以先把杀毒软件停掉（比如360、QQ电脑管家），然后再复制。行者网站下载的hosts文件，肯定没有危害，这个可以放心。</p>
+            <p>如果出现复制后，可以制作路书，但是重启电脑后，又不能制作，原因应该是hosts文件被杀毒软件恢复，可以重新复制一次。</p>
+            <p>其他问题1：地图不显示，或者设置好路书的起点和终点后无法生成路线</p>
+            <p>可以尝试以下任一链接制作路书。</p>
+            <p><a target="_blank" href="{% url 'lushu_create' %}">链接1</a></p>
+            <p><a target="_blank" href="{% url 'lushu_create_new' %}">链接2</a></p>
+            <p>其他问题2：制作好路书后无法导出</p>
+            <p>1. 由于浏览器种类繁多，无法做到每一款都测试，所以会有个别浏览器无法制作或导出路书，但是谷歌出品的Chrome浏览器绝对没有问题，解决办法：<a target="_blank" href="http://www.google.cn/intl/zh-CN/chrome/">下载安装谷歌Chrome浏览器</a></p>
+            {% comment %}
+            <p>2. 由于众所周知的原因，国内访问谷歌的服务时好时坏。但是目前只有谷歌地图支持规划路书，没有其他地图可以替代谷歌地图。解决办法：使用VPN或者代理访问路书页面（仅限对电脑比较熟悉的用户，由于涉及到敏感信息，所以不多做解释，可以自己搜索相关资料）。</p>{% endcomment %}
+            <p>2. 如果安装Chrome浏览器后还有问题，可以按页面最下方的联系方式与我联系，我可以代为制作和导出。</p>
+            <hr>
+            <p class="text-right"><a href="{% url 'download' %}">安装行者APP</a></p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+

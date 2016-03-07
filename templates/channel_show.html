@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    行者帮 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/xzb.css">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+<div class="app-header">
+    <div class="container">
+        <h1 class="pull-left"><a href="/bang/">行者帮</a></h1>
+        <a class="pull-right btn btn-primary btn-lg" href="{% url 'topic_publish' 2 %}">发布新话题</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- 置顶的 -->
+    {% for topic in tops %}
+        <div class="topic-list topic-tops">
+            <a class="topic-title" href="{% url 'topic_show' topic.id %}" target="_blank">
+                <div class="topic-list-left">{{ topic.comment_count }}<span>回复</span></div>
+                <div class="topic-list-center">
+                    <h3>{{ topic.content }}</h3>
+                    <p>
+                        <img class="topic-avatar" width="28" height="28" src="{{ topic.user.pic_url }}!avatar" alt="{{ topic.user.username }}的头像" onerror="this.src='http://static.imxingzhe.com/default-avatar/default-avatar.png!avatar';this.onerror=null">{{ topic.user.username }}
+                    <span class="lline">{{ topic.create_time|date:"Y-m-d H:i" }}</span>
+                    {% if topic.top %}<span class="topic-status lline">已置顶 </span>{% endif %}
+                    {% if topic.hidden %}<span class="topic-status lline">已删除</span>{% endif %}
+                    </p>
+                </div>
+                <div class="topic-list-right"><i class="iconfont">&#xe620;</i> {{ topic.view_count }}</div>
+            </a>
+        </div>
+    {% endfor %}
+
+    <!-- 正常的 -->
+    {% for topic in topics %}
+        <div class="topic-list">
+            <a class="topic-title" href="{% url 'topic_show' topic.id %}" target="_blank">
+                <div class="topic-list-left">{{ topic.comment_count }}<span>回复</span></div>
+                <div class="topic-list-center">
+                    <h3>{{ topic.content }}</h3>
+                    <p>
+                     <img class="topic-avatar" width="28" height="28" src="{{ topic.user.pic_url }}!avatar" alt="{{ topic.user.username }}的头像" onerror="this.src='http://static.imxingzhe.com/default-avatar/default-avatar.png!avatar';this.onerror=null">{{ topic.user.username }}
+
+                    <span class="lline">{{ topic.create_time|date:"Y-m-d H:i" }}</span>
+                    {% if topic.hidden %}<span class="lline topic-status">已删除</span>{% endif %}
+                    </p>
+                </div>
+                <div class="topic-list-right"><i class="iconfont">&#xe620;</i> {{ topic.view_count }}</div>
+            </a>
+        </div>
+
+    {% endfor %}
+
+<!-- Mobile 上的分页 -->
+    <div class="visible-xs-block row">
+        <ul class="pager">
+            <li>
+                {% if topics.has_previous %}
+                    <a href="?page={{ topics.previous_page_number }}" title="{{ topics.previous_page_number }}">上一页</a>
+                {% endif %}
+            </li>
+            <li>
+                {{ topics.number }} / {{ topics.paginator.num_pages }}
+            </li>
+            <li>
+                {% if topics.has_next %}
+                    <a href="?page={{ topics.next_page_number }}" title="{{ topics.next_page_number }}">下一页</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+<!-- PC 上的分页 -->
+<div id="Pagination" class="hidden-xs pagination-wrap"></div>
+
+</div>
+
+
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/kkpager/kkpager.min.js"></script>
+<script>
+//init
+$(function() {
+    //生成分页
+    kkpager.generPageHtml({
+        pagerid: 'Pagination', // 分页展示控件容器ID
+        pno: {{ topics.number }}, //当前页码
+        total: {{ topics.paginator.num_pages }}, //总页码
+        totalRecords: {{ topics.paginator.num_pages }} * 10, //总数据条数
+        isShowCurrPage: false, // 显示当前页
+        isShowTotalPage: false, //总页数
+        isGoPage: false,
+        isShowFirstPageBtn: false, //显示首页按钮
+        getLink: function(n) {
+            return "?page=" + n;
+        }
+    });
+});
+</script>
+{% endblock %}

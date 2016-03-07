@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ topic.content }} - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<link href="/static/css/topic.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+
+<div class="container">
+
+    <div class="row">
+        <ol class="breadcrumb">
+          <li><a href="/channels/">版块首页</a></li>
+          <li><a href="{% url 'channel_show' topic.channel_id %}">{{ topic.channel.name }}</a></li>
+          <li class="active">移动<strong>{{ topic.user.username }}</strong>的帖</li>
+        </ol>
+    </div>
+
+    <div class="page-header">
+        <form class="form-inline" method="post">
+            {% csrf_token %}
+            <select name="channel" class="form-control">
+                {% for channel in channels %}
+                    <option value="{{ channel.id }}" {% ifequal channel.name topic.channel.name %}selected="selected"{% endifequal %}>{{ channel.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">移动</button>
+        </form>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12" style="border-bottom: 1px solid #E2E2E2;">
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-12">
+                    <span class="track_author" style="color:gray">
+                        <a style="color:gray" href="{% url 'user_new' topic.user.encode_id %}">{{ topic.user.username }}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div class="col-md-12">
+                    {% if topic.top %}[置顶] {% endif %}{% if topic.hidden %}[已删除] {% endif %}<a href="{% url 'topic_show' topic.id %}">{{ topic.content|linebreaksbr }}</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="margin-bottom: 20px">
+                    <span class="track_author" style="color:gray">
+                        <span>{{ topic.create_time|date:"Y-m-d H:i" }}</span>
+                        <span style="margin-left: 10px">{{ topic.comment_count }}回复/{{ topic.view_count }}浏览</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+

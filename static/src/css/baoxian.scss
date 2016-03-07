@@ -1,0 +1,222 @@
+@import "bootstrap";
+@import "base.scss";
+
+body {
+    background-color: #F5F5F5;
+}
+
+@include phone {
+    body {
+        background-color: #EBEAE8;
+    }
+}
+
+.btn {
+    width: 120px;
+    font-size: 20px;
+    font-weight: 200;
+}
+
+@include phone {
+    .bgr {
+        float: left;
+        margin: 1em;
+        padding: 0.5em;
+        background-color: #fff;
+    }
+}
+
+.header-pic {
+    height: 32em;
+    background-image: url("http://cdn.bi-ci.com/dist_v2/image/baoxian/baoxian_banner.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+    @include phone {
+        height: 13em;
+        margin-bottom: 1em;
+    }
+}
+
+section {
+    margin: 3em 0;
+    background-color: #fff;
+    min-height: 270px;
+    @include phone {
+        margin: 0;
+        background-color: transparent;
+    }
+    .pic {
+        height: 270px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+    .pic1 {
+        background-image: url("http://cdn.bi-ci.com/dist_v2/image/baoxian/baoxian_section_1.jpg")
+    }
+    .pic2 {
+        background-image: url("http://cdn.bi-ci.com/dist_v2/image/baoxian/baoxian_section_2.jpg")
+    }
+    .pic3 {
+        background-image: url("http://cdn.bi-ci.com/dist_v2/image/baoxian/baoxian_section_3.jpg")
+    }
+    .pic4 {
+        background-image: url("http://cdn.bi-ci.com/dist_v2/image/baoxian/baoxian_section_4.jpg")
+    }
+    .pic5 {
+        background-image: url("http://cdn.bi-ci.com/dist_v2/image/baoxian/baoxian_section_5.jpg")
+    }
+    .pic6 {
+        background-image: url("http://cdn.bi-ci.com/dist_v2/image/baoxian/baoxian_section_6.jpg")
+    }
+    .cont {
+        h2 {
+            height: 2em;
+            margin: 2em 0;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
+            line-height: 0;
+        }
+        .info {
+            margin: 1.5em 0 2.5em;
+            span {
+                margin-right: 2em;
+            }
+        }
+        @include phone {
+            h2 {
+                margin: 1em 0;
+                font-size: 15px;
+                line-height: 1;
+            }
+            .info {
+                margin: .5em 0 1em;
+            }
+        }
+        .table-bordered {
+            margin: 0;
+            color: #777;
+            .td {
+                line-height: 2em;
+                min-height: 2em;
+                padding: .5em .2em;
+                div {
+                    height: 2em;
+                }
+            }
+            .td-bt {
+                border-top: 1px solid #eee;
+            }
+            .td-bl {
+                border-left: 1px solid #eee;
+            }
+            .td-br {
+                border-right: 1px solid #eee;
+            }
+            .td-bb {
+                border-bottom: 1px solid #eee;
+            }
+            @include phone {
+                .td {
+                    font-size: 12px;
+                    padding: .5em .2em 2.5em;
+                }
+                .td-br {
+                    border: none;
+                }
+                .td-sbb {
+                    border-bottom: 1px solid #eee;
+                }
+            }
+        }
+    }
+    .golink {
+        height: 270px;
+        padding-top: 3.5em;
+        border-left: 1px solid #eee;
+        text-align: center;
+        small {
+            color: #999;
+        }
+        .mark {
+            background: none;
+            font-size: 2em;
+            color: #ff9000;
+            small {
+                color: #ff9000;
+                font-size: 14px;
+            }
+        }
+    }
+    @include phone {
+        .golink {
+            height: auto;
+            padding-top: .5em;
+            border-left: 0;
+        }
+    }
+}
+
+.conts {
+    margin-bottom: 40px;
+    background-color: #fff;
+    border-top: 3px solid #0279C1;
+    form {
+        padding: 1em 2em;
+        h3 {
+            font-size: 18px;
+        }
+        input.form-control {
+            height: 46px;
+            border-radius: 1px;
+        }
+    }
+    .innerwrap {
+        background: #fff url("http://cdn.bi-ci.com/dist_v2/image/baoxian/sline.jpg") no-repeat left top;
+        padding: 1em 2em;
+    }
+    h3 {
+        font-weight: normal;
+        font-size: 24px;
+        color: #007ac2;
+    }
+    h4 {
+        margin-bottom: 40px;
+        font-weight: normal;
+        font-size: 18px;
+        color: #007ac2;
+    }
+    p {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.7;
+    }
+}
+
+.footer-cont {
+    background-color: #fff;
+    padding: 2em 0;
+    .header {
+        width: 100%;
+        height: 3.5em;
+        margin-bottom: 1.5em;
+        border-bottom: 1px solid #eee;
+        h4 {
+            display: inline-block;
+            line-height: 2;
+            border-bottom: 3px solid #007ac2;
+            font-weight: normal;
+        }
+    }
+    ul {
+        padding-left: 1em;
+        li {
+            margin-bottom: .5em;
+            color: #666;
+        }
+    }
+    img {
+        max-width: 100%;
+    }
+}

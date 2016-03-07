@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} 添加新赛事 {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/competitions_create.css">
+<link rel="stylesheet" href="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+{% block content %}
+{% load filters %}
+<header class="header">
+    <div class="container">
+        <h1 class="pull-left">添加新赛事</h1>
+    </div>
+</header>
+<div class="container form-container">
+    <form id="createMatchForm">
+        <div class="form-group">
+            <label class="required" for="matchTitle">赛事标题</label>
+            <input type="text" class="form-control input-lg" name="title" id="matchTitle" maxlength="30" required>
+        </div>
+        <div class="form-group">
+            <label class="required" for="matchDescription">赛事内容简介</label>
+            <textarea class="form-control" id="matchDescription" rows="10" name="description" maxlength="1000" required></textarea>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                <label class="required" for="matchStartTime">赛事开始时间</label>
+                <input class="form-control match-time" id="matchStartTime" type="text" readonly required>
+            </div>
+            <div class="col-md-6">
+                <label class="required" for="matchEndTime">赛事结束时间</label>
+                <input class="form-control match-time" id="matchEndTime" type="text" readonly required>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                <label class="required" for="matchCreateTime">报名开始时间</label>
+                <input class="form-control match-time" id="matchCreateTime" type="text" readonly required>
+            </div>
+            <div class="col-md-6">
+                <label class="required" for="matchClosingTime">报名结束时间</label>
+                <input class="form-control match-time" id="matchClosingTime" type="text" readonly required>
+            </div>
+        </div>
+        <input type="hidden" name="start_time" value="">
+        <input type="hidden" name="end_time" value="">
+        <input type="hidden" name="create_time" value="">
+        <input type="hidden" name="closing_time" value="">
+        <button type="submit" id="submitBtn" class="btn btn-primary btn-lg btn-block">添加</button>
+    </form>
+</div>
+{% endblock %}
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script>
+$(function() {
+// 时间选择器配置
+var confi = {
+    language: 'zh-CN',
+    format: "yyyy-mm-dd hh:ii",
+    autoclose: true,
+    pickerPosition: "bottom-left",
+    todayHighlight: true
+}
+$(".match-time").datetimepicker(confi);
+    // 添加时间戳
+    $("#matchStartTime").change(function() {
+        var v = $(this).val();
+        $("input[name=start_time]").val(toUnixTimestamp(v));
+    });
+    $("#matchEndTime").change(function() {
+        var v = $(this).val();
+        $("input[name=end_time]").val(toUnixTimestamp(v));
+    });
+    $("#matchCreateTime").change(function() {
+        var v = $(this).val();
+        $("input[name=create_time]").val(toUnixTimestamp(v));
+    });
+    $("#matchClosingTime").change(function() {
+        var v = $(this).val();
+        $("input[name=closing_time]").val(toUnixTimestamp(v));
+    });
+    // 创建
+    $('#createMatchForm').on('submit', function(e) {
+        e.preventDefault();
+        var submitBtn = $("#submitBtn");
+        submitBtn.addClass('disabled').attr('disabled', 'disabled').text('添加中…');
+        var myJsonData = {
+            title: $("#matchTitle").val(),
+            description: $('#matchDescription').val(),
+            start_time: parseInt($('input[name="start_time"]').val()),
+            end_time: parseInt($('input[name="end_time"]').val()),
+            create_time: parseInt($('input[name="create_time"]').val()),
+            closing_time: parseInt($('input[name="closing_time"]').val())
+        };
+        console.log(myJsonData);
+        var apiURL = '/api/v4/create_competition';
+        $.ajax({
+                url: apiURL,
+                type: 'POST',
+                data: myJsonData
+            })
+            .done(function(data) {
+                console.log(data);
+                console.log("success!");
+                submitBtn.addClass('btn-success').text('添加成功');
+                function showTime(count) {
+                    submitBtn.text('添加成功 ' + count);
+                    if (count === 0) {
+                        window.location = '/match/list/';
+                    } else {
+                        count -= 1;
+                        setTimeout(function() {
+                            showTime(count);
+                        }, 1000);
+                    }
+                }
+                showTime(5);
+            })
+            .fail(function(data, textStatus, request) {
+                function showTime(count) {
+                    if (count === 0) {
+                        submitBtn.removeClass('disabled btn-danger').removeAttr('disabled').text('添加');
+                    } else {
+                        count -= 1;
+                        setTimeout(function() {
+                            showTime(count);
+                        }, 1000);
+                    }
+                }
+                showTime(2);
+                for(var j in JSON.parse(data.responseText)) {
+                }
+                submitBtn.addClass('btn-danger').text(JSON.parse(data.responseText).error_message);
+            })
+            .always(function(xhr, data) {
+                console.log("complete");
+            });
+    });
+});
+</script>
+{% endblock %}

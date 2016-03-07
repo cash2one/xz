@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>行者活动</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="Author" contect="Mr.YangYang">
+    <link rel="stylesheet" href="http://cdn.bi-ci.com/static/normalize/normalize-3.0.3.min.css">
+    <link rel="stylesheet" href="/static/dist/css/activity_detail.css">
+</head>
+
+<body>
+    <div id="wxShareImg" style="display: none;">
+        <img src="{{ activity.pic_url }}!weixinShare">
+    </div>
+
+    <header id='slider' class='swipe'>
+        <div class='swipe-wrap' id="swipeWrap">
+        </div>
+        <h1><mark id="activityTypeWrap"></mark>{{ activity.activity_title }}</h1>
+    </header>
+    <div class="row base-data">
+        <div class="col-3"><i class="icon icon-1"></i><span class="data-font"><span id="activityKm"></span> km</span></div>
+        <div class="col-3"><i class="icon icon-2"></i><span class="data-font">{{ activity.isjoined }}/{{ activity.user_max_count }}</span></div>
+        <div class="col-3"><a id="injoinBtn" class="btn">立刻加入</a></div>
+    </div>
+    <div class="section">
+        <div class="tit">
+            <img src="{{ user.pic_url }}" class="" alt="">
+            <span>{{ user.username }}</span>
+        </div>
+        <div class="content" id="Content">
+            <div class="head"><i class="icon icon-3"></i>描述</div>
+            <div>
+                <pre>{{ activity.activity_content }}</pre>
+            </div>
+        </div>
+    </div>
+    <ul class="list">
+        <li class="row"><span class="tit"><i class="icon icon-4"></i>时间</span><span class="data-font" id="startTime"></span> - <span class="data-font" id="endTime"></span></li>
+        <li class="row text-overflow"><span class="tit"><i class="icon icon-5"></i>集合地</span><a href="/activity_address/{{ activity.id }}/">{{ activity.mass_address }}</a></li>
+        <li class="row"><span class="tit"><i class="icon icon-6"></i>费用</span><span id="activityCost" class="data-font"></span>元/人</li>
+        <li class="row border-1px"><span class="tit"><i class="icon icon-7"></i>电话</span><a href="tel:{{ activity.contact_mobile }}" class="data-font">{{ activity.contact_mobile }}</a></li>
+        <li class="row"><span class="tit"><i class="icon icon-8"></i>编号</span><span class="data-font">{{ activity.lushu_id }}</span></li>
+    </ul>
+    <div class="lushu" style="background-image:url('http://static.imxingzhe.com/lushu/{{ lushu.uuid }}!webActivityPhotos')">
+        <div class="header">
+            <div class="tit text-overflow">{{ lushu.title }}&nbsp;</div>
+            <div class="num text-overflow">路书 <span class="data-font">#{{ activity.lushu_id }}</span></div>
+        </div>
+    </div>
+    <article>
+        <h3><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAhCAMAAACP+FljAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAMBQTFRFbm5uhoaGcXFxd3d3nZ2d6urqrq6u1dXV7u7uoqKiycnJgYGBenp65eXlYWFhfX19vb29sbGxpaWlXFxcuLi4qKio9PT08fHx4ODg2traaWlp8vLyxcXFioqKmJiYXl5eZWVlx8fHtra23d3d3NzczMzMtLS04+PjlpaW0tLSjo6OV1dX+Pj4////+fn59/f3/f39/v7+WFhYWVlZWlpa/Pz89vb2W1tb+vr6qqqqkJCQ+/v7z8/Pu7u7w8PD7OzsC9RcIQAAAklJREFUeNp0lOly6jAMhZWwhQYCNIGylYT20tXynqWly/u/1ZUTSDt3LvrhmVjfyLJ8ToAzXkeOuLjfPvQfpoNAoayabcaBuSgqVB9P69IaCht50w3mRZ1hwGkREgdhqW00ed89eRBrs06OyAWluAOEYt1YR08fgVSISizvOlZ3ljXhAIGbUNuXMeVkXlW5RKymmY6uHEGAUL2OTr9QHV1JQYvgEgNPl1t0FZhUoc4GeCxcqkJZYwzzFxM/o+BQ4dCkK1V3xPJFsqoJ6gtvtb9RDNQqtgmyepdj8jpRsrk53oC+xgoIfMe8zrMKr60vGoB635bpo4JlXK6wyVOFN9vhZyBHTw8RZsbDnP0HoBJ74xcQlsm5wD8AU72sXAFEq0tArjzzCQCBvAAwmsAcYHK8DMxsFyCUl4G7cgcwEr+Aedlhv4C+q7DuqV/Aq/8DcNyZPvjpoL0FU/edmarOX1JOzB7e7Ru2NUlaiol2UMs4HsPUjKq2qFAKedGeMNOhgu/MbNsz1AGG8jT4QgVgPxFwqEf8pAFZ+MZeYduxpqcF4nT39N65vNXpvaphjlex3SPJHreW3qu2gZDB/FmdNPcnc0Ih0VY4N+UMkRXNLUh8whklew0XijTJC0lvYncLsptowtkwSbV/g0XjC4n9WK8fNkjOoECUh9Bq7wZPxmFFjgffmHX3a9kLvscf/VGpo7nE4mw9ZweRQKlNnGZR7Ey6GzcGObvbKVQcuiPKxqn/kvR+Jg78/CMgS8pgvHzsMWrl9Hug7b8CDABMaKXno0CcRAAAAABJRU5ErkJggg==" alt="注意" width="16" class="exclamation-mark">活动须知和免责条款</h3>
+        <p>1、参加活动，必须佩戴头盔，夜骑必须配前后灯；</p>
+        <p>2、参加活动前或者活动过程中严禁饮用含酒精饮料；</p>
+        <p>3、鉴于自行车运动具有危险性和不可预知性，本次活动只提供一个自行车友的交流和联系平台。参加者要对自己的行为及后果负完全责任。车友应自行购买户外活动相关险种。对本次活动中存在或可能存在的风险，自愿承担其责任，并独自承担事故发生后人身所受侵害、伤害的救治责任和财产损失责任；</p>
+        <p>4、活动的发起人和领队不对任何由自行车运动本身以及往返路途中发生的危险承担责任。</p>
+        <p>5、活动的参加者必须遵守并按照活动内容及路线的安排进行相应的活动，不得违反相关的法律法规、交通法规。参加者因违反相关法律法规而导致的一切法律后果均由参加者自行承担；</p>
+        <p>6、对于不服从安排、不同意劝退的人员，领队和活动发起人不承担任何责任；</p>
+        <p>7、不满18周岁参加活动的，须由其监护人陪同；</p>
+    </article>
+
+    <div id="wxMark" class="wx-mark">
+        <p class="tip">请在浏览器中打开</strong></p>
+        <p>行者搜索活动编号：<br><strong class="big-text">{{ activity.id }}</strong></p>
+    </div>
+    <script src="/static/js/swipe-min.js"></script>
+    <script>
+
+    // 开始结束时间
+    document.getElementById('startTime').innerHTML = new Date({{ activity.start_time }}).toLocaleDateString();
+    document.getElementById('endTime').innerHTML = new Date({{ activity.end_time }}).toLocaleDateString();
+
+    var endTime = {{ activity.end_time }},
+        noewTime = Date.now(),
+        injoinBtn = document.getElementById('injoinBtn');
+
+    console.log('endTime: '+ endTime);
+    console.log('noewTime: ' + noewTime);
+
+    if (noewTime > endTime) {
+        injoinBtn.setAttribute("disabled", "disabled");
+        injoinBtn.innerHTML = '已结束';
+        injoinBtn.className += ' disabled';
+    } else {
+        // 打开行者APP
+        injoinBtn.onclick = function() {
+            if (is_weixin()) {
+                wxMark.style.display = 'block';
+                return false;
+            } else {
+                window.location = 'xingzhe://imxingzhe.com/activity?type=activity&activityid=' + {{ activity.id }}; //打开行者
+
+                // iOS 9的跳转逻辑已不适应
+                // setTimeout(function() {
+                //     window.location = 'http://www.imxingzhe.com/download/'; //如果超时就跳转到app下载页
+                // }, 600);
+            }
+        }
+    };
+
+    
+
+    // 显示活动图片
+    var photoStr = "{{ activity.cover_pic }}",
+        strs = new Array(),
+        i;
+    strs = photoStr.split(";");
+
+    // 添加第一张头图作为微信分享缩略图
+    // document.getElementById('wxShareImg').innerHTML = '<img src="' + strs[1] + '!weixinShare">';
+
+    for (i = 0; i < strs.length; i++) {
+        document.getElementById('swipeWrap').innerHTML += '<div class="swipe-cont" style="background-image: url(\'' + strs[i] + '!webActivityPhotos\')"></div>';
+    }
+
+    // 活动公里数
+    activityKm = ({{ activity.activity_miles }} / 1000).toFixed(1);
+    document.getElementById('activityKm').innerHTML = activityKm;
+
+    // 活动难度类型
+    var activityType = {{ activity.activity_type }},
+        activityTypeWrap = document.getElementById('activityTypeWrap');
+    console.log('activityType: ' + activityType);
+
+    if (activityType === 0) {
+        activityTypeWrap.className = "jiandan";
+        activityTypeWrap.innerHTML = '简单';
+    } else if (activityType === 1) {
+        activityTypeWrap.className = 'xiuxian';
+        activityTypeWrap.innerHTML = '休闲';
+    } else if (activityType === 2) {
+        activityTypeWrap.className = 'kunnan';
+        activityTypeWrap.innerHTML = '困难';
+    } else if (activityType === 3) {
+        activityTypeWrap.className = 'fengkuang';
+        activityTypeWrap.innerHTML = '疯狂';
+    } else if (activityType === 4) {
+        activityTypeWrap.className = 'diyu';
+        activityTypeWrap.innerHTML = '地狱';
+    };
+
+    // 活动图片切换
+    window.mySwipe = new Swipe(document.getElementById('slider'), {
+        speed: 400,
+        auto: 4000
+    });
+    </script>
+</body>
+
+</html>

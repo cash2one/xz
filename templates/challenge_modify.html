@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    修改挑战内容
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/challenge_add.css">
+<base target="_blank" />
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+<div class="app-header">
+    <div class="container">
+        <h1 class="pull-left">修改挑战</h1>
+    </div>
+</div>
+
+<div class="container">
+<div class="wrap">
+    <h2 class="text-center"><span class="nun">1</span>添加修改需要用到的新图片</h2>
+    <div class="upload-img">
+        <div class="form-group">
+            <p class="help-block">点击「选择文件」，然后点「上传」，成功上传后会生成此图片的URL。</p>
+            <input type="file" name="file" id="file" required="required" accept="image/*" multiple="multiple">
+        </div>
+        <div class="form-group">
+        <a class="btn btn-default" id="fileSubmit">上传</a>
+        </div>
+        <div id="log" class="help-block"></div>
+    </div>
+
+
+    <h2 class="text-center"><span class="nun">2</span>修改此挑战</h2>
+    <form id="myForm">
+    {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="text" id="id" name="id" class="form-control" readonly="readonly" value="{{ challenge.id }}">
+        </div>
+        <div class="form-group">
+            <label for="title">标题</label>
+            <input type="text" id="title" name="title" class="form-control" placeholder="标题" value="{{ challenge.title }}" required="required">
+        </div>
+        <div class="form-group">
+            <label>状态</label>
+            <label class="radio-inline">
+                <input type="radio" name="challenge_type" id="inlineRadio0" value="0">进行中
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="challenge_type" id="inlineRadio1" value="1">结束
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="challenge_type" id="inlineRadio2" value="2">隐藏
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="small_pic">小图（勋章图）链接</label>
+            <input type="url" id="small_pic" name="small_pic" class="form-control" value="{{ challenge.small_pic }}" required="required">
+        </div>
+        <div class="form-group">
+            <label for="big_pic">大图（头图）链接</label>
+            <input type="url" id="big_pic" name="big_pic" class="form-control" value="{{ challenge.big_pic }}" required="required">
+        </div>
+
+        <div class="form-group">
+            <label for="inputStartTime">开始时间(注意格式，英文-)</label>
+            <input type="text" class="form-control" id="inputStartTime" value="{{ challenge.start_time }}">
+            <span id="StartTimehelpBlock" class="help-block"></span>
+        </div>
+        <div class="form-group">
+            <label for="inputEndTime">结束时间</label>
+            <input type="text" class="form-control" id="inputEndTime" value="{{ challenge.end_time }}">
+            <span id="EndTimehelpBlock" class="help-block"></span>
+        </div>
+
+        <input type="hidden" id="inputStartTimeVal" name="start_time" value="{{ challenge.start_time }}">
+        <input type="hidden" id="inputEndTimeVal" name="end_time" value="{{ challenge.end_time }}">
+
+        <div class="form-group">
+            <label for="title">奖励</label>
+            <input type="text" id="reward" name="reward" class="form-control" placeholder="奖励" value="{{ challenge.reward }}">
+        </div>
+        <div class="form-group">
+            <label for="title">内容 <a href="http://cdn.bi-ci.com/webapp/markdown-guide/challenge_md.html" target="_blank">查看示例<i class="iconfont">&#xe635;</i></a></label>
+            <textarea class="form-control" id="content" name="content" rows="20" required="required">{{ challenge.content }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg" style="margin-right:20px">确认修改</button><a href="/challenge_modify/{{ challenge.id }}/" class="link">不改了，返回此挑战</a>
+    </form>
+</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/upyun-api/spark-md5.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/upyun-api/async.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/upyun-api/upyun-mu.js"></script>
+
+
+<script>
+/*
+/* UPYUN API
+*/
+    var today = new Date(),
+        nowdate = today.getFullYear().toString() + (today.getMonth()+1) + today.getDate();
+
+    document.getElementById('fileSubmit').onclick = function() {
+
+        var ext = '.' + document.getElementById('file').files[0].name.split('.').pop(),
+        filename = document.getElementById('file').files[0].name;
+
+        var config = {
+            bucket: 'xingzhe-img',
+            expiration: parseInt((new Date().getTime() + 3600000) / 1000),
+            form_api_secret: 'loO4HjINwaV6UmjD14riVfV252w='
+        };
+
+        var instance = new Sand(config);
+        var options = {
+            'notify_url': 'http://upyun.com'
+        };
+
+        instance.setOptions(options);
+        instance.upload('/challenges/' + nowdate + '/' + filename);
+    };
+
+    // demo stuff
+    function addLog(data) {
+
+        var elem = document.createElement("div");
+
+        elem.innerHTML += '<p><strong>' + data.bucket_name + '的URL: </strong>' + '<a target="_blank"  href="http://static.imxingzhe.com' + data.path + '">' + 'http://static.imxingzhe.com' + data.path + '</a>' + '</p>';
+        log.appendChild(elem);
+    }
+
+    document.addEventListener('uploaded', function(e) {
+        var log = document.getElementById("log");
+        addLog(e.detail);
+        console.log(e.detail);
+    });
+
+
+
+
+/*
+/* 时间戳转换
+*/
+    function datetime_to_unix(datetime) {
+        var tmp_datetime = datetime.replace(/:/g, '-');
+        tmp_datetime = tmp_datetime.replace(/ /g, '-');
+        var arr = tmp_datetime.split("-");
+        var now = new Date(Date.UTC(arr[0], arr[1] - 1, arr[2], arr[3] - 8, arr[4], arr[5]));
+        return parseInt(now.getTime() / 1000);
+    }
+    var inputStartTime = document.querySelector('#inputStartTime'),
+        inputEndTime = document.querySelector('#inputEndTime');
+    inputStartTime.onchange = function(val) {
+        document.getElementById('inputStartTimeVal').setAttribute('value', datetime_to_unix(String(inputStartTime.value) + ' 00:00:00'));
+        console.log(document.getElementById('inputStartTimeVal').value);
+    }
+    inputEndTime.onchange = function(val) {
+        document.getElementById('inputEndTimeVal').setAttribute('value', datetime_to_unix(String(inputEndTime.value) + ' 00:00:00'));
+    }
+
+    var challengeType = {{ challenge.type }};
+    if (challengeType == 0) {
+        $("#inlineRadio0").attr('checked', 'checked');
+    } else if (challengeType == 1) {
+        $("#inlineRadio1").attr('checked', 'checked');;
+    } else {
+        $("#inlineRadio2").attr('checked', 'checked');;
+    }
+
+
+/*
+/* POST
+*/
+
+var submitBtn = document.querySelector('button[type=submit]');
+
+  window.addEventListener("load", function () {
+    function sendData() {
+      submitBtn.classList.add('disabled');
+      submitBtn.setAttribute('disabled', 'disabled');
+      submitBtn.textContent = '添加中…';
+
+      var XHR = new XMLHttpRequest();
+      var FD  = new FormData(form);
+
+      // if successfully sent
+      XHR.addEventListener("load", function(event) {
+        submitBtn.classList.remove('disabled');
+        submitBtn.classList.add('btn-success');
+        submitBtn.textContent = '添加成功';
+
+        function showTime(count) {
+            submitBtn.textContent = '添加成功 ' + count;
+            if (count === 0) {
+                window.location = '/challenges/';
+            } else {
+                count -= 1;
+                setTimeout(function() {
+                    showTime(count);
+                }, 1000);
+            }
+        }
+        showTime(2);
+      });
+
+      // if case of error
+      XHR.addEventListener("error", function(event) {
+        alert('添加失败!');
+      });
+      XHR.open("POST", "#");
+      XHR.send(FD);
+    }
+
+    var form = document.getElementById("myForm");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      sendData();
+    });
+  });
+</script>
+{% endblock %}

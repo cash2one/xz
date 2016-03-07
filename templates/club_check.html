@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+    车队审核 - 行者骑行软件
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+    <table class="table table-bordered">
+        <tbody>
+        {% for club in clubs %}
+            <tr>
+                <td><a target="_blank" href="{% url 'club_edit' club.no %}">{{ club.title }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+

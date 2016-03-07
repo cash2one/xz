@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>行者2015年度总报告</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="http://cdn.bi-ci.com/img/one_year/swiper.min.css">
+
+    <!-- Demo styles -->
+    <style>
+    html, body {
+        position: relative;
+        height: 100%;
+    }
+    body {
+        background: #eee;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color:#000;
+        margin: 0;
+        padding: 0;
+    }
+    @-webkit-keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            -webkit-transform: translateY(-20px) rotate(-135deg);
+            transform: translateY(-20px) rotate(-135deg)
+        }
+        100% {
+            opacity: 1;
+            -webkit-transform: translateY(0) rotate(-135deg);
+            transform: translateY(0) rotate(-135deg)
+        }
+    }
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+    .page1{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f1.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .page2{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f2.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .page3{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f3.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .page4{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f4.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .page5{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f5.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .page6{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f6.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .page7{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f7.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .page8{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f8.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .page9{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f9.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .page10{
+        background:#e5f1fc url(http://static.imxingzhe.com/year2015/f10.jpg) center no-repeat;
+        background-size: 95%;
+    }
+    .arrow {
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        margin-left: -9px;
+        border-top: 1px solid #d1e7f8;
+        border-left: 1px solid #d1e7f8;
+        z-index: 9999;
+        -webkit-tap-highlight-color: rgba(255,255,255,0);
+        -webkit-animation: fadeInUp 1.5s .2s ease infinite;
+        animation: fadeInUp 1.5s .2s ease infinite;
+    }
+    </style>
+</head>
+<body>
+    <!-- Swiper -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide page1"></div>
+            <div class="swiper-slide page2"></div>
+            <div class="swiper-slide page3"></div>
+            <div class="swiper-slide page4"></div>
+            <div class="swiper-slide page5"></div>
+            <div class="swiper-slide page6"></div>
+            <div class="swiper-slide page7"></div>
+            <div class="swiper-slide page8"></div>
+            <div class="swiper-slide page9"></div>
+            <div class="swiper-slide page10"></div>
+        </div>
+    </div>
+    <div class="arrow"></div>
+    <!-- Swiper JS -->
+    <script src="http://cdn.bi-ci.com/img/one_year/js/swiper.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        direction: 'vertical'
+    });
+    window.addEventListener("load", function() {
+        document.querySelector('.arrow').style.display = 'block';
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    我创建的活动 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/activity.css">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<div class="activity-header">
+    <div class="container">
+        <h1 class="pull-left">我创建的活动</h1>
+        <a href="/activity_add/" target="_blank" class="pull-right btn btn-primary btn-lg">创建新活动</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="activity-wrap">
+        <div class="row" id="activityWrapRow">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="/static/dist/js/combine/activity-app.js"></script>
+<script>
+$.getJSON('/api/v4/my_publish_activities', function(result, textStatus) {
+
+    var data = result.data;
+    var t = Date.parse(new Date());
+
+    // 判断是否创建了活动
+    if (data.length === 0) {
+        $("#activityWrapRow").html('<h3 class="text-muted text-center">您尚未创建任何活动</h3>');
+            return false;
+        };
+
+        for (var i = 0; i < data.length; i++) {
+                if (data[i].activityCoverPic.length === 0) {
+                    data[i].activityCoverPic = 'http://static.imxingzhe.com/activity/activity-default.jpg';
+                };
+                $("#activityWrapRow").append('<div class="card col-sm-6 col-md-3">' +
+                    '<div class="thumbnail">' +
+                    '<a title="点击查看并修改：' + data[i].activityTitle + '" href="/activity_edit/?activityId='+ data[i].activityId + '" target="_blabk">' +
+                    '<div class="pic" style="background-image: url(' + getFirstPicUrl(data[i].activityCoverPic) + '!webActivityPhotos)"></div>' +
+                    '<div class="caption">' +
+                        '<h3 class="text-overflow">' + typeToStr(data[i].activityType) + data[i].activityTitle + '</h3>' +
+                        '<div class="activity-address text-overflow"><i class="iconfont">&#xe60b;</i>' + data[i].activityAddress + '</div>' +
+                    '</div>' +
+                    '<ul>' +
+                        '<li class="line datastatus" data-status="' + (data[i].activityEndTime - t) + '"><i class="iconfont icon1">&#xe630;</i>' + getDateStatus(data[i].activityStartTime, data[i].activityEndTime) + '</li>' +
+                        '<li class="line"><i class="iconfont icon2">&#xe634;</i>' + data[i].activityUsersCount + '/' + data[i].activityUserMaxCount + '人</li>' +
+                        '<li><i class="iconfont icon3">&#xe633;</i>'+ data[i].activityMiles/1000 + 'km</li>' +
+                    '</ul>' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>');
+            };
+});
+</script>
+{% endblock %}

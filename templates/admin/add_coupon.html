@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加新优惠券</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <style type="text/css">
+    .container {
+        max-width: 60em;
+    }
+    
+    .header {
+        margin-bottom: 7em;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    
+    .header h3 {
+        padding-bottom: 19px;
+        margin-top: 19px;
+        margin-bottom: 0;
+        line-height: 40px;
+    }
+    
+    .btns-group {
+        margin: 3em auto;
+    }
+    
+    .btns-group .btn {
+        margin: 0 1em;
+    }
+    
+    .img-rounded {
+        margin: 1em .5em;
+    }
+    
+    .modal-body {
+        font-size: 1.4em
+    }
+    
+    .modal-body strong {
+        color: #00ccff;
+        font-weight: normal;
+    }
+    textarea{min-height: 120px}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active">
+                        <a href="/get_coupons/"><i class="glyphicon glyphicon-list-alt"></i> 优惠券列表</a>
+                    </li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">添加新优惠券</h3>
+        </div>
+        <form id="myForm" class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="inputTitle">优惠券标题</label>
+                <input type="text" class="form-control" id="inputTitle" name="title" placeholder="输入优惠券标题">
+            </div>
+            <div class="form-group">
+                <label for="inputDescription">优惠券描述</label>
+                <textarea class="form-control" id="inputDescription" name="description" placeholder="输入优惠券描述" maxlength="140" required="required"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="inputCredits">所需积分</label>
+                <input type="number" class="form-control" id="inputCredits" name="credits" required="required" min="0" max="100000000" step="1">
+            </div>
+            <div class="form-group">
+                <label for="inputStartTime">开始时间</label>
+                <input type="text" class="form-control" id="inputStartTime" name="start_time" placeholder="2015-01-01" data-toggle="tooltip" data-placement="right" title="格式为:2015-01-01 (注意英文-)" required="required">
+                <span id="StartTimehelpBlock" class="help-block"></span>
+            </div>
+            <div class="form-group">
+                <label for="inputEndTime">结束时间</label>
+                <input type="text" class="form-control" id="inputEndTime" name="end_time" placeholder="2015-01-01" data-toggle="tooltip" data-placement="right" title="格式为:2015-01-01 (注意英文-)" required="required">
+                <span id="EndTimehelpBlock" class="help-block"></span>
+            </div>
+            <div class="form-group">
+                <label for="inputUseRule">使用规则</label>
+                <textarea class="form-control" id="inputUseRule" name="use_rule" placeholder="输入使用规则描述" maxlength="300"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="inputStock">库存 (默认库存为“－4”，代表“不限库存”)</label>
+                <input type="text" class="form-control" id="inputStock" name="stock" value="-4" required="required">
+            </div>
+            <div class="form-group">
+                <label>是否删除</label>
+                <div id="radioGroup">
+                    <label class="radio-inline">
+                        <input type="radio" name="deleted" id="dlelte0" value="0" selected="selected"> 否
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="deleted" id="deleted1" value="1"> 是
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="type">类型</label>
+                <select class="form-control" name="type" id="type" required="required">
+                    <option value="0" selected="selected">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inputFile">添加优惠券图片</label>
+                <input type="file" id="inputFile" name="head_img" accept="image/*" onchange="handleFiles(this.files)">
+            </div>
+            <div class="form-group">
+                <label for="inputFile2">添加产品图片</label>
+                <input type="file" id="inputFile2" name="product_img" accept="image/*" onchange="handleFiles(this.files)">
+            </div>
+            <div class="form-group">
+                <label>图片预览区</label>
+                <div id="headerImgThumb"></div>
+            </div>
+            <div class="text-center btns-group">
+                <a id="previewCoupon" class="btn btn-default" data-toggle="modal" data-target="#myModal">点击预览</a>
+                <button type="submit" id="buttonSubmit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> 确认添加</button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">优惠券预览</h4>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default" data-dismiss="modal">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    var inputFile = document.getElementById('inputFile'),
+        headerImgThumb = document.getElementById('headerImgThumb'),
+        previewCoupon = document.getElementById('previewCoupon');
+
+    // 显示上传图片的缩略图
+    function handleFiles(files) {
+        for (var i = 0; i < files.length; i++) {
+            var img = document.createElement("img");
+            img.className = 'img-rounded';
+            img.src = window.URL.createObjectURL(files[i]);
+            img.height = 200;
+            img.onload = function(e) {
+                window.URL.revokeObjectURL(this.src);
+            };
+            headerImgThumb.appendChild(img);
+        }
+    }
+
+
+
+    // 时间戳转换函数
+    function datetime_to_unix(datetime) {
+        var tmp_datetime = datetime.replace(/:/g, '-');
+        tmp_datetime = tmp_datetime.replace(/ /g, '-');
+        var arr = tmp_datetime.split("-");
+        var now = new Date(Date.UTC(arr[0], arr[1] - 1, arr[2], arr[3] - 8, arr[4], arr[5]));
+        return parseInt(now.getTime() / 1000);
+    }
+
+    var inputStartTime = document.querySelector('#inputStartTime'),
+        inputEndTime = document.querySelector('#inputEndTime');
+
+    inputStartTime.onchange = function(val) {
+        document.querySelector('#StartTimehelpBlock').innerHTML = '你填写的是：' + this.value;
+        inputStartTime.value = datetime_to_unix(String(inputStartTime.value) + ' 00:00:00');
+    }
+    inputEndTime.onchange = function(val) {
+        document.querySelector('#EndTimehelpBlock').innerHTML = '你填写的是：' + this.value;
+        inputEndTime.value = datetime_to_unix(String(inputEndTime.value) + ' 00:00:00');
+    }
+
+
+    // 开始
+    window.addEventListener("load", function() {
+
+        // 预览优惠券
+        previewCoupon.onclick = function() {
+
+            // 此函数获取 radio 的 value值
+            function GetRadioValue(RadioName) {
+                var obj;
+                obj = document.getElementsByName(RadioName);
+                if (obj != null) {
+                    var i;
+                    for (i = 0; i < obj.length; i++) {
+                        if (obj[i].checked) {
+                            return obj[i].value;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            // 此函数获取 option 的 value 值
+            function GetOptionValue(optionName) {
+                var obj;
+                obj = document.getElementsByTagName(optionName);
+                if (obj != null) {
+                    var i;
+                    for (i = 0; i < obj.length; i++) {
+                        if (obj[i].selected) {
+                            return obj[i].value;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            // 添加预览 DOM
+            var modalbody = document.querySelector('.modal-body'),
+                div = document.createElement("div"),
+                val1 = document.querySelector('#inputTitle').value, //title 
+                val2 = document.querySelector('#inputDescription').value, //description
+                val3 = document.querySelector('#StartTimehelpBlock').innerHTML, //start time
+                val4 = document.querySelector('#EndTimehelpBlock').innerHTML, //end time
+                val5 = document.querySelector('#inputUseRule').value, //use rule
+
+                radioDeleted = document.getElementsByName('deleted'),
+                val6 = GetRadioValue("deleted"),
+                val7 = GetOptionValue("option"),
+                val8 = document.querySelector("#inputCredits").value;
+                val9 = document.querySelector("#inputStock").value;
+
+            // 清空一次 modalbody
+            modalbody.innerHTML = '';
+
+            // 再添加
+            div.innerHTML = '<p>优惠券标题：<strong>' + val1 + '</strong></p><p>优惠券描述：<strong>' + val2 + '</strong></p><p>兑换需要积分：<strong>' + val8 +'</strong></p><p>开始时间：<strong>' + val3 + '</strong></p><p>结束时间：<strong>' + val4 + '</strong></p><p>使用规则：<strong>' + val5 + '</strong></p><p>是否删除：<strong>' + val6 + '</strong></p><p>类型：<strong>' + val7 + '<strong></p><p>库存：<strong>' + val9 + '<strong></p>';
+
+            modalbody.appendChild(div);
+        }
+
+
+        // sendData
+        function sendData() {
+
+            // HMLHttpRequest
+            var XHR = new XMLHttpRequest();
+
+            var FD = new FormData(form);
+
+            var buttonSubmit = document.querySelector("#buttonSubmit");
+
+            // 数据成功发送并返回后执行的操作
+            XHR.addEventListener("load", function(event) {
+
+                console.log(XHR.responseText); //返回json
+                var jsonParseJson = JSON.parse(event.target.responseText); // 解析 json
+
+                // 根据json返回值进行的操作（成功添加/添加失败）
+                if (jsonParseJson.id) {
+                    console.log(jsonParseJson.id);
+                    buttonSubmit.setAttribute("class", "btn btn-success");
+                    buttonSubmit.disabled = "disabled";
+                    buttonSubmit.innerHTML = '添加成功！';
+                    window.location.href = '/get_coupon/' + jsonParseJson.id + '/'; // 页面跳转到返回的 id URL
+                } else{
+                    console.log(jsonParseJson.error_msg);
+                    buttonSubmit.innerHTML = '<i class="glyphicon glyphicon-ok"></i> 确认添加';
+                    buttonSubmit.removeAttribute('disabled');
+                    alert('提交失败：' + jsonParseJson.error_msg);
+                };
+                
+                
+            });
+
+            XHR.addEventListener("error", function(event) {
+                alert('发生未知错误，请尝试重新提交');
+            });
+
+            XHR.open("POST", "/add_coupon/");
+
+            XHR.send(FD);
+        }
+
+        var form = document.getElementById("myForm");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            buttonSubmit.innerHTML = '正在添加..';
+            buttonSubmit.disabled = "disabled";
+            sendData();
+        });
+    });
+    </script>
+</body>
+
+</html>

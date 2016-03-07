@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}赛事{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/competitions_list.css">
+<link rel="stylesheet" href="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<header class="header">
+    <div class="container">
+        <h1>行者赛事</h1>
+        <div>
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#all" aria-controls="all" role="tab" data-toggle="tab">全部</a></li>
+            <li role="presentation"><a href="#signUp" aria-controls="signUp" role="tab" data-toggle="tab">报名中</a></li>
+            <li role="presentation"><a href="#in" aria-controls="in" role="tab" data-toggle="tab">进行中</a></li>
+            <li role="presentation"><a href="#over" aria-controls="over" role="tab" data-toggle="tab">已结束</a></li>
+          </ul>
+        </div>
+    </div>
+</header>
+   
+<div class="container">
+    <div class="match-list-wrap col-md-12">
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="all">
+            </div>
+            <div role="tabpanel" class="tab-pane" id="signUp">
+            </div>
+            <div role="tabpanel" class="tab-pane" id="in">
+            </div>
+            <div role="tabpanel" class="tab-pane" id="over">
+            </div>
+        </div>
+    </div>
+   <!--  <div class="col-md-2 org">
+            <div class="thumbnail">
+                    <div class="caption">
+                        <h4 class="organizers">主办方</h4>
+                        <div class="org_pic">
+                            <img src="http://static.imxingzhe.com/year2015/f1.jpg">
+                            <img src="http://static.imxingzhe.com/year2015/f1.jpg">
+                            <img src="http://static.imxingzhe.com/year2015/f1.jpg">
+                        </div>
+                        <button class="btn btn-primary btn-sm btn-block">查看更多</button>
+                    </div>
+            </div>
+    </div> -->
+
+</div>
+<!-- <div id="Pagination" class="hidden-xs pagination-wrap"></div>
+
+</div> -->
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/kkpager/kkpager.min.js"></script>
+<script>
+$(function() {
+
+    $.ajax({
+            url: '/api/v4/get_competitions',
+            type: 'GET'
+        })
+        .done(function(data) {
+            var dataSet = jsonToHTML(data.data);
+            $('#all').append(dataSet[0]);
+            $('#signUp').append(dataSet[1]);
+            $('#in').append(dataSet[2]);
+            $('#over').append(dataSet[3]);
+        })
+        .fail(function() {
+            console.log("error");
+        })
+        .always(function() {
+            // console.log("complete");
+        });
+
+
+
+    function jsonToHTML(e) {
+        var aaa=["","","",""],status='',statusStr='',str;
+        
+        // 判断是否有
+        if (e.length === 0) {
+            aaa[0]='<h3 class="text-muted text-center">您尚未创建任何活动</h3>';
+        };
+        for (var i = 0; i < e.length; i++) {
+           if(e[i].status ==0 || e[i].status ==1){
+                    status='btn-primary btn-xs signUpIng';
+                    statusStr='报名中';
+            }else if(e[i].status ==2|| e[i].status ==3){
+                    status='btn-warning btn-xs Ing';
+                    statusStr='进行中';
+            }else{
+                    status='btn-xs finished';
+                    statusStr='已结束'; 
+            }
+           
+           function show_date(s)
+            {
+                var mydate = new Date(s);
+                var today = '';
+                today += mydate.getFullYear() + '年';   
+                today += mydate.getMonth()+1 + '月';   
+                today += mydate.getDate() + '日'; 
+                today += ' ';   
+                today += mydate.getHours();
+                today += ':' + mydate.getMinutes();
+                return today;       
+            }
+            function show_time(s)
+            {
+                var mydate = new Date(s);
+                var today = '';
+                today += mydate.getHours();
+                today += ':' + mydate.getMinutes();
+                return today;       
+            }
+
+
+            str='<div class="card col-sm-6 col-md-3">'+
+                        '<div class="thumbnail">'+
+                            '<a href="/competitions/detail/?id='+e[i].id+'/" target="_blank">'+
+                                '<img class="pic" src="'+e[i].pic_url+'"/>'+
+                                '<div class="caption">'+
+                                    '<h4 class="text-overflow">'+e[i].title+'</h4>'+
+                                    '<div class="captionDetail">'+
+                                        '<p class="host"><i class="iconfont">&#xe634;</i>主办方：<span>'+e[i].host+'</span></p>'+
+                                        '<p class="palce"><i class="iconfont">&#xe60b;</i>地点 :<span>'+e[i].place+'</span></p>'+
+                                        '<p class="time"><i class="iconfont">&#xe622;</i>时间 :<span>'+show_date(e[i].start_time)+'至'+show_time(e[i].end_time)+'</span></p>'+
+                                        '<button class="btn '+status+'">'+statusStr+'</button>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</a>'+
+                        '</div>'+
+                    '</div>';            
+            switch(e[i].status){
+                case 0:
+                case 1:
+                        aaa[1] += str;
+                        break;
+                case 2:
+                case 3:
+                        aaa[2] += str;
+                        break;
+
+                case 4:
+                        console.log(status);
+                        console.log(str);
+                        aaa[3] += str;
+                        break;               
+            }
+            console.log(status);
+            console.log(aaa);
+            aaa[0] += str;
+            if(i==4){
+                console.log(status+"\n");
+                console.log(e[i].status+'/'+typeof(e[i].status));
+                console.log(str);
+            }
+        };
+        return aaa; 
+    }
+
+    // //生成分页
+    // kkpager.generPageHtml({
+    //     pagerid: 'Pagination', // 分页展示控件容器ID
+    //     pno: 1, //当前页码
+    //     total: 2, //总页码
+    //     totalRecords: 2 * 10, //总数据条数
+    //     isShowCurrPage: false, // 显示当前页
+    //     isShowTotalPage: false, //总页数
+    //     isGoPage: false,
+    //     isShowFirstPageBtn: false, //显示首页按钮
+    //     getLink: function(n) {
+    //         return "?page=" + n;
+    //     }
+    // });
+
+
+
+});
+</script>
+{% endblock %}

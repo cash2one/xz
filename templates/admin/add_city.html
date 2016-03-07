@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}
+    添加城市 - 行者骑行软件
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="span8">
+        <hr/>
+        <form id="form" class="form-horizontal" method="post">
+            <fieldset>
+                {% csrf_token %}
+
+                <div class="control-group">
+                    <label class="control-label" for="">添加城市</label>
+                    <div class="controls">
+                        <select id="province" name="province"><option value="0">选择省份</option></select>
+                        <input type="text" class="input" id="city" name="city" placeholder="城市名字">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="submit" class="btn btn-primary">提交</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script  type="text/javascript">
+    var provinces = [{% for p in provinces %}{'id': {{ p.id }}, 'name': '{{ p.name }}'}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    $(function() {
+    	$.each(provinces, function(i, p) {
+    		$("#province").append("<option value='" + p.id + "'>" + p.name + "</option>");
+    	});
+    });
+    
+</script>
+{% endblock %}

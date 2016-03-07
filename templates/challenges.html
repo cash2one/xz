@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    行者挑战
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/challenges.css">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+
+<div class="app-header">
+    <div class="container">
+        <h1 class="pull-left">行者挑战</h1>
+        <a href="/challenge_add/" target="_blank" class="pull-right btn btn-primary btn-lg">创建新挑战</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="challenges-wrap">
+        <h4>进行中</h4>
+        <div class="text-center loading-wrap"><i class="iconfont loading-icon" id="loadingicon">&#xe638;</i></div>
+        <div id="challengesWrap" class="row"></div>
+    </div>
+    
+    <div class="challenges-wrap challenges-wrap-past">
+        <h4>已结束</h4>
+        <div id="challengesWrapPast" class="row"></div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+    <script>
+
+    // 时间戳转换函数
+    function unix_to_datetime(unix) {
+        var now = new Date(parseInt(unix) * 1000);
+        return now.getFullYear()+"年"+(now.getMonth()+1)+"月"+now.getDate()+"日";
+    };
+
+        $.get('api/v3/challenge_info/', function(data) {
+            $("#loadingicon").hide();
+
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].type === 0) {
+
+                    $("#challengesWrap").append('<div class="card col-sm-6 col-md-3">' +
+                        '<div class="thumbnail">' +
+                        '<a title="' + data[i].title + '" href="/challenges/'+ data[i].id + '">' +
+                        '<div class="challenge-pic" style="background-image: url(' + data[i].big_pic + '!challenngeslist)"></div>' +
+                        '<div class="caption">' +
+                            '<h3 class="text-overflow">' + data[i].title + '</h3>' +
+                            '<p>' + unix_to_datetime(data[i].start_time) + '-' + unix_to_datetime(data[i].end_time)+ '</p>' +
+                            '<p>奖励：'+ data[i].reward +'</p>' +
+                            // '<img class="small-pic" src="' + data[i].small_pic + '">' +
+                        '</div>' +
+                        '</a>' +
+                        '</div>' +
+                        
+                        '</div>');
+                } else if (data[i].type === 1){
+                    $("#challengesWrapPast").append('<div class="card col-sm-6 col-md-3">' +
+                        '<div class="thumbnail">' +
+                        '<a title="' + data[i].title + '" href="/challenges/'+ data[i].id + '">' +
+                        '<div class="challenge-pic" style="background-image: url(' + data[i].big_pic + '!challenngeslist)"></div>' +
+                        '<div class="caption">' +
+                            '<h3 class="text-overflow">' + data[i].title + '</h3>' +
+                            '<p>' + unix_to_datetime(data[i].start_time) + '-' + unix_to_datetime(data[i].end_time)+ '</p>' +
+                            '<p>奖励：'+ data[i].reward +'</p>' +
+                            // '<img class="small-pic" src="' + data[i].small_pic + '">' +
+                        '</div>' +
+                        '</a>' +
+                        '</div>' +
+                        '</div>');
+                };
+            };
+        });
+
+    </script>
+{% endblock %}

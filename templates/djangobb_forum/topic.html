@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+{% load forum_extras %}
+{% load pagination_tags %}
+{% load i18n %}
+{% load filters %}
+{% load thumbnail %}
+
+{% block title %}{{ topic.name }} - 行者骑行软件{% endblock %}
+{% block css %}
+<link href="/static/css/custom.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% autopaginate posts forum_settings.TOPIC_PAGE_SIZE %}
+
+<div class="row">
+    <div class="span9">
+        <ul class="breadcrumb">
+            <li>
+                <a href="{% url djangobb:index %}">行者社区</a><span class="divider"> / </span>
+            </li>
+            <li>
+                {% link topic.forum %}<span class="divider"> / </span>
+            </li>
+            <li>
+                {{ topic.name }}
+            </li>
+        </ul>
+    </div>
+    {% ifequal topic.forum.id 1 %}
+    <div class="span2">
+        &nbsp;&nbsp;&nbsp;&nbsp;<a class="btn" href="{% url djangobb:edit_topic_workouts topic.id %}">设置路线</a>
+    </div>
+    {% endifequal %}
+</div>
+
+{% ifnotequal total_distance 0 %}
+<div class="row">
+    <div class="span9">
+        <div id="map_canvas" style="height:550px"></div>
+    </div>
+    <div class="span3" style="margin-left: -50px;">
+        <div class="row" style="margin-left:63px;">
+            <ul class="unstyled">
+                {% for workout in workouts %}
+                <li>
+                    <a target="_blank" href="{% url workout workout.id %}">{{ workout.start_time|to_datetime|date:"Y-m-d"}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ workout.distance|to_distance }} 公里</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endifnotequal %}
+
+<div class="row">
+    <div class="span10">
+        {% paginate %}
+    </div>
+</div>
+
+{% for post in posts %}
+<div class="row">
+    <a name="post-{{ post.id }}"></a>
+    <div class="span10" style="border-bottom: 1px solid #E2E2E2; margin-bottom: 10px;">
+        <div class="row">
+            <div class="span10" id="p{{ post.id }}">
+                <span class="track_author"> <strong><a style="color:gray" href="{% url user post.user.id %}">{{ post.user.username }}</a></strong> <span style="color:gray; margin-left: 10px;">{% forum_time post.created %}</span> <span class="pull-right">{{ forloop.counter|add:page_base }}楼</span> <span class="pull-right" style="width: 30px;"><a onclick="return replyPost({{ post.id }}, {{ post.user.id}}, '{{ post.user.username }}');" href="#reply" title="回复此楼">回复</a></span> </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span10" style="margin-top: 10px; margin-bottom: 10px;">
+                <p style="margin-top: 10px">
+                    {% if post.image %}
+                    {% if post.image.width > 800 or post.image.height > 800 %}
+                    <img src="{% thumbnail post.image 800x800 %}" />
+                    {% else %}
+                    <img src="{{ post.image.url|safe }}" width="{{ post.image.width }}" height="{{ post.image.height }}"/>
+                    {% endif %}
+                    {% endif %}
+                </p>
+                <p style="color: gray">
+                    {% if post.to_user %}
+                    回复 <a style="color:gray" href="{% url user post.to_user.id %}">{{ post.to_user.username }}</a>
+                    {% endif %}
+                    {% if post.to_post %}
+                    "{{ post.to_post.body_html|truncatechars:50|safe }}"
+                    {% endif %}
+                </p>
+                <p>
+                    {{ post.body_html|safe }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endfor %}
+
+<div class="row">
+    <div class="span10">
+        {% paginate %}
+    </div>
+</div>
+
+{% if reply_form %}
+{% with form=reply_form %}
+<div class="row" id="reply">
+    <div class="span10">
+        {% include "djangobb_forum/includes/post_form.html" %}
+    </div>
+</div>
+{% endwith %}
+{% endif %}
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+	$(function() {
+		$("#id_to_user, #id_to_post").val("");
+	});
+	function replyPost(postId, userId, userName) {
+		$("#divReplyTo").show();
+		$("#spanToUser").text(userName)
+		$("#id_to_user").val(userId);
+		$("#id_to_post").val(postId);
+	}
+</script>
+
+{% ifnotequal total_distance 0 %}
+{% google_map_api %}
+<script  type="text/javascript">
+	var defaultLagLng = new google.maps.LatLng(37.51975069, 122.04547628);
+	var points = [defaultLagLng]; 
+{% if trackpoints %}
+	points = [{% for p in trackpoints %}new google.maps.LatLng({{ p.latitude }},{{ p.longitude }}){% if not forloop.last %},{% endif %}{% endfor %}]{% endif %}</script>
+
+<script  type="text/javascript">
+	var map;
+var bound;
+var route;
+var startMarker;
+var stopMarker;
+var startPosition;
+var stopPosition;
+
+$(init);
+
+function init() {
+initMap();
+}
+
+function initMap() {
+startPosition = points[0];
+stopPosition = points[points.length - 1];
+
+var options = {
+zoom : 14,
+center : points[0],
+mapTypeId : google.maps.MapTypeId.ROADMAP //SATELLITE
+};
+
+var min_lat = {{ min_lat }}
+	;
+	var min_lng =  
+ {{ min_lng }}
+	;
+	var max_lat =  
+ {{ max_lat }}
+	;
+	var max_lng =  
+ {{ max_lng }}
+	;
+
+	if (min_lat * min_lng * max_lat * max_lng != 0) {
+		var sw = new google.maps.LatLng(min_lat, min_lng);
+		var ne = new google.maps.LatLng(max_lat, max_lng);
+		bound = new google.maps.LatLngBounds(sw, ne);
+	}
+	map = new google.maps.Map(document.getElementById("map_canvas"), options);
+	if (!!bound) {
+		map.fitBounds(bound);
+	}
+
+	route = new google.maps.Polyline({
+		path : points,
+		strokeColor : "#33B5E5",
+		strokeOpacity : 1.0,
+		strokeWeight : 3
+
+	});
+
+	route.setMap(map);
+
+	startMarker = new google.maps.Marker({
+		position : startPosition,
+		map : map,
+		icon : "/static/images/map/1.png",
+		title : "开始",
+		draggable : true
+	});
+	stopMarker = new google.maps.Marker({
+		position : stopPosition,
+		map : map,
+		icon : "/static/images/map/2.png",
+		title : "停止"
+	});
+
+	}
+
+</script>
+{% endifnotequal %}
+{% endblock %}
+

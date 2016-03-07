@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>赛事详情</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="/static/dist/css/competitions_h5.css">
+</head>
+
+<body>
+    <div class="page-group" id="xzList">
+        <div class="page page-current" id="pageMain">
+            <header class="bar bar-nav">
+                <a class="icon icon-me pull-right"></a>
+                <h1 class="title">行者赛事</h1>
+            </header>
+            <div class="content marginbm">
+                <div class="card">
+                    <div valign="bottom" class="card-header color-white no-border no-padding">
+                        <span class="mark-status">报名中</span>
+                        <img class='card-cover' src="http://cdn.bi-ci.com/dist_v2/image/challenges/challenges_mobile_banner.jpg" alt="">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-content-inner">
+                            <ul>
+                                <li><strong>主办方：</strong><span id="dataHost"></span></li>
+                                <li><strong>赛事时间：</strong><span id="dataStarttime"></span> ~ <span id="dataEndtime"></span></li>
+                                <li><strong>报名时间：</strong><span id="dataCreateTime"></span> ~ <span id="dataClosingtime"></span></li>
+                                <li><strong>比赛地点：</strong><span id="dataPlace"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">赛事详情</a>
+                    <a href="#tab2" class="tab-link button">赛事组别</a>
+                    <a href="#tab3" class="tab-link button">成绩查询</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div id="dataDescription">
+                            </div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <!-- <div class="content-block"> -->
+                            <div class="list-block">
+                                <ul id="dataGroupList">
+                                </ul>
+                            </div>
+                            <!-- </div> -->
+                        </div>
+                        <div id="tab3" class="tab">
+                            <div class="searchbar row">
+                                <div class="search-input col-80">
+                                    <input type="tel" placeholder='报名手机号' disabled>
+                                </div>
+                                <a class="button button-fill button-primary col-20">查询</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bar bar-tab bar-footer">
+                <a href="#" class="open-contact tab-item"><i class="icon icon-phone"></i>联系主办方</a>
+                <a id="dataEnrollBtn" class="tab-item external btn-active">我要报名</a>
+            </div>
+        </div>
+        <!-- 主办方联系方式 END -->
+        <!-- 赛事组别详情 -->
+        <div class="page" id="pageGroupDetail">
+            <header class="bar bar-nav">
+                <a class="icon icon-left pull-left back"></a>
+                <h1 class="title">行者赛事</h1>
+            </header>
+            <div class="content">
+                <div class="content-block-title">男子精英组</div>
+                <div class="list-block">
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">出发时间：<span id="dataStartTime"></span></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">关门时间：<span id="dataClosingTime"></span></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">比赛距离：<span id="dataGroupDistance"></span></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">报名费用：<span id="dataGroupMoney"></span></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">报名人数：<span id="dataGroupQuoto"></span></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">比赛路书：<span id="dataLushuId"></span></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <img id="dataLushuPic" alt="赛事路书">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 赛事组别详情 END -->
+        <div class="popup popup-contact">
+            <div class="content-block">
+                <div class="content-block-title">联系主办方</div>
+                <div class="list-block">
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">手机：</div>
+                                <div class="item-after">
+                                    <a id="daatTel"></a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">QQ：</div>
+                                <div class="item-after" id="dataQQ"></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">邮箱：</div>
+                                <div class="item-after">
+                                    <a href="mailto:12345678@qq.com" id="dataEmail"></a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a class="ico-close close-popup" title="关闭"></a>
+        </div>
+    </div>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script>
+    var competitionId = location.search.substring(4),
+        getURL = '/api/v4/competition_detail?competition_id=' + competitionId;
+
+    var toStrTime = function(e) {
+        var date = new Date(e);
+        Y = date.getFullYear() + '/';
+        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
+        D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+        h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
+        m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes());
+        return Y + M + D + h + m;
+    };
+
+    $.get(getURL, function(response) {
+        var data = response.data;
+        $('.mark-status').addClass('mark-status' + data.status).text();
+
+        $('#dataHost').text(data.host);
+        $('#dataStarttime').text(toStrTime(data.start_time));
+        $('#dataEndtime').text(toStrTime(data.end_time));
+        $('#dataCreateTime').text(toStrTime(data.create_time));
+        $('#dataClosingtime').text(toStrTime(data.closing_time));
+        $('#dataPlace').text(data.place);
+        $('#dataDescription').html(data.description);
+        $('#daatTel').attr('href', 'tel:' + data.mobile).text(data.mobile);
+        $('#dataQQ').text(data.QQ);
+        $('#dataEmail').attr('href', 'mailto:' + data.email).text(data.email);
+
+        var group = data.group,
+            groupStr = '';
+
+        $.each(group, function(index, val) {
+            groupStr = '<li class="item-content item-link">' +
+                '<div class="item-inner group-link" data-groupind="' + index + '">' +
+                '<div class="item-title">' + val.group_name + ' <small>报名费 ¥' + val.group_money + '</small></div>' +
+                '</div>' +
+                '</li>';
+            $('#dataGroupList').append(groupStr);
+        });
+
+        $(document).on('click', '.group-link', function() {
+            var groupind = $(this).data('groupind');
+
+            $('#dataStartTime').text(toStrTime(group[groupind].start_time));
+            $('#dataClosingTime').text(toStrTime(group[groupind].closing_time));
+            $('#dataGroupDistance').text(group[groupind].group_distance);
+            $('#dataGroupMoney').text(group[groupind].group_money);
+            $('#dataGroupQuoto').text(group[groupind].group_quoto);
+            $('#dataLushuId').text(group[groupind].lushu_id);
+            $('#dataLushuPic').attr('src', 'http://static.imxingzhe.com/lushu/'+ group[groupind].lushu_uuid +'.png!webActivityPhotos');
+
+            $.router.load("#pageGroupDetail"); 
+            
+        });
+    })
+
+    // 打开主办方联系方式
+    $(document).on('click', '.open-contact', function() {
+        $.popup('.popup-contact');
+    });
+
+    // 点击报名
+    $(document).on('click', '#dataEnrollBtn', function() {
+        $.router.load('/competitions/enroll/?id='+competitionId, true);
+    });
+    </script>
+</body>
+
+</html>

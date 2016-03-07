@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load filters %}
+{% block title %}
+    行者骑行软件
+{% endblock %}
+{% block content %}
+    <h3>报名人员列表</h3>
+    <hr/>
+    <div class="row">
+        <div class="span8">
+            {% if list %}
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>行者用户名</th>
+                        <th>真实姓名</th>
+                        <th>身份证号</th>
+                        <th>报名编号</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for wlqx in list %}
+                        <tr>
+                            <td>
+                                <a target="_blank" href="{% url 'user_new' wlqx.user.encode_id %}">{{ wlqx.user.username }}</a>
+                            </td>
+                            <td>
+                                {{ wlqx.real_name }}
+                            </td>
+                            <td>
+                                {{ wlqx.id_number }}
+                            </td>
+                            <td>
+                                {{ wlqx.enroll_number }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

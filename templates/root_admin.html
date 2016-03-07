@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="utf-8">
+    <meta property="qc:admins" content="353421363161501672056375"/>
+    <title>{% block title %}行者{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    {% block css %}{% endblock %}
+    <link rel="icon" type="image/png" href="http://cdn.bi-ci.com/static/commonimg/favicon/favicon32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://cdn.bi-ci.com/static/commonimg/favicon/favicon16.png" sizes="16x16">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/static/dist/js/vendor/html5shiv.min.js"></script>
+      <script src="/static/dist/js/vendor/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+      <!-- Nav -->
+        {% block navbar %}
+        <nav class="navbar navbar-admin navbar-fixed-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/adminadmin/">行者后台管理</a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        {% block login %}
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if user.is_authenticated %}
+                            <li><a href="{% url 'user_new' user.encode_id %}">{{ user.username }}</a></li>
+                            <li><a href="{% url 'userena_signout' %}"><span>退出</span></a></li>
+                            {% else %}
+                            <li><a href="/user/login">登录</a></li>
+                            <li><a href="/user/register">注册</a></li>
+                            {% endif %}
+                        </ul>
+                        {% endblock %}
+                    </div>
+                </div>
+        </nav>
+
+        <div class="container-fluid">
+          <div class="row">
+
+              <!-- 左侧导航 -->
+              <div class="col-sm-3 col-md-2 sidebar">
+                  <ul class="nav nav-sidebar">
+                      <li>
+                          <a class="navdrop-toggle">勋章管理<span class="caret"></span></a>
+                          <ul class="navdrop-menu">
+                              <li><a href="/new_add_medal/">添加勋章</a></li>
+                              <li><a href="/medal_list/">勋章列表</a></li>
+                          </ul>
+                      </li>
+                      <li><a href="#">挑战管理</a></li>
+                    
+                  </ul>
+              </div>
+        {% endblock %}
+        <!-- Nav End -->
+
+    {% block container %}
+
+      </div>
+    </div>
+
+    {% endblock %}
+    <script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+    <script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+    <script src="/static/dist/js/common.js"></script>
+    <script>
+    var navdropMenu = $('.navdrop-menu'),
+        navdropToggle = $('.navdrop-toggle');
+
+    navdropToggle.on('click', function() {
+      $(this).toggleClass('open');
+      if ($(this).hasClass('open')) {
+        navdropMenu.show();
+      } else{
+        navdropMenu.hide();
+      };
+    });
+    
+    </script>
+    {% block js %}
+    {% endblock %}
+
+  </body>
+</html>

@@ -1,0 +1,328 @@
+@import "bootstrap";
+@import "base.scss";
+
+.btn.btn-primary {
+    padding: 8px 16px;
+}
+
+.form-control {
+    border-radius: 1px;
+}
+
+.topic-list {
+    margin-bottom: 1.2em;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 1px rgba(0,0,0,.11),0 1px 2px rgba(0,0,0,.22);
+    border-radius: 1px;
+    @include phone {
+        margin-bottom: 1em;
+    }
+    a {
+        text-decoration: none;
+    }
+    &:hover {
+        box-shadow: 0 0 3px rgba(0,0,0,.13),0 3px 6px rgba(0,0,0,.26);
+    }
+}
+
+.topic-list-left {
+    display: table-cell;
+    min-width: 89px;
+    color: #fff;
+    font-size: 22px;
+    text-align: center;
+    vertical-align: middle;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    background-color: $color-xingzhe-blue;
+    @include phone {
+        font-size: 16px;
+        min-width: 3em;
+    }
+    span {
+        font-size: 12px;
+        display: block;
+    }
+}
+
+.topic-tops {
+    .topic-list-left {
+        background-color: #DD773F;
+    }
+    .topic-status {
+        color: #DF7737;
+    }
+}
+
+.topic-list-center {
+    display: table-cell;
+    max-width: inherit;
+    width: 100%;
+    padding: 0 1em;
+    @include phone {
+        padding: 0 .5em;
+    }
+    h3 {
+        height: 40px;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 1.4;
+        color: #333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        @include phone {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            height: 31px;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+    }
+    &:hover {
+        h3 {
+            color: $color-xingzhe-blue;
+        }
+    }
+    p {
+        color: #a2acb3;
+        font-size: 13px;
+    }
+    .topic-avatar {
+        width: 28px;
+        height: 28px;
+        margin-right: 4px;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+    }
+    .lline:before {
+        content: "|";
+        color: #a2acb3;
+        padding: 0.333em;
+    }
+}
+
+.topic-list-right {
+    display: table-cell;
+    min-width: 57px;
+    vertical-align: middle;
+    color: #797c8c;
+    @include phone {
+        min-width: 34px;
+    }
+}
+
+// 分页
+.pagination-wrap {
+    float: left;
+    position: relative;
+    left: 50%;
+    clear: both;
+    color: #999;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 6px 0px 6px 6px;
+    font-size: 13px;
+    > div {
+        position: relative;
+        left: -50%;
+    }
+    a {
+        float: left;
+        border: 1px solid #ccc;
+        display: inline;
+        padding: 7px 14px 7px 14px;
+        margin-right: 5px;
+        cursor: pointer;
+        background: #fff;
+        text-decoration: none;
+        color: #999;
+        &:hover {
+            border: 1px solid $color-xingzhe-blue;
+            background-color: $color-xingzhe-blue;
+            color: #fff;
+        }
+    }
+    span.disabled {
+        float: left;
+        display: inline;
+        padding: 7px 14px 7px 14px;
+        margin-right: 5px;
+        border: 1px solid #DFDFDF;
+        background-color: #FFF;
+        color: #DFDFDF;
+    }
+    span.curr {
+        float: left;
+        border: 1px solid $color-xingzhe-blue;
+        display: inline;
+        padding: 7px 14px 7px 14px;
+        margin-right: 5px;
+        color: $color-xingzhe-blue;
+    }
+    .spanDot {
+        float: left;
+        margin-right: 5px;
+        line-height: 24px;
+    }
+}
+
+.pager {
+    li {
+        a,
+        span {
+            border-radius: 3px;
+        }
+    }
+}
+
+// 帖子详情
+article {
+    margin: 0 0 20px;
+    background-color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 2px 1px rgba(84, 84, 84, 0.1);
+    -moz-box-shadow: 0 2px 1px rgba(84, 84, 84, 0.1);
+    box-shadow: 0 2px 1px rgba(84, 84, 84, 0.1);
+    .top {
+        overflow: hidden;
+        border-radius: 3px 3px 0 0;
+        background-color: $color-xingzhe-blue;
+        a {
+            display: block;
+            padding: 1em;
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            .iconfont {
+                font-weight: bold;
+            }
+        }
+    }
+    section {
+        padding: 2em;
+        overflow: hidden;
+    }
+    .head-avatar {
+        margin-right: 2em;
+        max-width: 100px;
+        text-align: center;
+        .topic-avatar {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+        }
+        p {
+            margin: 0;
+            font-size: 12px;
+        }
+    }
+    .topic-comtent {
+        display: table-cell;
+        font-size: 16px;
+        line-height: 1.5;
+        .status-top {
+            color: #DF7737;
+        }
+        @include phone {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    }
+    .footer {
+        padding: 1em 2em;
+        overflow: hidden;
+        background: #fbfbfb;
+        border-top: 1px #dddddd solid;
+        .pull-left {
+            color: #a2acb3;
+            font-size: 13px;
+            .line:after {
+                font-size: 12px;
+                content: "|";
+                color: #a2acb3;
+                padding: 0.5em;
+            }
+        }
+    }
+}
+
+.comments-container {
+    background-color: #fff;
+    .comment-item {
+        padding: 2em 2em 1em;
+        border-bottom: 1px #eee solid;
+    }
+    .comment-content {
+        margin-bottom: 1em;
+    }å
+    .footer {
+        .pull-left {
+            color: #a2acb3;
+            font-size: 13px;
+            span:before {
+                font-size: 12px;
+                content: "|";
+                color: #a2acb3;
+                padding: 0.5em;
+            }
+        }
+    }
+}
+
+.form-container {
+    margin-bottom: 2em;
+    padding: 4em 2em 2em;
+    background-color: #fff;
+    textarea {
+        width: 100%;
+        margin-bottom: 1em;
+        border: 2px #dddddd solid;
+        border-radius: 2px;
+        box-shadow: inset 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+
+// 发布
+.new-topic {
+    margin-bottom: 3em;
+    background-color: #fff;
+    .header {
+        margin-bottom: 10px;
+        overflow: hidden;
+        border-radius: 3px 3px 0 0;
+        background-color: $color-xingzhe-blue;
+        color: #fff;
+        padding: 1em;
+        font-size: 16px;
+    }
+    .new-form {
+        padding: 2em 3em;
+        .textarea {
+            width: 100%;
+            height: 30em;
+            margin-bottom: 2em;
+            padding: .5em;
+            border: 2px #dddddd solid;
+            border-radius: 2px;
+            box-shadow: inset 0 0 0 rgba(0, 0, 0, 0);
+        }
+        @include phone {
+            padding: 1em;
+            .textarea {
+                height: 20em;
+            }
+        }
+        a.cancel {
+            margin-left: 1em;
+            color: #b8b8b8;
+        }
+    }
+}

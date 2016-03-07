@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    位置 - 行者骑行软件
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="span12">
+            <div id="map_canvas" style="height:550px"></div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+    {% baidu_map_api %}
+
+    <script type="text/javascript">
+        var map;
+        var center = new BMap.Point({{ latlng.1 }}, {{ latlng.0 }});
+        var zoom = 16;
+
+        $(initMap);
+
+        function initMap() {
+            map = new BMap.Map("map_canvas");
+            map.addControl(new BMap.NavigationControl());
+            map.addControl(new BMap.ScaleControl());
+            map.addControl(new BMap.OverviewMapControl());
+            map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]}));
+            map.enableScrollWheelZoom();
+            map.centerAndZoom(center, zoom);
+
+            var marker = new BMap.Marker(center);
+            map.addOverlay(marker);
+        }
+
+    </script>
+
+{% endblock %}

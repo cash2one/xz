@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    挑战list
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<style type="text/css">
+    .challenge-list section {
+        background-color: #f7f7f7;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+    .challenge-list section div {
+        margin-bottom: 10px;
+    }
+    .challenge-list section div img{
+        max-width: 300px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+<div class="container challenge-list">
+  <div class="page-header">
+    <h1>挑战列表<small><a href="/challenge_add/" class="btn btn-link">添加新挑战</a></small></h1>
+  </div>
+
+        {% for challenge in challenges %}
+            <section>
+                <div>ID：{{ challenge.id }}</div>
+                <div>标题：{{ challenge.title }}</div>
+                <div>状态：{{ challenge.type }}</div>
+                <div>小图链接：<p><a href="{{ challenge.small_pic }}" target="_blank">{{ challenge.small_pic }}</a></p></div>
+                <div>大图链接：<p><a href="{{ challenge.big_pic }}" target="_blank">{{ challenge.big_pic }}</a></p></div>
+                <div>开始时间：{{ challenge.start_time }}</div>
+                <div>结束时间：{{ challenge.end_time }}</div>
+                <div>奖励：{{ challenge.reward }}</div>
+                <div>内容：{{ challenge.content }}</div>
+                <div><a href="/challenges/{{ challenge.id }}/" class="btn btn-default">查看挑战</a> <a href="/challenge_modify/{{ challenge.id }}/" class="btn btn-default">修改挑战</a></div>
+            </section>
+        {% endfor %}
+
+</div>
+{% endblock %}

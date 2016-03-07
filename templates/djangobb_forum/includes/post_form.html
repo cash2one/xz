@@ -1,0 +1,51 @@
+{% load i18n %}
+<form class="form-horizontal" id="post" action="{{ form_url|default_if_none:"." }}" method="post" enctype="multipart/form-data">
+    <fieldset>
+        {% csrf_token %}
+        {% if not user.is_authenticated %}
+        <div class="control-group">
+            <div class="controls">
+                <span class="lable">登录以后才能发布</span>
+            </div>
+        </div>
+        {% endif %}
+        {% if forum %}
+        <div class="control-group">
+            <label class="control-label" for="">标题</label>
+            <div class="controls">
+                {{ form.name }}
+                <span class="help-inline">{{ form.name.errors }}</span>
+            </div>
+        </div>
+        {% else %}
+        <div class="control-group" id="divReplyTo" style="display: none;">
+            <label class="control-label" for="">回复</label>
+            <div class="controls" style="padding-top: 5px;">
+            	<span id="spanToUser"></span>
+                {{ form.to_user }}{{ form.to_post }}
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="control-group">
+            <label class="control-label" for="">内容</label>
+            <div class="controls">
+                {{ form.body }}
+                <span class="help-inline">{{ form.body.errors }}</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="">图片</label>
+            <div class="controls">
+                {{ form.image }}
+                <span class="help-inline">{{ form.image.errors }}</span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <input type="submit" name="{{ form.FORM_NAME }}" value="发布" {% if not user.is_authenticated %} disabled="disabled" {% endif %} class="btn btn-primary">
+        </div>
+    </fieldset>
+</form>

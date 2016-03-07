@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex>
+	<sitemap>
+        <loc>
+            http://{{ request.get_host }}/flatpages.txt
+        </loc>
+    </sitemap>
+	{% for s in workout_splits %}
+	<sitemap>
+        <loc>
+            http://{{ request.get_host }}/workout_{{ s.0 }}_{{ s.1 }}.txt
+        </loc>
+    </sitemap>
+    {% endfor %}
+    {% for s in lushu_splits %}
+	<sitemap>
+        <loc>
+            http://{{ request.get_host }}/lushu_{{ s.0 }}_{{ s.1 }}.txt
+        </loc>
+    </sitemap>
+    {% endfor %}
+</sitemapindex>

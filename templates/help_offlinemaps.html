@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    离线地图问题
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+<div class="container">
+    <div class="row row-help">
+    {% include "help_nav.html" %}
+
+    <ol class="breadcrumb visible-xs">
+    <li><a href="#">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">离线地图问题</li>
+    </ol>
+
+<div class="col-md-10 main">
+            <h2>离线地图问题</h2>
+            <p><strong>通过APP下载离线地图：打开行者，进入首页右上角设置找到 "离线地图" 即可方便的下载。</strong></p>
+            <ul>
+                <li>这是最简单的方式，此种方式适合连接WiFi或手机上网流量多的用户。</li>
+                <li>下载时如果下载进度一直不变，请检查存储卡是否还有空间。</li>
+                <li>很多用户手机上已经装了百度地图官方软件，通过官方软件下载了离线地图，行者无法使用通过百度地图已经下载好的离线地图。</li>
+                <li>如果andriod手机有两个存储卡：内置卡和外置卡，离线地图放置在哪个卡上与具体的手机有关，请分别尝试放在内置卡和外置卡。</li>
+                <li>目前发现QQ手机管家不知什么原因，会清理掉百度离线地图，所以如果下载好的百度离线地图消失，请检查是否有类似软件。</li>
+            </ul>
+            <p><strong>手动下载离线地图：</strong></p>
+            <ul>
+                <li>此种方式适合无WiFi或手机上网流量不多的用户，这一种方式下载的百度离线包和内置方式下载的百度离线包是完全一样的。</li>
+                <li>通过电脑打开网址（<a href="http://shouji.baidu.com/map/map.html">http://shouji.baidu.com/map/map.html</a>）</li>
+                <li>选择你的手机品牌和手机型号， 选择城市，然后点击下载。</li>
+                <li>解压缩下载的zip文件。</li>
+                <li>找到vmp文件夹，把它拷贝到手机SD卡的BaiduMapSDK文件夹里。如果你的手机SD卡上没有BaiduMapSDK，需要先创建它。在上述过程中如遇提示“是否移动或复制文件夹”，点击“是”即可。最终手机上的正确的路径为 /sdcard/BaiduMapSDK/vmp/</li>
+                <li>完成，现在重启行者，关掉网络，看能不能浏览离线地图。</li>
+            </ul>
+
+            <hr>
+            <p class="text-right"><a href="{% url 'download' %}">安装行者APP</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

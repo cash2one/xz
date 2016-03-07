@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    视频介绍
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+<div class="container">
+    <div class="row row-help">
+    {% include "help_nav.html" %}
+
+    <ol class="breadcrumb visible-xs">
+    <li><a href="#">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">视频介绍</li>
+    </ol>
+
+<div class="col-md-10 main">
+            <h2>视频介绍正在制作中，敬请期待！</h2>
+            <hr>
+            <p class="text-right"><a href="{% url 'download' %}">安装行者APP</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

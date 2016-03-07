@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}
+    语音导航 - 行者骑行软件
+{% endblock %}
+{% block content %}
+    {% load filters %}
+    <div class="row">
+        <div class="span2">
+            {% include "help_nav.html" with active=4 %}
+        </div>
+
+        <div class="span10">
+            <div class="row">
+                <div class="span10">
+                    <h3>行者可以方便的调用百度语音导航功能</h3>
+
+                    <p>打开行者，找到运动-地图，点击地图上的导航图标，按照提示操作即可。</p>
+
+                    <p>进行导航前需要GPS定位成功并且开启网络连接。</p>
+
+                    <p>语音导航和行者路书是两个独立的功能，语音导航的路线由百度地图生成，暂时还无法直接对行者路书进行语音导航。</p>
+
+                    <p>使用语音导航需要安装最新版百度地图，在手机上按照提示下载即可。</p>
+
+                    <p>语音导航可以搭配手机支架使用，下图最右手机支架，经过测试较为牢固 <a href="http://imxz.taobao.com" target="_blank">点击购买</a></p>
+                    <hr/>
+                </div>
+            </div>
+            <div class="row" style="text-align: center;">
+                <div class="span3">
+                    <p><img style="width:240px; height:400px" src="/static/images/nav/nav.png" title="行者语音导航"/>
+                    </p>
+                </div>
+                <div class="span3">
+                    <p><img style="width:240px; height:400px" src="/static/images/nav/nav_baidu_ditu.png" title="行者语音导航"/>
+                    </p>
+                </div>
+                <div class="span3">
+                    <p><a href="http://imxz.taobao.com" target="_blank"><img style="height:400px" src="/static/images/nav/nav_bike_phone.jpg" title="手机支架"/></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

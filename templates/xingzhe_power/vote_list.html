@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <ul>
+        {{ for vote in votes }}
+            <li>{{ vote.title }}</li>
+            <li>{{ vote.header }}</li>
+            <li>{{ vote.footer }}</li>
+            <li>{{ vote.condition }}</li>
+            <li>{{ vote.start_time }}</li>
+            <li>{{ vote.end_time }}</li>
+            <li>{{ vote.content }}</li>
+            <li><a href="vote_edit?v_id={{ vote.id }}">编辑</a></li>
+        {{ endfor }}
+    </ul>
+</head>
+<body>
+
+</body>
+</html>

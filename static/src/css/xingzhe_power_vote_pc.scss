@@ -1,0 +1,116 @@
+@import "bootstrap";
+@import "base.scss";
+body {
+    background-color: #F3F3F3;
+}
+
+.header-img {
+    width: 100%;
+}
+
+.container-vote {
+    overflow: hidden;
+    padding: 0;
+    margin: 2em auto;
+    background-color: #fff;
+    max-width: 50em;
+    font-size: 16px;
+    .content {
+        padding: 2em;
+    }
+    img {
+        max-width: 100%;
+    }
+    .btn {
+    	min-width: 10em;
+    	margin: 0 0 3em;
+    	height: 3em;
+        line-height: 2em;
+    }
+}
+
+.container-vote-in {
+    .btn {
+        margin: 3em auto;
+        min-width: 15em;
+        height: 4em;
+        line-height: 3em;
+    }
+    .qr {
+        margin: 0 0 5em;
+        text-align: center;
+        h4 {
+            margin-bottom: 1em;
+        }
+        img {
+            width: 160px;
+        }
+    }
+}
+
+////
+input[type=file] {
+    position: absolute!important;
+    clip: rect(1px 1px 1px 1px);
+}
+
+.file-input-wrap {
+    padding: 0;
+    position: relative;
+    margin-bottom: 1em;
+    background-color: #eee;
+    overflow: hidden;
+    border: 1px dashed #999;
+    color: #999;
+    text-align: center;
+    min-height: 10em;
+    max-height: 100%;
+    img {
+        z-index: 2;
+        max-width: 100%;
+    }
+    .close-btn {
+        position: absolute;
+        width: 35px;
+        height: 35px;
+        font-style: normal;
+        font-weight: 100;
+        text-align: center;
+        top: 10px;
+        right: 10px;
+        z-index: 3;
+        font-size: 30px;
+        line-height: 1;
+        background-color: #fff;
+        background-color: rgba(255, 255, 255, .85);
+        border-radius: 50%;
+        box-shadow: rgba(0, 0, 0, .3)0 3px 6px;
+        color: #404040;
+        cursor: pointer;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        &:hover {
+            background-color: #fff;
+        }
+    }
+}
+
+.file-input-wrap-sm {
+    height: 10em;
+    overflow: hidden;
+}
+
+.file-input-trigger {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    font-size: 3em;
+    line-height: 3.5;
+    font-weight: 100;
+    cursor: pointer;
+}

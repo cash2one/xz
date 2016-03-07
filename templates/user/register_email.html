@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+{% load crispy_forms_tags %}
+
+{% block title %} 邮箱帐号注册 - 行者骑行软件 {% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="/static/dist/css/user-login.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form id="signupEmailForm" class="form-accounts form-signup-phone" role="form" data-toggle="validator" autocomplete="off" data-toggle="validator">
+      <header class="text-center">
+        <h1 title="邮箱注册" class="iconfont">&#xe60c;</h1>
+        <h2 class="text-center">虽千万里，吾往矣</h2>
+      </header>
+        <div class="form-group">
+            <label for="signupEmailAccount">
+              <i class="iconfont">&#xe63e;</i>
+              <input type="email" class="form-control input-lg input-block check-account" id="signupEmailAccount" name="email" placeholder="邮箱" tabindex="1" required data-error="请输入正确的邮箱">
+            </label>
+            <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+            <label for="signupEmailPassword">
+              <i class="iconfont">&#xe639;</i>
+              <input type="password" class="form-control input-lg" id="signupEmailPassword" name="password" placeholder="密码（不少于6位）" tabindex="2" data-minlength="6" required data-error="请输入密码长度不少于6位">
+            </label>
+            <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="3">注册</button>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-xs-7 margin-top-10 margin-bottom-10">
+              已有帐号，<a href="/user/login" tabindex="4">直接登录»</a>
+          </div>
+          <div class="col-sm-6 col-xs-5 margin-top-10 margin-bottom-10 login-reset-password text-right">
+            <a href="/user/register" tabindex="5">手机号注册</a>
+          </div>
+        </div>
+    </form>
+</div>
+<textarea class="hidden" hidden id="pubkey">{{ pk }}</textarea>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="/static/dist/js/common.js"></script>
+<script src="/static/dist/js/base64tocode.js"></script>
+<script src="/static/dist/js/componet/validator.min.js"></script>
+<script src="/static/dist/js/componet/jsencrypt.min.js"></script>
+<script src="/static/dist/js/user-login.js"></script>
+{% endblock %}

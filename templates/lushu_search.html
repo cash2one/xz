@@ -1,0 +1,204 @@
+{% extends "base-fluid.html" %}
+{% block title %}
+    搜索路书 查找路书 - 行者路书 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+<div class="container-fluid" style="margin-top:20px">
+
+    <div style="display: none">
+        <form class="form-inline" id="searchContainer" style="margin-top:5px;">
+            <div class="well well-small">
+                <div class="btn-group">
+                    <a id="startBoundBtn" class="btn" style="color: darkgreen">起点范围</a>
+                    <a id="endBoundBtn" class="btn" style="color: darkred">终点范围</a>
+                </div>
+                <a id="searchBtn" class="btn btn-primary">搜索</a>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-xs-9">
+            <div id="map_canvas"></div>
+        </div>
+        <div class="col-xs-3">
+            <a id="searchLushuHelp" href="#">如何划定范围，搜索路书？</a>
+            <img id="searchLushuTips" style="display: none" src='/static/images/screenshot/lushu_search.gif' />
+            <div id="search_result" style="overflow-y:auto;"></div>
+        </div>
+    </div>    
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+    {% baidu_map_api %}
+    {% comment %}<script type="text/javascript" src="/static/js/DrawingManager_min.js"></script>{% endcomment %}
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+    <script type="text/javascript">
+        $("#searchLushuHelp").click(function () {
+            $("#searchLushuTips").toggle();
+            return false;
+        });
+
+        var startRect;
+        var endRect;
+
+        var mapHeight = $(window).height() - 70;
+        $("#map_canvas").height(mapHeight);
+        $("#search_result").height(mapHeight);
+        var map = new BMap.Map("map_canvas");
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]}));
+        map.enableScrollWheelZoom();
+
+        var city = new BMap.LocalCity();
+        city.get(function (result) {
+            map.centerAndZoom(result.center, 11);
+        });
+
+        function SearchControl() {
+            this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+            this.defaultOffset = new BMap.Size($("#map_canvas").width() / 2 - 113, 0);
+        }
+        SearchControl.prototype = new BMap.Control();
+        SearchControl.prototype.initialize = function (map) {
+            var container = $("#searchContainer").get(0);
+            map.getContainer().appendChild(container);
+            return container;
+        };
+        var searchControl = new SearchControl();
+        map.addControl(searchControl);
+
+        var startStyleOptions = {
+            strokeColor: "green",
+            fillColor: "white",
+            strokeWeight: 2,
+            strokeOpacity: 0.8,
+            fillOpacity: 0.6,
+            strokeStyle: 'solid'
+        };
+        var endStyleOptions = {
+            strokeColor: "red",
+            fillColor: "white",
+            strokeWeight: 2,
+            strokeOpacity: 0.8,
+            fillOpacity: 0.6,
+            strokeStyle: 'solid'
+        };
+        var startDrawingManager = new BMapLib.DrawingManager(map, {
+            isOpen: false,
+            enableDrawingTool: false,
+            rectangleOptions: startStyleOptions
+        });
+        var endDrawingManager = new BMapLib.DrawingManager(map, {
+            isOpen: false,
+            enableDrawingTool: false,
+            rectangleOptions: endStyleOptions
+        });
+        $("#startBoundBtn").click(function () {
+            $(this).addClass("disabled");
+            $("#endBoundBtn").removeClass("disabled");
+            if (startRect != null) {
+                map.removeOverlay(startRect);
+                startRect = null;
+            }
+            startDrawingManager.open();
+            startDrawingManager.setDrawingMode(BMAP_DRAWING_RECTANGLE);
+        });
+        $("#endBoundBtn").click(function () {
+            $(this).addClass("disabled");
+            $("#startBoundBtn").removeClass("disabled");
+            if (endRect != null) {
+                map.removeOverlay(endRect);
+                endRect = null;
+            }
+            endDrawingManager.open();
+            endDrawingManager.setDrawingMode(BMAP_DRAWING_RECTANGLE);
+        });
+        var startRectanglecomplete = function(rect){
+            startRect = rect;
+            startDrawingManager.close();
+            $("#startBoundBtn").removeClass("disabled");
+        };
+        startDrawingManager.addEventListener('rectanglecomplete', startRectanglecomplete);
+        var endRectanglecomplete = function(rect){
+            endRect = rect;
+            endDrawingManager.close();
+            $("#endBoundBtn").removeClass("disabled");
+        };
+        endDrawingManager.addEventListener('rectanglecomplete', endRectanglecomplete);
+
+        $("#searchBtn").click(function () {
+            search(0);
+        });
+
+        function search(page) {
+            if (startRect == null) {
+                alert("还没有选择起点范围");
+                return;
+            }
+            if (endRect == null) {
+                alert("还没有选择终点范围");
+                return;
+            }
+            var start_sw;
+            var start_ne;
+            var end_sw;
+            var end_ne;
+            if (startRect != null) {
+                var points = startRect.getPath();
+                for (var i in points) {
+                    var p = points[i];
+                    if (i == 1) {
+                        start_ne = p.lat + "," + p.lng;
+                    }
+                    if (i == 3) {
+                        start_sw = p.lat + "," + p.lng;
+                    }
+                }
+            }
+            if (endRect != null) {
+                var points = endRect.getPath();
+                for (var i in points) {
+                    var p = points[i];
+                    if (i == 1) {
+                        end_ne = p.lat + "," + p.lng;
+                    }
+                    if (i == 3) {
+                        end_sw = p.lat + "," + p.lng;
+                    }
+                }
+            }
+            $("#search_result").text("正在搜索...");
+            $.ajax({
+                type: "GET",
+                dataType: "html",
+                url: "/api/search_lushu",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    start_sw: start_sw,
+                    start_ne: start_ne,
+                    end_sw: end_sw,
+                    end_ne: end_ne,
+                    page: page
+                }
+            }).success(function(html) {
+                $("#search_result").html(html);
+            }).error(function(){
+                alert("出错了，刷新网页再试一下");
+            });
+        }
+    </script>
+{% endblock %}

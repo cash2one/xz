@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block title %}
+    行者帮 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/xzb.css">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+<div class="app-header">
+    <div class="container">
+        <h1 class="pull-left"><a href="/bang/">行者帮</a></h1>
+        <a class="pull-right btn btn-primary btn-lg" href="#Reply">回复</a>
+    </div>
+</div>
+
+<div class="container">
+
+<article>
+    <header class="top">
+        <a href="/bang/"><i class="iconfont">&#xe616;</i> 返回列表</a>
+    </header>
+    <div class="row">
+    <section>
+        <div class="hidden-xs head-avatar pull-left">
+            <a href="{% url 'user_new' topic.user.encode_id %}" title="{{ topic.user.username }}">
+                <img class="topic-avatar" src="{{ topic.user.pic_url }}!avatar" alt="{{ topic.user.username }}的头像" onerror="this.src='http://static.imxingzhe.com/default-avatar/default-avatar.png!avatar';this.onerror=null">
+                <p class="text-overflow">{{ topic.user.username }}</p>
+            </a>
+        </div>
+
+        <div class="topic-comtent">
+            {% if topic.top %}<span class="status-top">[已置顶]</span> {% endif %}{% if topic.hidden %}[已删除] {% endif %}
+            {{ topic.content|linebreaksbr }}
+        </div>
+    </section>
+
+    <div class="col-md-12">
+        <div class="footer">
+            <div class="pull-left">
+                <a class="visible-xs-inline line" href="{% url 'user_new' topic.user.encode_id %}" title="{{ topic.user.username }}">{{ topic.user.username }}</a>
+                <span class="line">{{ topic.create_time|date:"Y-m-d H:i" }}</span>
+                <span class="line">{{ topic.comment_count }}回复</span>
+                <span>{{ topic.view_count }}浏览</span>
+            </div>
+            {% if user.is_superuser %}
+            <div class="pull-right">
+                <a href="#" id="toggleHidden">{% if topic.hidden %}显示{% else %}隐藏{% endif %}</a>
+                <a href="#" id="toggleTop">{% if topic.top %}取消置顶{% else %}置顶{% endif %}</a>
+                <a href="{% url 'topic_edit' topic.id %}">编辑</a>
+            </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+</article>
+
+<!-- 评论 -->
+<div class="comments-container">
+    {% for comment in comments %}
+        <div class="row comment-item">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 comment-content">
+                        {% if comment.hidden %}[已删除] {% endif %}{{ comment.content|linebreaksbr }}
+                    </div>
+                    <div class="col-md-12 footer">
+                        <div class="pull-left">
+                            <a href="{% url 'user_new' comment.user.encode_id %}">{% if topic.user.username = comment.user.username %}[楼主]{% endif %} {{ comment.user.username }}</a>
+                            <span>{{ comment.create_time|date:"Y-m-d H:i" }}</span>
+                        </div>
+
+                        <div class="pull-right">
+                        {% if user.is_superuser %}
+                                <a href="#" onclick="return toggleCommentHidden({{ comment.id }}, {% if comment.hidden %}true{% else %}false{% endif %});">{% if comment.hidden %}显示{% else %}隐藏{% endif %}</a>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}    
+</div>
+
+<!-- 回复框 -->
+<div class="form-container">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="" method="post">
+                <fieldset>
+                    {% csrf_token %}
+                        <textarea class="textarea" id="Reply" rows="8" id="content" name="content" class="form-control" maxlength="500" required></textarea>
+                        <button type="submit" class="btn btn-primary btn-lg">回复</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>    
+</div>
+
+   
+</div>
+
+
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+    {% if user.is_superuser %}
+        <script type="text/javascript">
+            $("#toggleHidden").click(toggleHidden);
+            $("#toggleTop").click(toggleTop);
+
+            function toggleHidden() {
+                if(confirm("确定要{% if topic.hidden %}显示{% else %}隐藏{% endif %}吗？")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/toggle_topic_hidden",
+                        data: {
+                            id: "{{ topic.id }}",
+                            csrfmiddlewaretoken: "{{ csrf_token }}"
+                        }
+                    }).success(function(msg) {
+                        location.href = "{% url 'topic_show' topic.id %}";
+                    }).error(function(){
+                        alert("出错了，刷新网页再试一下");
+                    });
+                }
+                return false;
+            }
+
+            function toggleTop() {
+                if(confirm("确定要{% if topic.top %}取消置顶{% else %}置顶{% endif %}吗？")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/toggle_topic_top",
+                        data: {
+                            id: "{{ topic.id }}",
+                            csrfmiddlewaretoken: "{{ csrf_token }}"
+                        }
+                    }).success(function(msg) {
+                        location.href = "{% url 'topic_show' topic.id %}";
+                    }).error(function(){
+                        alert("出错了，刷新网页再试一下");
+                    });
+                }
+                return false;
+            }
+
+            function toggleCommentHidden(commentId, commentHidden) {
+                var operate = commentHidden ? "显示" : "隐藏";
+                if(confirm("确定要" + operate + "吗？")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/toggle_comment_hidden",
+                        data: {
+                            id: commentId,
+                            csrfmiddlewaretoken: "{{ csrf_token }}"
+                        }
+                    }).success(function(msg) {
+                        location.href = "{% url 'topic_show' topic.id %}";
+                    }).error(function(){
+                        alert("出错了，刷新网页再试一下");
+                    });
+                }
+                return false;
+            }
+        </script>
+    {% endif %}
+{% endblock %}
+

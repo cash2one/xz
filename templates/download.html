@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}
+    下载行者 - 行者骑行软件
+{% endblock %}
+{% block css %}
+    <link href="/static/dist/css/download.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="wrapL">
+        <img src="http://cdn.bi-ci.com/dist_v2/image/download/xingzhe_logo_v2.png" alt="行者2.0 LOGO" class="logoV2 masthead">
+        <h1>行者<span class="hidden-xs">，最好用的骑行软件</span></h1>
+    </div>
+    <div class="wrapR">
+        <div class="btn-group hidden-xs">
+            <a href="https://itunes.apple.com/cn/app/id779325629" target="_blank" class="btn btn-ios" title="安装iPhone版">iPhone</a>
+            <a href="http://cdn.imxingzhe.com/xingzhe.apk" class="btn btn-android" download title="下载Android版">Android</a>
+        </div>
+        <div class="hidden-xs qr-download">
+            <div class="qrcode-img"></div>
+        </div>
+        <a href="http://cdn.imxingzhe.com/xingzhe.apk" class="btn btn-download-mobile visible-xs-block" id="downloadBtn">点击安装</a>
+        <small class="visible-xs-block version-tip" id="versionTip"></small>
+    </div>
+</div>
+
+<div id="wxMark" class="wx-mark">
+    请<strong>在浏览器(或Safari)中打开</strong>后进行下载<i class="iconfont">&#xe604;</i><br>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="/static/dist/js/download.js"></script>
+{% endblock %}

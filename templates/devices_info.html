@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <title>设备信息</title>
+    <link href="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.css" rel="stylesheet">
+    <style type="text/css">
+    .table {
+        margin: 30px 0;
+    }
+    
+    .table>tbody>tr>td,
+    .table>tbody>tr>th,
+    .table>tfoot>tr>td,
+    .table>tfoot>tr>th,
+    .table>thead>tr>td,
+    .table>thead>tr>th {
+        padding: 16px 8px;
+    }
+    
+    .iconfont {
+        font-family: "iconfont";
+        font-size: 16px;
+        font-style: normal;
+    }
+    
+    .col-1 {
+        color: #1a1a1a;
+    }
+    
+    .col-2 {
+        color: #d6d6d6;
+    }
+    
+    .col-3 {
+        color: #30dfda;
+    }
+    
+    .col-4 {
+        color: #3f8dd9;
+    }
+    
+    .col-5 {
+        color: #ff7b90;
+    }
+    .pagination li a:hover{cursor: pointer;}
+    </style>
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bi-ci.com/static/html5shiv/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="container-fluid">
+        <table class="table table-bordered table-hover table-striped">
+            <caption>神奇的搜索：⌘+F(Mac) or Ctrl+F(Win)</caption>
+            <thead>
+                <tr>
+                    <th>Server ID</th>
+                    <th>用户ID</th>
+                    <th>车型</th>
+                    <th>颜色</th>
+                    <th>车架编号</th>
+                    <th>GPS</th>
+                    <th>LIS</th>
+                    <th>AT24</th>
+                    <th>W25Q</th>
+                    <th>BiCi ID</th>
+                    <th>SIM卡号</th>
+                    <th>蓝牙名</th>
+                    <th>创建时间</th>
+                    <th>软件版本号</th>
+                    <th>容量</th>
+                    <th>可用容量</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination pagination-lg">
+            </ul>
+        </nav>
+    </div>
+    <script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+    <script>
+    $(function() {
+        var URL = '/api/v3/get_total_devices',
+            paginations = $(".pagination li"),
+            tbody = $("tbody"),
+            mtd = "<td></td>";
+
+        $.getJSON(URL, function(json) {
+            var pageLength = json.total_pages;
+            for (var i = 1; i < pageLength + 1; i++) {
+                $(".pagination").append("<li><a>" + i + "</a></li>");
+            };
+            $(".pagination a").on('click', function(event) {
+                event.preventDefault();
+                var x = $(this).text();
+                tbody.empty();
+                getDate(URL + "?page=" + x);
+            });
+            getDate(URL);
+
+        });
+
+        function getDate(pageUrl) {
+            $.getJSON(pageUrl, function(json) {
+                var devicesLength = json.devices.length;
+
+                for (var i = 0; i < devicesLength; i++) {
+
+                    var jsondevices = json.devices[i],
+                        mid = jsondevices.id,
+                        muser_id = jsondevices.user_id,
+                        mbc_mode = jsondevices.bc_mode,
+                        mbc_color = jsondevices.bc_color,
+                        mversion = jsondevices.version,
+                        mcapacity = jsondevices.capacity,
+                        mavaiable = jsondevices.avaiable,
+                        msim_num = jsondevices.sim_num,
+                        mbc_serial = jsondevices.bc_serial,
+                        mdevice_name = jsondevices.device_name,
+                        mcreate_time = jsondevices.create_time,
+                        mbike_id = jsondevices.bike_id,
+                        mGPS = jsondevices.GPS,
+                        mLIS = jsondevices.LIS,
+                        mAT24 = jsondevices.AT24,
+                        mW25Q = jsondevices.W25Q;
+
+                    if (mbc_color === 1) {
+                        mbc_color = '<strong class="iconfont col-1">黑</strong>'; //黑
+                    } else if (mbc_color === 2) {
+                        mbc_color = '<strong class="iconfont col-2">白</strong>'; //白
+                    } else if (mbc_color === 3) {
+                        mbc_color = '<strong class="iconfont col-3">绿</strong>'; //绿
+                    } else if (mbc_color === 4) {
+                        mbc_color = '<strong class="iconfont col-4">蓝</strong>'; //蓝
+                    } else {
+                        mbc_color = '<strong class="iconfont col-5">玫红</strong>'; //玫红
+                    }
+
+                    if (mbc_mode == 1) {
+                        mbc_mode = '基本版';
+                    } else if (mbc_mode == 2) {
+                        mbc_mode = '专家版';
+                    } else {
+                        mbc_mode = 'Pro版';
+                    }
+
+                    tbody.append('<tr><td>' + mid + '</td><td>' + muser_id + '</td><td>' + mbc_mode + '</td><td>' + mbc_color + '</td><td>' + mbike_id + '</td><td>' + mGPS + '</td><td>' + mLIS + '</td><td>' + mAT24 + '</td><td>' + mW25Q + '</td><td>' + mbc_serial + '</td><td>' + msim_num + '</td><td>' + mdevice_name + '</td><td>' + mcreate_time + '</td><td>' + mversion + '</td><td>' + mcapacity + '</td><td>' + mavaiable + '</td></tr>');
+                };
+
+            });
+        }
+
+
+    });
+    </script>
+</body>
+
+</html>

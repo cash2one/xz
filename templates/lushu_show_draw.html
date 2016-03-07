@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ lushu.user.username }}的路书 {{ lushu.distance|to_distance }}公里 - 行者路书 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<style type="text/css">
+    .table th, .table td {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="row" style="margin-top:10px">
+    <div class="span5">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'lushu' %}">路书导航</a><span class="divider">/</span></li>
+            <li><a href="{% url 'user_new' lushu.user.encode_id %}">{{ lushu.user.username }}</a> 的路书&nbsp;&nbsp;{{ lushu.distance|to_distance }}公里</li>
+        </ul>
+    </div>
+    <div class="pull-right btn-toolbar">
+        <div class="btn-group">
+            {% if gpx_exists %}
+                <a class="btn btn-small btn-primary" target="_blank" href="{% url 'lushu_id' lushu.id %}">编号&nbsp;{{ lushu.id }}</a>
+            {% else %}
+                <a id="generateGpx" class="btn btn-small btn-primary" href="javascript:void(0)">生成编号</a>
+            {% endif %}
+        </div>
+        <div class="btn-group">
+            <a class="dropdown-toggle btn btn-small" data-toggle="dropdown" href="#">
+                导出
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu" style="left:0px;">
+                {% if gpx_exists %}
+                    <li><a target="_blank" href="{% url 'download_lushu' lushu.id %}">GPX格式</a></li>
+                {% else %}
+                    <li id="exportGpx"><a href="javascript:void(0)">GPX格式</a></li>
+                {% endif %}
+            </ul>
+            </a>
+        </div>
+        <div class="btn-group">
+            <a class="dropdown-toggle btn btn-small" data-toggle="dropdown" href="#">
+                分享
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <div class="bdsharebuttonbox" data-tag="share_1" style="margin-left:15px;">
+                        <a class="bds_qzone" data-cmd="qzone" href="#"></a>
+                        <a class="bds_tsina" data-cmd="tsina"></a>
+                        <a class="bds_renren" data-cmd="renren"></a>
+                        <a class="bds_tqq" data-cmd="tqq"></a>
+                        <a class="bds_more" data-cmd="more">更多</a>
+                    </div>
+                </li>
+            </ul>
+            </a>
+        </div>
+        <!-- <div class="btn-group">
+                    <a href="{% url 'lushu_edit' lushu.id %}">修改</a>
+                </div> -->
+        <div class="btn-group">
+            <a href="#" id="toggleLushu" class="btn btn-small">{% if lushu.hidden %}显示{% else %}隐藏{% endif %}</a>
+        </div>
+        <div class="btn-group">
+            <a href="#" id="toggleDeleteLushu" class="btn btn-small">{% if lushu.deleted %}恢复{% else %}删除{% endif %}</a>
+        </div>
+        <div class="btn-group">
+            <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+                制作路书
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a target="_blank" href="{% url 'lushu_create' %}">链接1</a></li>
+                <li><a target="_blank" href="{% url 'lushu_create_new' %}">链接2</a></li>
+                <li class="divider"></li>
+                <li><a href="javascript:void(0);">由于谷歌地图的问题<br />个别地区只能使用其中一个<br />但对大部分地区的用户来说<br />两个链接制作方式完全一样</a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <a target="_blank" href="{% url 'lushu_search' %}" class="btn btn-small">搜索路书</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="span12" style="margin-top:-10px; margin-bottom: 10px;">{{ lushu.title }}</div>
+</div>
+<div style="display: none">
+    <a style="margin-top:4px;" class="btn btn-small" id="changeMapSize" href="#">放大地图</a>
+</div>
+<div class="row">
+    <div class="span12">
+        <div id="map_canvas" style="height:550px"></div>
+        <div>
+            <form class="form-horizontal" method="post" action="" style="display: none">
+                <input type="hidden" name="points" />
+                <input type="hidden" name="download" />
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+{% google_map_api %}
+<script  type="text/javascript">
+    var defaultLagLng = new google.maps.LatLng(37.51975069, 122.04547628);
+    var points = [defaultLagLng]; 
+    {% if points %}
+    points = [{% for p in points %}new google.maps.LatLng({{ p.latitude }},{{ p.longitude }}){% if not forloop.last %}, {% endif %}{% endfor %}];
+    {% endif %}
+    var waypoints = []; 
+    {% if waypoints %}
+    waypoints = [{% for p in waypoints %}{'latLng':new google.maps.LatLng({{ p.latitude }},{{ p.longitude }}), 'content': '{{p.content|safe}}'}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    {% endif %}
+
+    var min_lat = {{ min_lat }};
+    var min_lng = {{ min_lng }};
+    var max_lat = {{ max_lat }};
+    var max_lng = {{ max_lng }};
+</script>
+<script type="text/javascript" src="/static/js/of.min.js"></script>
+<script type="text/javascript" src="/static/js/lushu_show_draw.js"></script>
+<script  type="text/javascript">
+
+    function toggleLushu() {
+        var is_authenticated = {{ user.is_authenticated|yesno:"true, false" }};
+        var is_owner = {{ is_owner|yesno:"true, false" }};
+        if(!is_authenticated){
+            alert("登录后才可以操作");
+        } else if(!is_owner) {
+            alert("只能对自己创建的路书进行操作");
+        } else if(confirm("确定要{% if lushu.hidden %}显示{% else %}隐藏{% endif %}吗？")) {
+            $.ajax({
+                type: "POST",
+                url: "/api/toggle_lushu",
+                data: {
+                    id: "{{ lushu.id }}",
+                    csrfmiddlewaretoken: "{{ csrf_token }}" 
+                }
+            }).success(function(msg) {
+                location.href = "{% url 'user_new' lushu.user.encode_id %}";
+            }).error(function(){
+                alert("出错了，刷新网页再试一下");
+            });
+        }
+        return false;
+    }
+
+    function toggleDeleteLushu() {
+        var is_authenticated = {{ user.is_authenticated|yesno:"true, false" }};
+        var is_owner = {{ is_owner|yesno:"true, false" }};
+        if(!is_authenticated){
+            alert("登录后才可以操作");
+        } else if(!is_owner) {
+            alert("只能对自己创建的路书进行操作");
+        } else if(confirm("确定要{% if lushu.deleted %}恢复吗？{% else %}删除吗？删除后不能恢复！{% endif %}")) {
+            $.ajax({
+                type: "POST",
+                url: "/api/toggle_delete_lushu",
+                data: {
+                    id: "{{ lushu.id }}",
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }
+            }).success(function(msg) {
+                location.href = "{% url 'user_new' lushu.user.encode_id %}";
+            }).error(function(){
+                alert("出错了，刷新网页再试一下");
+            });
+        }
+        return false;
+    }
+    
+</script>
+
+<script>
+    var share_content = "我的路书，总距离{{ lushu.distance|to_distance }}公里，使用@行者骑行软件 制作，点击查看详细路线";
+
+    window._bd_share_config = {
+        common: {
+            bdText: share_content
+        },
+        share: [
+            {
+                "bdSize": 16
+            }
+        ]
+    }
+    with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion=' + ~(-new Date() / 36e5)];
+</script>
+
+{% endblock %}

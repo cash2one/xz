@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load filters %}
+{% block title %}
+    根据编号查找路书 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<link href="/static/css/forms.css" rel="stylesheet">
+<style type="text/css">
+.form-inline input[type="text"]{
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 5px;
+    padding: 7px 9px;
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <br />
+    <div class="row">
+        <div class="span12">
+            <form class="form-inline" method="get">
+                <input name="id" type="text" placeholder="请输入路书编号" value="{{ id }}"/>
+                <button type="submit" class="btn btn-primary">查找</button>
+            </form>
+        </div>
+    </div>
+    {% if error %}
+    <div class="row">
+        <div class="span12">
+            <p>路书编号是一个数字</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

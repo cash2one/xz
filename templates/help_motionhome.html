@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    行者GPS定位问题
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+<div class="container">
+    <div class="row row-help">
+    {% include "help_nav.html" %}
+
+    <ol class="breadcrumb visible-xs">
+    <li><a href="/">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">运动首页设置</li>
+    </ol>
+
+<div class="col-md-10 main">
+            <h2>运动首页设置</h2>
+            <h3>显示详细数据</h3>
+            <p><img src="http://cdn.bi-ci.com/dist_v2/image/help/android-first-page.png" class="img-rounded"></p>
+            <p>开启此按钮可以切换在运动首页显示3项基本数据（当前速度，里程，运动时间）或7项专家数据（当前速度，里程，运动时间，平均速度，最大速度，海拔，累积上升）。</p>
+            <h3>夜间模式（暂不支持iOS系统）</h3>
+            <p><img src="http://cdn.bi-ci.com/dist_v2/image/help/android-block.png" class="img-rounded"></p>
+            <p>开启夜间模式，运动首页将面为深色背景。</p>
+            <h3>位置共享：</h3>
+            <p>开启后实现两个功能，1. 每隔一分钟自动上传当前位置到行者网站，朋友家人可在网页端查看www.imxingzhe.com/im/mJnXGJnZadm/weizhi/ ; 2. 可让队友在行者手机端看到我的最新位置；</p>
+            <h3>踏频训练：</h3>
+            <p>使用行者踏频训练功能，非常有助于练就合理的踏频，保护膝盖，防止运动伤害。</p>
+            <p>如何计算自己的踏频：打开行者，找到设置-踏频训练，通过加减号，调整声音的频率和自己正常踩踏的频率保持一致，这时行者显示的数字就是您的踏频。</p>
+            <p>如何进行科学的踏频训练：骑行时，找到设置-踏频训练，调整声音频率到合适的值，然后跟随节奏进行踩踏即可。</p>
+            <p>踏频是指每分钟蹬踏的次数（左右脚各蹬半圈算一次）。正常情况下，合理的踏频是80-90左右，每个人有少许差异，专业运动员会更高。</p>
+            <hr>
+            <p class="text-right"><a href="{% url 'download' %}">安装行者APP</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

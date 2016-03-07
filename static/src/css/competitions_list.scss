@@ -1,0 +1,206 @@
+@import "bootstrap";
+@import "base.scss";
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.eot');
+    src: url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.woff2') format('woff2'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.woff') format('woff'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.ttf') format('truetype'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-arrow-left:before {
+    content: "\e091";
+}
+
+.glyphicon-arrow-right:before {
+    content: "\e092";
+}
+
+body {
+    background-color: #F5F5F5;
+}
+
+.form-container {
+    max-width: 720px;
+    margin: 0 auto 30px;
+    padding: 50px;
+    background-color: #fff;
+    .form-group {
+        margin-bottom: 40px;
+    }
+    .form-control {
+        position: relative;
+    }
+    textarea {
+        max-width: 620px;
+    }
+}
+
+header.header {
+    margin-bottom: 50px;
+    padding: 20px 0;
+    background-color: #fff;
+    padding-bottom:0px;
+    h1 {
+        margin-top: 10px;
+        font-weight: normal;
+        font-size: 22px;
+        margin-left: 10px;
+        a {
+            color: #555;
+            text-decoration: none;
+        }
+    }
+}
+
+.nav-tabs{
+    border-bottom: 2px solid #007ac2;
+    li{
+        a,a:hover,a:focus{
+            color: #fff !important;    
+            border: 1px solid #868686;    
+            text-decoration: none;
+            background-color: #868686;
+        }
+    }
+    li.active{
+        a{
+            background-color: #007ac2 !important;
+        }
+    }
+}
+.match-list-wrap {
+    .pic {
+        width:100%;
+    }
+    .text-overflow{
+        margin: 0;
+    }
+    .captionDetail{
+        position: relative;
+        margin-top: 10px;
+        p{
+            margin: 2px 0;
+            font-size: 12px;
+        }
+        .host{
+            .iconfont{
+                color:#195fa4;
+            }
+        }
+        .place{
+            .iconfont{
+                color:#fa3708;
+            }
+        }
+        .time{
+            .iconfont{
+                color:#f3a622;
+            }
+        }
+        .signUpIng,.Ing,.finished{
+            color: #fff;
+            position:absolute;
+            top:0px;
+            right:0px;
+        }
+    } 
+}
+.org{
+    .organizers{
+        color: #000;
+        font-size: 13px;
+        text-align: center;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #eee;
+    }
+    .org_pic{
+        width: 145px;
+        overflow: hidden;
+        img{
+            overflow: hidden;
+            height: 70px;
+            width: 70px;
+            float: left;
+            margin: 1px
+        }
+
+    }
+    button{
+        margin-top:10px;
+    }
+}
+// 分页
+.pagination-wrap {
+    float: left;
+    position: relative;
+    left: 50%;
+    clear: both;
+    color: #999;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 6px 0px 6px 6px;
+    font-size: 13px;
+    > div {
+        position: relative;
+        left: -50%;
+    }
+    a {
+        float: left;
+        border: 1px solid #ccc;
+        display: inline;
+        padding: 7px 14px 7px 14px;
+        margin-right: 5px;
+        cursor: pointer;
+        background: #fff;
+        text-decoration: none;
+        color: #999;
+        &:hover {
+            border: 1px solid $color-xingzhe-blue;
+            background-color: $color-xingzhe-blue;
+            color: #fff;
+        }
+    }
+    span.disabled {
+        float: left;
+        display: inline;
+        padding: 7px 14px 7px 14px;
+        margin-right: 5px;
+        border: 1px solid #DFDFDF;
+        background-color: #FFF;
+        color: #DFDFDF;
+    }
+    span.curr {
+        float: left;
+        border: 1px solid $color-xingzhe-blue;
+        display: inline;
+        padding: 7px 14px 7px 14px;
+        margin-right: 5px;
+        color: $color-xingzhe-blue;
+    }
+    .spanDot {
+        float: left;
+        margin-right: 5px;
+        line-height: 24px;
+    }
+}
+
+.pager {
+    li {
+        a,
+        span {
+            border-radius: 3px;
+        }
+    }
+}

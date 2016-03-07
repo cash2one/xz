@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    发布新话题 - 行者帮 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/xzb.css">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+<header class="header">
+    <div class="container">
+        <h1 class="pull-left"><a href="/bang/">行者帮</a></h1>
+    </div>
+</header>
+
+<div class="container">
+    <section class="new-topic">
+        <header class="header">新话题</header>
+
+        <div class="row new-form">
+            <div class="col-md-12">
+                <form action="" method="post">
+                    <fieldset>
+                        {% csrf_token %}
+                        <textarea class="textarea" id="content" name="content" class="input-xlarge" autofocus required maxlength="500"></textarea>
+                        <button type="submit" class="btn btn-primary btn-lg">发布</button>
+                        <a class="cancel" href="/bang/">取消并返回</a>
+                    </fieldset>
+                </form>
+            </div>
+        </div>          
+    </section>
+</div>
+
+
+
+{% endblock %}
+

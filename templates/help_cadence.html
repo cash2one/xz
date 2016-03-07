@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}
+    踏频训练，踏频计算 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    {% load filters %}
+
+
+<div class="container">
+    <div class="row row-help">
+        {% include "help_nav.html" %}
+    <ol class="breadcrumb visible-xs">
+    <li><a href="/">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">行者GPS定位问题</li>
+    </ol>
+        <div class="col-md-10 main">
+            <h2>踏频训练</h2>
+            <p>使用行者踏频训练功能，非常有助于练就合理的踏频，保护膝盖，防止运动伤害。</p>
+            <h3>如何计算自己的踏频？</h3>
+            <p>打开行者，点击右上角显示辅助功能，选择<span class="label label-info">踏频训练</span>，通过加减号，调整声音的频率和自己正常踩踏的频率保持一致，这时行者显示的数字就是您的踏频。</p>
+            <h3>如何进行科学的踏频训练？</h3>
+            <p>骑行时，在<span class="label label-info">踏频训练</span>界面，调整声音频率到合适的值，然后跟随节奏进行踩踏即可。</p>
+            <p>踏频是指每分钟蹬踏的次数（左右脚各蹬半圈算一次）。正常情况下，合理的踏频是80-90左右，每个人有少许差异，专业运动员会更高。</p>
+            <p>
+                <img class="img-thumbnail" src="http://cdn.bi-ci.com/dist_v2/image/help/help-tapin-1.jpg" alt="踏频训练">
+                <img class="img-thumbnail" src="http://cdn.bi-ci.com/dist_v2/image/help/help-tapin-2.png" alt="踏频训练">
+            </p>
+            <p><a href="{% url 'download' %}" class="btn btn-info">马上下载行者App</a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

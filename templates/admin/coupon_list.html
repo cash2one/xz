@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+{% load filters %} 
+
+<head>
+    <meta charset="UTF-8">
+    <title>优惠劵列表</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <style type="text/css">
+    .header {
+        margin-bottom: 3em;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    
+    .header h3 {
+        padding-bottom: 19px;
+        margin-top: 19px;
+        margin-bottom: 0;
+        line-height: 40px;
+    }
+    
+    caption h2 {
+        text-align: center;
+        color: #444
+    }
+    
+    .table>tbody>tr>td,
+    .table>tbody>tr>th {
+        padding: 12px 8px
+    }
+    .input-num {
+        max-width: 100px;
+    }
+    .margin-right {
+        margin-right: 20px;
+    }
+
+    .refresh-code-count {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+        cursor: pointer;
+    }
+    .refresh-code-count:hover {
+        text-decoration: none;
+    }
+
+    .animation {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+        -webkit-transition: transform 1s ease-in;
+        -o-transition: transform 1s ease-in;
+        transition: transform 1s ease-in;
+        color: #999;
+    }
+    .alert {
+        width: 200px;
+        height: 53px;
+        margin: auto;
+        position: absolute;
+        top: 0; left: 0; bottom: 0; right: 0;
+        position: fixed;
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="alert alert-success text-center" id="alert" role="alert"></div>
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active">
+                        <a href="/add_coupon/"><i class="glyphicon glyphicon-plus"></i> 添加新优惠券</a>
+                    </li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">优惠券列表</h3>
+        </div>
+        <div class="row">
+            <form id="createNumForm" class="form-inline col-xs-8">
+              <div class="form-group">
+                <label for="inputNum">生成优惠券码：</label>
+                <input type="number" class="form-control input-num" id="inputNum" min="1" name="inputNum" placeholder="生成个数" required="required">
+              </div>
+              <button class="btn btn-default btn-primary margin-right">点击生成</button>
+              剩余优惠券码 <strong id="codeCounts" class="code-counts"></strong> 个
+              <a id="refreshCodeCount" class="glyphicon glyphicon-refresh refresh-code-count" title="点击刷新"></a>
+            </form>
+
+            <form class="col-xs-4" action="/search_coupon/" method="get" id="searchForm">
+                <div class="input-group">
+                    <input type="search" class="form-control" id="searchBar" name="search" placeholder="我是万能的搜索框"  autofocus="autofocus" required="required">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i> 搜索</button>
+                    </span>
+                </div>
+            </form>
+
+        </div>
+
+        <table class="table table-hover table-bordered">
+            <caption>
+                <h2>优惠券列表</h2>
+            </caption>
+            <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>描述</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for coupon in coupons %}
+                <tr>
+                    <th scope="row">{{ coupon.title }}</th>
+                    <td>{{ coupon.description }}</td>
+                    <td>{{ coupon.start_time|to_date|date:"Y-m-d" }}</td>
+                    <td>{{ coupon.end_time|to_date|date:"Y-m-d" }}</td>
+                    <td class="text-center"><a href="/get_coupon/{{ coupon.id }}/" class="btn btn-default btn-primary btn-sm"><i class="glyphicon glyphicon-eye-open"></i> 查看</a> <a href="" id="deleteItem" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i> 删除</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<script src="/static/js/vendor/jquery.min.js"></script>
+<script>
+    $(function() {
+        var codeCounts = $("#codeCounts"),
+            alertInfo = $("#alert");
+        //获取剩余优惠券码
+        function getCodeCounts () {
+            $.get('/api/v3/get_discount_code_counts', function(data) {
+                // console.log(data.count);
+                codeCounts.text(data.count);
+            });
+        }
+        getCodeCounts();
+        // Ajax刷新显示生成优惠券码
+        $("#refreshCodeCount").on('click', function() {
+            event.preventDefault();
+            $(this).addClass('animation');
+            getCodeCounts();
+            setTimeout(function(){$("#refreshCodeCount").removeClass('animation')}, 1000);
+        });
+        // 生成优惠券码
+        $("#createNumForm").on('click', 'button', function(event) {
+            event.preventDefault();
+            var inputNumVal = $("#inputNum").val(),
+                myjson = JSON.stringify({"counts": inputNumVal});
+
+            if (inputNumVal) {
+                $.ajax({
+                    url: '/api/v3/create_discount_code',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: myjson
+                })
+                .done(function(data) {
+                    console.log("success");
+                    getCodeCounts();
+                    alertInfo.text('优惠券码生成成功！').fadeIn(200).delay(800).fadeOut(200);
+                })
+                .fail(function(data) {
+                    console.log("error");
+                })
+                .always(function() {
+                    console.log("complete");
+                });
+            } else {
+                alert('生成个数不能为空');
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}
+    上传我的位置 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+
+<div class="container">
+    <div class="row row-help">
+        {% include "help_nav.html" %}
+    <ol class="breadcrumb visible-xs">
+    <li><a href="#">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">共享位置相关</li>
+    </ol>
+        <div class="col-md-10 main">
+            <h2>共享位置，外出骑行让家人更放心</h2>
+            <p>手机上打开行者，找到 <span class="label label-info">设置</span> &raquo; <span class="label label-info">上传位置</span>，可以设置每隔一段时间自动将你的位置上传到行者网站，然后登录到行者网站，在“{% if user.is_authenticated %}<a target="_blank" href="{% url 'user_location_new' request.user.encode_id %}">我的位置</a>{% else %}我的位置{% endif %}”页面即可查看。</p>
+            <p>您可以把“{% if user.is_authenticated %}<a target="_blank" href="{% url 'user_location_new' request.user.encode_id %}">我的位置</a>{% else %}我的位置{% endif %}”页面的网址发给家人或朋友，他们在电脑上就可以看到您在外骑车时的最新位置了。</p>
+            <p><img class="img-thumbnail" src="http://cdn.bi-ci.com/dist_v2/image/help/help-weizhi.jpg" title="共享位置"></p>
+            <p><a href="{% url 'download' %}" class="btn btn-info">马上下载行者App</a></p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

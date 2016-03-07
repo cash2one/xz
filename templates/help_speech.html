@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    语音播报问题
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+<div class="container">
+    <div class="row row-help">
+    {% include "help_nav.html" %}
+
+    <ol class="breadcrumb visible-xs">
+    <li><a href="#">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">语音播报问题</li>
+    </ol>
+
+<div class="col-md-10 main">
+            <h2>语音播报问题（暂不支持iOS系统）</h2>
+            <p>语音播报支持对距离和时间进行播报，语音提示是中文发音，所以需要安装中文语音包，常见的中文语音包是讯飞语音，安装步骤：</p>
+            <ol>
+                <li><a href="http://download.voicecloud.cn/100IME/iFlyIME_v5.1.1921.apk" download="iFlyIME">点击下载</a>讯飞语音。</li>
+                <li>安装成功后，打开，找到“设置”，勾选“开启系统合成设置”打开手机系统设置-“语言和输出法”-“文字转语音（TTS）输出”，首选引擎选择“讯飞语音合成”, 语言“中文”；不同手机系统的语音设置略有不同。</li>
+            </ol>
+            <hr>
+            <p class="text-right"><a href="{% url 'download' %}">安装行者APP</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

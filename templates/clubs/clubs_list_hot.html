@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %} 俱乐部排名 {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/explore.css"> {% endblock %} {% block content %} {% load filters %}
+
+<div class="app-header">
+    <div class="container">
+        <h1 class="pull-left">俱乐部热度排行榜<small> 俱乐部热度值与俱乐部活跃人数和俱乐部运动里程有关</small></h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <p class="text-center"><i class="iconfont loading-icon" id="loadingicon">&#xe638;</i></p>
+        <div class="col-md-12 clubs-list">
+            <div class="row clubs-list-header">
+                <div class="col-md-1 col-xs-3 text-center cl-rank"><i class="iconfont">&#xe637;</i><p>排名</p></div>
+                <div class="col-md-7 col-xs-6 cl-name"><i class="iconfont">&#xe634;</i><p>俱乐部</p></div>
+                <div class="col-md-2 hidden-xs text-center cl-city"><i class="iconfont">&#xe60b;</i><p>城市</p></div>
+                <div class="col-md-2 col-xs-3 text-center cl-hotlevel"><i class="iconfont">&#xe636;</i><p>热度</p></div>
+            </div>
+            <ol id="clubsListWrap">
+            </ol>
+        </div>
+    </div>
+
+
+<div id="Pagination" class="hidden-xs pagination-wrap"></div>
+
+<div id="paginationxs" class="visible-xs-block paginationxs-wrap">
+    <nav>
+      <ul class="pager">
+        <li class="previous disabled" id="previousStatus"><a id="previousLink"><span aria-hidden="true">&larr;</span> 上一页</a></li>
+        <li class="text-center text-muted" id="pageNum">1</li>
+        <li class="next"><a href="?page=2" id="nextLink">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+      </ul>
+    </nav>
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/kkpager/kkpager.min.js"></script>
+<script>
+//init
+$(function() {
+
+    var clubsListWrap = $("#clubsListWrap");
+
+    function loadList(e) {
+        $.ajax({
+                url: '/api/v4/team_rank',
+                type: 'GET',
+                data: {
+                    limit: 20, // 每页获取长度
+                    page: e, // 页码
+                    timeType: 2 // 0年度 / 1月度 / 2热度
+                }
+            })
+            .done(function(json) {
+                $("#loadingicon").hide();
+                console.log("success");
+                var listdata = json.data;
+
+                for (var i = 0; i < listdata.length; i++) {
+                        n = e*20+i+1;
+                        clubsListWrap.append('<li class="item row">' +
+                            '<div class="col-md-1 col-xs-3 badge text-center" data-badge="' + n + '">' + n + '</div>' +
+                            '<div class="col-md-7 col-xs-6">' +
+                            '<div class="club-avatar">' +
+                            '<img src="' + listdata[i].teamAvatar + '!avatar" class="hidden-xs" alt="club avatar" onerror="this.src=\'http://cdn.bi-ci.com/dist_v2/image/xing-default-avatar.png\';this.onerror=null">' +
+                            '</div>' +
+                            '<h3 class="text-overflow">' + listdata[i].teamTitle + '</h3>' +
+                            '</div>' +
+                            '<div class="col-md-2 hidden-xs text-center">' +
+                                listdata[i].teamCityName +                            
+                            '</div>' +
+                            '<div class="col-md-2 col-xs-3 text-center text-overflow">' +
+                                '<strong>' + mToKm(listdata[i].teamHotValue) + '</strong>' +                            
+                            '</div>' +
+                            '</li>')
+                };
+            })
+            .fail(function(data) {
+                console.log("error: " + data);
+            })
+    }
+
+
+    // 判断页码状态
+    if (window.location.search.length === 0) {
+        // 第一页
+        loadList(0);
+
+        // 生成分页器
+        kkpager.generPageHtml({
+            pagerid: 'Pagination', // 分页展示控件容器ID
+            pno: 1, //当前页码
+            total: 50, //总页码
+            totalRecords: 1000, //总数据条数
+            isShowCurrPage: false, // 显示当前页
+            isShowTotalPage: false, //总页数
+            isGoPage: false,
+            isShowFirstPageBtn: false, //显示首页按钮
+            getLink: function(e) {
+                return "?page=" + e;
+            }
+        });
+
+    } else{
+        // 非第一页
+        var pageno = window.location.search.slice(6);
+        loadList(pageno - 1);
+
+        // 生成分页器
+        kkpager.generPageHtml({
+            pagerid: 'Pagination', // 分页展示控件容器ID
+            pno: pageno, //当前页码
+            total: 50, //总页码
+            totalRecords: 1000, //总数据条数
+            isShowCurrPage: false, // 显示当前页
+            isShowTotalPage: false, //总页数
+            isGoPage: false,
+            isShowFirstPageBtn: false, //显示首页按钮
+            getLink: function(e) {
+                return "?page=" + e;
+            }
+        });
+
+        var previousNum = parseInt(pageno) - 1,
+            nextNum = parseInt(pageno) + 1;
+
+        // 手机上的分页控件
+        if (pageno === '1') {
+            $("#pageNum").text('1');
+            $("#previousLink").removeAttr('href');
+            $("#previousStatus").attr('disabled', 'disabled');
+            $('#nextLink').attr('href', '?page=2');
+        } else {
+            $("#previousStatus").removeClass('disabled');
+            $("#pageNum").text(pageno);
+            $("#previousLink").attr('href', '?page=' + previousNum);
+            $('#nextLink').attr('href', '?page=' + nextNum);
+        };
+
+    };
+
+});
+</script>
+{% endblock %}

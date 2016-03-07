@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {{ club.title }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    {% load filters %}
+    <div class="well">
+        最新版支持手机直接创建队伍，且无需审核，欢迎<a href="{% url 'download' %}">下载使用</a>
+    </div>
+    <div class="page-header">
+        <h2>
+            {{ club.title }}
+            <small>
+                队长&nbsp;
+                <a href="{% url 'user' club.user.id %}" target="_blank">{{ club.user.username }}</a>
+                {% if club.user.id == request.user.id %}<span class="pull-right"><a href="{% url 'club_edit' club.no %}">修改</a></span>{% endif %}
+            </small>
+        </h2>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <p>{{ club.description|linebreaksbr }}</p>
+            <br />
+            <div id="map_canvas" style="height:500px"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    {% baidu_map_api %}
+    <script type="text/javascript">
+        var map = new BMap.Map("map_canvas");
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]}));
+        map.enableScrollWheelZoom();
+
+        var center = new BMap.Point({{ club.longitude }}, {{ club.latitude }});
+        map.centerAndZoom(center, 15);
+
+        var marker = new BMap.Marker(center);
+        map.addOverlay(marker);
+
+    </script>
+{% endblock %}

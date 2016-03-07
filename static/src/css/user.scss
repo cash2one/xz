@@ -1,0 +1,411 @@
+@import "bootstrap";
+@import "base.scss";
+
+.color-xingzhe-blue {
+    color: $color-xingzhe-blue;
+}
+
+.data-font {
+    font-family: "Din Alternate", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+body {
+    background-color: #eff2f5;
+}
+
+.wrap-right {
+    margin-top: 60px;
+    .datas {
+        min-height: 360px;
+        background-color: $color-white;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    }
+    .wrap-location {
+        margin-bottom: 60px;
+        padding: 10px 25px 50px;
+        background-color: $color-white;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    }
+}
+
+.wrap-left {
+    margin-top: 60px;
+    margin-bottom: 40px;
+}
+
+@include phone {
+    .wrap-right,
+    .wrap-left {
+        margin-top: 30px;
+    }
+}
+
+
+.user-info {
+    padding-top: 20px;
+    text-align: center;
+    background-color: $color-xingzhe-blue;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: $color-white;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    a {
+        color: $color-white;
+    }
+    .default-avatar {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        padding: 2px;
+        border-radius: 50%;
+        background-color: $color-white;
+    }
+    .user-name {
+        margin-right: 5px;
+        font-size: 18px;
+        word-wrap: break-word;
+        word-break: normal;
+    }
+    hr {
+        max-width: 220px;
+        border-top: 1px solid rgba(255, 255, 255, .4);
+    }
+    .age-and-sex {
+        font-size: 12px;
+        font-weight: 200;
+        padding: 1px 6px;
+        margin-right: 5px;
+        border-radius: 2px;
+        .iconfont {
+            margin-right: 2px;
+            font-size: 12px;
+        }
+    }
+    .sex-male {
+        background-color: $color-xingzhe-blue;
+    }
+    .sex-female {
+        background-color: #f44;
+    }
+    .data-city {
+        margin-right: 5px;
+        font-size: 13px;
+        font-weight: 200;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    .data-distance-title {
+        margin: 20px 0 5px;
+        font-size: 13px;
+    }
+    .data-distance {
+        margin: 0 0 10px;
+        font-size: 42px;
+        line-height: 1;
+        text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+    }
+    .data-jifen {
+        font-size: 13px;
+        font-weight: 200;
+    }
+}
+.user-info-bgi-0 {
+    background-image: url(http://cdn.bi-ci.com/dist_v2/image/user/user-bgi/0.jpg);
+}
+.user-info-bgi-1 {
+    background-image: url(http://cdn.bi-ci.com/dist_v2/image/user/user-bgi/1.jpg);
+}
+.user-info-bgi-2 {
+    background-image: url(http://cdn.bi-ci.com/dist_v2/image/user/user-bgi/2.jpg);
+}
+.user-info-bgi-3 {
+    background-image: url(http://cdn.bi-ci.com/dist_v2/image/user/user-bgi/3.jpg);
+}
+
+
+.user-nav {
+    margin: 0 auto;
+    border-top: #b8c4ce 1px solid;
+    .nav {
+        background-color: $color-white;
+        li {
+            float: left;
+            width: 33.33%;
+            text-align: center;
+            padding: 5px 0;
+            bottom: -1px;
+            &:hover {
+                border-bottom: 2px solid $color-xingzhe-blue;
+            }
+            &:first-child {
+                a {
+                    border-left: 0;
+                }
+            }
+            a {
+                display: block;
+                padding: 20px 0;
+                font-size: 18px;
+                color: $color-xingzhe-blue;
+                border-left: 1px dashed #b8c4ce;
+                outline: none;
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+        .active {
+            border-bottom: 2px solid $color-xingzhe-blue;
+        }
+    }
+}
+
+.workout-list {
+    list-style: none;
+    padding-left: 90px;
+    margin-bottom: 50px;
+    @include phone {
+        padding-left: 50px;
+    }
+    li {
+        height: 120px;
+        border-left: 1px #aaa solid;
+        font-size: 16px;
+        .wrap {
+            float: left;
+            .data-font {
+                font-size: 20px;
+            }
+        }
+        .cadence-heart {
+            float: right;
+            width: 90px;
+            height: 20px;
+            margin-top: 15px;
+            .cadence1 {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                margin-right: 10px;
+                background-image: url("http://cdn.bi-ci.com/dist_v2/image/user/bici-cadence-heart-icon.png");
+                background-repeat: no-repeat;
+                background-position: 0 -36px;
+            }
+            .cadence2 {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                margin-right: 10px;
+                background-image: url("http://cdn.bi-ci.com/dist_v2/image/user/bici-cadence-heart-icon.png");
+                background-repeat: no-repeat;
+                background-position: 0 -18px;
+            }
+            .heart2 {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                margin-right: 10px;
+                background-image: url("http://cdn.bi-ci.com/dist_v2/image/user/bici-cadence-heart-icon.png");
+                background-repeat: no-repeat;
+                background-position: 0 0;
+            }
+            @include phone {
+                margin-top: 4px;
+            }
+        }
+        @include phone {
+            height: 100px;
+            .wrap {
+                float: none;
+                margin-top: 0;
+                position: relative;
+                left: -20px;
+                .data-font {
+                    font-size: 15px;
+                }
+            }
+        }
+        a {
+            text-decoration: none;
+            display: inline-block;
+            h3 {
+                margin-top: 0;
+                font-size: 22px;
+                font-weight: normal;
+                color: #333;
+                @include phone {
+                    line-height: 1.3;
+                    font-size: 14px;
+                }
+            }
+            p {
+                margin-top: 5px;
+                margin-bottom: 0;
+                font-size: 13px;
+                color: #777;
+                .iconfont {
+                    margin-right: 3px;
+                }
+                @include phone {
+                    margin-left: 50px;
+                }
+            }
+            &:hover {
+                text-decoration: none;
+                h3 {
+                    color: $color-xingzhe-blue;
+                }
+            }
+        }
+        .icon {
+            display: inline-block;
+            float: left;
+            position: relative;
+            left: -35px;
+            z-index: 999;
+            width: 70px;
+            height: 70px;
+            text-align: center;
+            line-height: 70px;
+            background-color: $color-white;
+            border: 1px solid #b8c4ce;
+            border-radius: 50%;
+            .iconfont {
+                font-size: 40px;
+                color: #333;
+            }
+            @include phone {
+                width: 50px;
+                height: 50px;
+                line-height: 50px;
+                left: -26px;
+                .iconfont {
+                    font-size: 30px;
+                }
+            }
+        }
+        &:hover {
+            .icon {
+                .iconfont {
+                    color: $color-xingzhe-blue;
+                    -webkit-animation: fadeInLeft 1s .1s ease both;
+                    -moz-animation: fadeInLeft 1s .1s ease both;
+                }
+                @-webkit-keyframes fadeInLeft {
+                    0% {
+                        opacity: 0;
+                        -webkit-transform: translateX(-20px)
+                    }
+                    100% {
+                        opacity: 1;
+                        -webkit-transform: translateX(0)
+                    }
+                }
+                @-moz-keyframes fadeInLeft {
+                    0% {
+                        opacity: 0;
+                        -moz-transform: translateX(-20px)
+                    }
+                    100% {
+                        opacity: 1;
+                        -moz-transform: translateX(0)
+                    }
+                }
+            }
+        }
+    }
+}
+
+.date-select {
+    padding: 20px 40px;
+    font-size: 24px;
+    .form-control {
+        width: 100px;
+        height: 42px;
+        padding: 0 0 0 10px;
+        font-size: 24px;
+        text-align: center;
+        border: none;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        -webkit-transition: none;
+        transition: none;
+        border: 1px solid #e5e5e5;
+        color: #666;
+        background: #f3f3f3 url("http://cdn.bi-ci.com/dist_v2/image/icon-moreunfold.png") no-repeat center right;
+        background-size: 26px 42px;
+        border-radius: 0;
+        outline: none;
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        text-indent: 0.01px;
+        &:hover {
+            border-color: $color-xingzhe-blue;
+            color: $color-xingzhe-blue;
+        }
+    }
+    .form-control[name=month] {
+        width: 70px;
+    }
+    select::-ms-expand {
+        display: none;
+    }
+    @include phone {
+        padding: 20px;
+        font-size: 18px;
+        .form-control {
+            display: inline-block;
+            width: 70px;
+            vertical-align: middle;
+            font-size: 16px;
+        }
+    }
+}
+
+.month-data {
+    padding: 0 40px;
+    .wrap-summary-div {
+        margin-top: 35px;
+        margin-bottom: 60px;
+        text-align: center;
+        font-size: 13px;
+        color: #999;
+        .data-font {
+            margin-right: 6px;
+            font-size: 30px;
+            color: $color-xingzhe-blue;
+        }
+    }
+    .data-font {
+        font-size: 16px;
+    }
+    @include phone {
+        padding: 0 15px;
+    }
+}
+
+.loading {
+    display: none;
+    margin-top: 70px;
+    z-index: 99;
+    text-align: center;
+}
+
+.alert {
+    margin-top: 70px;
+    text-align: center;
+    color: #bbb;
+    font-size: 24px;
+}
+
+.userLocaTip {
+    margin-top: 30px;
+    h3 {
+        font-weight: normal;
+        font-size: 20px;
+    }
+}

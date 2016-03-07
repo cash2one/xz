@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load filters %}
+{% block title %}
+    优惠细则 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <br/>
+    {% if coupon_type %}
+        <table class="table">
+            <tbody>
+            <tr>
+                <td class="span2">优惠类型</td>
+                <td>{{ coupon_type.title }}</td>
+            </tr>
+            <tr>
+                <td>优惠细则</td>
+                <td>{{ coupon_type.description|linebreaksbr }}</td>
+            </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <p>没有找到优惠码信息</p>
+    {% endif %}
+
+{% endblock %}

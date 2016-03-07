@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load forum_extras %}
+{% load pagination_tags %}
+{% load i18n %}
+
+{% block title %}{{ forum.name }} - 行者骑行软件{% endblock %}
+{% block content %}
+{% autopaginate topics forum_settings.FORUM_PAGE_SIZE %}
+
+<div class="row">
+    <div class="span10">
+        <ul class="breadcrumb">
+            <li>
+                <a href="{% url djangobb:index %}">行者社区</a><span class="divider"> / </span>
+            </li>
+            <li>
+                {{ forum.name }}
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="span10">
+        <a class="btn btn-primary pull-right" href="{% url djangobb:add_topic forum.id %}">发布</a>
+    </div>
+</div>
+<div class="row">
+    <div class="span10">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>作者</th>
+                    <th>回复/浏览</th>
+                    <th>最新回复</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if topics %}
+                {% for topic in topics %}
+                <tr>
+                    <td style="width: 50%">{% link topic %}</td>
+                    <td style="width: 12%"><a href="{% url user topic.user.id %}">{{ topic.user.username }}</a></td>
+                    <td style="width: 12%">{{ topic.reply_count }}/{{ topic.views }}</td>
+                    <td style="width: 26%">{% forum_time topic.updated %} <a style="color:gray" href="{% url user topic.last_post.user.id %}">{{ topic.last_post.user.username }}</a></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="4">还没有内容</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span5">
+        {% paginate %}
+    </div>
+</div>
+{% endblock %}
+

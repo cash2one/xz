@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    上传gpx路书 - 行者骑行软件
+{% endblock %}
+{% block content %}
+    {% load filters %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<style type="text/css">
+.upload-lushu {
+    margin: 40px auto;
+}
+</style>
+{% endblock %}
+
+<div class="container upload-lushu">
+
+
+<form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+    {% csrf_token %}
+    <legend>上传路书</legend>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="file">gpx文件</label>
+        <div class="col-sm-10">
+            <input type="file" id="file" name="file" placeholder="" required="required">&nbsp;
+            <p class="help-block"></p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="distance">距离</label>
+        <div class="col-sm-1">
+            <input type="text" class="form-control" id="distance" name="distance" required="required">
+            <p class="help-block"></p>
+        </div>
+        <span>公里</span>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="title">详情</label>
+        <div class="col-sm-10">
+            <textarea rows="12" id="title" name="title" class="form-control" placeholder="路书详情" required="required"></textarea>
+            <p class="help-block"></p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" value="提交" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+
+
+<!--     <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+                <fieldset>
+                    {% csrf_token %}
+                    <legend>上传路书</legend>
+                    <div class="control-group">
+                        <label class="control-label" for="file">gpx文件</label>
+                        <div class="controls">
+                            <input type="file" id="file" name="file" placeholder="">&nbsp;
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="title">距离</label>
+                        <div class="controls">
+                            <input type="text" class="input span1" id="distance" name="distance" placeholder="">公里
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="title">详情</label>
+                        <div class="controls">
+                            <textarea rows="12" id="title" name="title" class="input-xlarge span8" placeholder="路书详情"></textarea>
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <input type="submit" value="提交" class="btn btn-primary">
+                        <span></span>
+                    </div>
+                </fieldset>
+    </form> -->
+
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

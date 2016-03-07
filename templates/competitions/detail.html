@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}赛事{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/competitions_detail.css">
+<link rel="stylesheet" href="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<header class="header">
+    <div class="container">
+        <h1>行者赛事</h1>
+        <!-- <div>
+            <a href="#" class="publish_com"><button class="btn btn-danger btn-sm pull-right">发布比赛</button></a>
+        </div> -->
+    </div>
+</header>
+   
+<div class="container">
+    <div class="match-list-wrap col-md-12">
+        <div class="card">
+            <div class="thumbnail" id="match">
+              
+            </div>
+        </div>
+        <div>
+             <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#comDetail" aria-controls="comDetail" role="tab" data-toggle="tab">赛事详情</a></li>
+                <li role="presentation"><a href="#groSearch" aria-controls="groSearch" role="tab" data-toggle="tab">组别查询</a></li>
+                <li role="presentation"><a href="#graSearch" aria-controls="graSearch" role="tab" data-toggle="tab">成绩查询</a></li>
+              </ul>
+              <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane fade in active" id="comDetail">
+                      <div class="card">
+                        <div class="thumbnail" id="des">
+                           
+                        </div>
+                    </div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="groSearch">
+                        <div class="card">
+                            <div class="thumbnail">
+                                   <div class="groupS">
+                                      <!-- Nav tabs -->
+                                      <ul class="nav nav-tabs" role="tablist" id="group">
+                                       
+                                      </ul>
+                                      <!-- Tab panes -->
+                                      <div class="tab-content" id="groupContent">
+
+                                      <!--   <div role="tabpanel" class="tab-pane" id="profile">
+                                        2...
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="messages">
+                                        3...
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="settings">
+                                        4...
+                                        </div> -->
+                                      </div>
+                                    </div>
+                            </div>
+                         </div>    
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="graSearch">
+                      <div class="card">
+                        <div class="thumbnail">
+                                <div class="caption">
+                                    <div class="search">
+                                        <input type="text" placeholder="输入姓名/手机号/身份证／报名ID查询" disabled="true"></input>
+                                        <button class="btn btn-primary btn-sm signUpIng" disabled="true">查询</button>
+                                    </div>
+                                    <div class="captionDetail">
+                                      <!--   <table  class="gradeSer">
+                                            <tr>
+                                                <th>名次</th>
+                                                <th>姓名</th>
+                                                <th>手机</th>
+                                                <th>组别</th>
+                                                <th>成绩</th>
+                                            </tr>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>忘记</td>
+                                                <td>18355559425</td>
+                                                <td>男子精英组</td>
+                                                <td>0:29:15.13</td>
+                                            </tr>
+                                        </table> -->
+                                    </div>
+                                </div>
+                        </div>
+                      </div>  
+                  </div>
+              </div>
+        </div>
+    </div>
+   <!--  <div class="col-md-2 org">
+            <div class="thumbnail">
+                    <div class="caption">
+                        <h4 class="organizers">主办方</h4>
+                        <div class="org_pic">
+                            <img src="http://static.imxingzhe.com/year2015/f1.jpg">
+                            <img src="http://static.imxingzhe.com/year2015/f1.jpg">
+                            <img src="http://static.imxingzhe.com/year2015/f1.jpg">
+                        </div>
+                        <button class="btn btn-primary btn-sm btn-block">查看更多</button>
+                    </div>
+            </div>
+    </div> -->
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script>
+$(function() {
+    var locationhrefLength=location.href.split('=').length-1,
+    id=location.href.split('=')[locationhrefLength].split('/')[0];
+    function show_date(s)
+    {
+        var mydate = new Date(s);
+        var today = '';
+        today += mydate.getFullYear() + '年';   
+        today += mydate.getMonth()+1 + '月';   
+        today += mydate.getDate() + '日'; 
+        today += ' ';   
+        today += mydate.getHours();
+        today += ':' + mydate.getMinutes();
+        return today;       
+    }
+    function show_time(s)
+    {
+        var mydate = new Date(s);
+        var today = '';
+        today += mydate.getHours();
+        today += ':' + mydate.getMinutes();
+        return today;       
+    }
+    var toStrTime = function(e) {
+	    var date = new Date(e);
+	    Y = date.getFullYear() + '/';
+	    M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
+	    D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+	    h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
+	    m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes());
+	    return Y + M + D + h + m;
+	};
+    
+    $.ajax({
+            url: '/api/v4/competition_detail',
+            type: 'GET',
+            data: {
+                competition_id:parseInt(id)
+            }
+        })
+        .done(function(data) {
+            var object=data.data,groupStr='',groupContentStr='',p='',dis='<a href="/competitions/enroll/?id='+object.id+'/" class="btn btn-primary signUpIng">我要报名</a>',extra_money='';
+            if(data.data.status == 2 || data.data.status == 3 || data.data.status == 4){
+            	dis='<a href="#" class="btn btn-primary signUpIng" disabled>我要报名</a>';
+            }
+            $('#match').append('<img class="pic col-sm-6 col-md-5" src="'+object.pic_url+'" />'+
+                    '<div class="caption col-sm-6 col-md-7">'+
+                        '<h4 class="text-overflow">'+object.title+'</h4>'+
+                        '<div class="captionDetail">'+
+                            '<p class="host"><i class="iconfont">&#xe634;</i>主办方 ：<span>'+object.host+'</span></p>'+
+                            '<p class="palce"><i class="iconfont">&#xe60b;</i>签到地点 :<span>'+object.place+'</span></p>'+
+                            '<p class="time"><i class="iconfont">&#xe622;</i>比赛时间：<span>'+show_date(object.start_time)+'至'+show_time(object.end_time)+'</span></p>'+
+                            dis+
+                            '<p>报名截止时间 ：<span>'+show_date(object.create_time)+'至'+show_time(object.closing_time)+'</span></p>'+
+                        '</div>'+
+                    '</div>'); 
+            $('#des').append(object.description); 
+            for(var i=0;i<object.group.length;i++){
+            	if(object.group[i].lushu_id==0){
+            		p='<p>比赛路书：无路书</p>';
+            	}else{
+            		p='<p>比赛路书：'+object.group[i].lushu_title+' <span>#'+object.group[i].lushu_id+'</span></p>';
+            		p+='<img class="lushu" src="http://static.imxingzhe.com/lushu/'+ object.group[i].lushu_uuid +'.png!webActivityPhotos"/>';
+            	}
+            	if(object.group[i].extra_money != null){
+            		extra_money=object.group[i].extra_money;
+            	}
+                if(i==0){
+                    groupStr+='<li role="presentation" class="active"><a href="#home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab"><span class="span">'+object.group[i].group_name+'</span><span class="monney">¥'+object.group[i].group_money+'</span></a></li>';
+                    groupContentStr+='<div role="tabpanel" class="tab-pane active" id="home'+i+'">'+
+                                            '<div class="caption col-sm-6 col-md-4">'+
+                                                '<div class="captionDetail">'+
+                                                    '<p>出发时间：<span>'+toStrTime(object.group[i].start_time)+'</span></p>'+
+                                                    '<p>结束时间: <span>'+toStrTime(object.group[i].closing_time)+'</span></p>'+
+                                                    '<p>比赛距离：<span>'+object.group[i].group_distance+'km</span></p>'+
+                                                    '<p>报名额外费用：<span>'+extra_money+'</span></p>'+
+                                                    '<p>总报名人数：<span>'+object.group[i].group_quoto+'人</span></p>'+
+                                                '</div>'+   
+                                            '</div>'+   
+                                            '<div class="caption col-sm-6 col-md-7">'+
+                                                p+
+                                            '</div>'+    
+                                        '</div>';
+                }else{
+                    groupStr+='<li role="presentation"><a href="#home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab"><span class="span">'+object.group[i].group_name+'</span><span class="monney">¥'+object.group[i].group_money+'</span></a></li>';
+                    groupContentStr+='<div role="tabpanel" class="tab-pane" id="home'+i+'">'+
+                                            '<div class="caption col-sm-6 col-md-4">'+
+                                                '<div class="captionDetail">'+
+                                                    '<p>出发时间：<span>'+toStrTime(object.group[i].start_time)+'</span></p>'+
+                                                    '<p>结束时间: <span>'+toStrTime(object.group[i].closing_time)+'</span></p>'+
+                                                    '<p>比赛距离：<span>'+object.group[i].group_distance+'km</span></p>'+
+                                                    '<p>报名额外费用：<span>'+extra_money+'</span></p>'+
+                                                    '<p>总报名人数：<span>'+object.group[i].group_quoto+'人</span></p>'+
+                                                '</div>'+   
+                                            '</div>'+   
+                                            '<div class="caption col-sm-6 col-md-7">'+
+                                                p+
+                                            '</div>'+    
+                                        '</div>';
+                }
+            }
+            $('#group').append(groupStr);
+            $('#groupContent').append(groupContentStr);
+     
+
+        })
+        .fail(function() {
+            console.log("error");
+        })
+        .always(function() {
+            console.log("complete");
+        });
+
+
+});
+</script>
+{% endblock %}0

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">        
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<title>骑行回家 - 在线直播 - 直播结束</title>
+	<style>
+		html { height: 100% }
+	    body { height: 100%; margin: 0; padding: 0 }
+	    #map_canvas {width: 100%; height: 100%;}
+	    .wrapper {width: 100%;height: 100px;position: fixed;top: 0;left: 0;z-index: 999;background: rgba(255,255,255,.8);}
+		.wrapper ul {margin: 0;padding: 0 5%;list-style: none;line-height: 100px;font-size: 2em;}
+		.wrapper ul li{float: left;width: 50%;}
+		.wrapper strong {color: #45aeea;font-weight:300; font-family: Helvetica, Arial, sans-serif;}
+		#speedWrap:after{content: 'Km';font-size: 12px;color: #222;margin-left: 5px}
+		@media (max-width: 480px) {
+			.wrapper{height: 70px;}
+			.wrapper ul{font-size: 1em;line-height: 35px;}
+			.wrapper ul span{display: block; width: 100%;}
+			.wrapper ul strong{display: block; width: 100%;line-height: 20px;}
+		}
+	</style>
+	<script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
+	<script src="http://cdn.bi-ci.com/xingzhesite/static/maps/wgs2mars.min.js"></script>
+
+</head>
+<body>
+<div class="wrapper">
+
+	<ul>
+
+		<li><span>总公里：</span><strong id="speedWrap">534</strong></li>
+		<li><span>总用时：</span><strong id="timeWrap">3天11小时8分钟</strong></li>
+	</ul>
+</div>
+<div id="map_canvas"></div>
+
+<!-- 显示时间计算 -->
+<script>
+ //格式化时间
+ function formatDate(now) {             
+  var year = now.getYear();            
+  var month = now.getMonth()+1;            
+  var date = now.getDate();            
+  var hour = now.getHours();
+  var minute = now.getMinutes();
+  var second = now.getSeconds();
+  return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;            
+ }
+ //获取相差的时间字符串
+ function getTime(smallTime,largeTime) {
+  //相差的long值
+  var resTime  = largeTime - smallTime;
+  //相差的天数
+  var days = Math.floor(resTime / (24 * 3600 * 1000));
+
+  //相差的小时数
+  var temp1 = resTime % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
+  var hours = Math.floor(temp1 /(3600 * 1000));
+  //相差分钟数
+  var temp2 = temp1 %(3600*1000)        //计算小时数后剩余的毫秒数
+  var minutes = Math.floor(temp2 / (60 * 1000));
+  //相差的秒数
+  //var temp3 = temp2 % (60 * 1000);      //计算分钟数后剩余的毫秒数
+  //var seconds = Math.round(temp3 / 1000);
+  //return days + "天" + hours + "小时" + minutes + "分钟" + seconds +"秒";
+  return days + "天" + hours + "小时" + minutes + "分钟";
+ }
+ function wr() {
+  /* 字符串时间 */
+  var d = new Date(1423708406000);  //long值
+  var oldTime = d.getTime();
+  /* 当前时间 */
+  var longCurTime  = new Date().getTime();
+  document.getElementById("timeWrap").innerText = getTime(oldTime,longCurTime);
+  // setTimeout("wr()","1000");
+ }
+//初始化
+window.onload = function () {
+ //wr();
+};
+
+</script>
+
+<script>
+$(document).ready(function() {
+
+	var styleArray; // 地图风格
+	var marker; //图标标记
+	var map;
+	var newLayLng; //最新位置坐标
+	var url = 'http://www.imxingzhe.com/api/v2/get_live_route'
+	var newspeed;
+	var newspeedWrap = $("#speedWrap");
+
+	// 地图样式
+	var styleArray = [
+	  {
+	    featureType: "all",
+	    stylers: [
+	      { saturation: -80 }
+	    ]
+	  },{
+	    featureType: "road.arterial",
+	    elementType: "geometry",
+	    stylers: [
+	      { hue: "#00ffee" },
+	      { saturation: 50 }
+	    ]
+	  },{
+	    featureType: "poi.business",
+	    elementType: "labels",
+	    stylers: [
+	      { visibility: "off" }
+	    ]
+	  }
+	];
+
+function get_json () {
+
+	$.getJSON(url, function(json) {
+		console.log(json);
+		//总点数
+		var data = json;
+		console.log(data);
+		var locaLength = data.length;
+		var newlongitude = data[locaLength - 1].longitude;
+		var newlatitude = data[locaLength - 1].latitude;
+		var newgcjloc = transformFromWGSToGCJ(newlongitude,newlatitude);
+
+		// 当前速度
+		//newspeed = data[locaLength - 1].speed.toFixed(2);
+		//newspeedWrap.text(newspeed);
+
+		// 最新位置坐标
+		newLayLng = new google.maps.LatLng(newgcjloc.lat,newgcjloc.lng);
+
+
+	        // 地图配置
+	        var mapOptions = {
+	          center: newLayLng,
+	          zoom: 14,
+	          mapTypeId: google.maps.MapTypeId.ROADMAP,
+	          styles: styleArray,
+	          panControl: false,
+	          streetViewControl: false
+	        };
+	        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+
+		var image = new google.maps.MarkerImage("http://cdn.bi-ci.com/xingzhesite/static/maps/marker-img-3.jpg", null, null, null, new google.maps.Size(45,64));
+	        // 绘制图标
+	        marker = new google.maps.Marker({
+	            position: newLayLng,
+	            map: map,
+	            animation: google.maps.Animation.DROP,
+	            title:"",
+	            icon: image
+	        });
+
+			// 创建折线路径点
+			var tempData = [];
+			var flightPlanCoordinates = [];
+			var lats;
+			var lons;
+			var i;
+
+            for (i = 0; i < locaLength; i++) {
+	            lats = data[i].latitude;
+	            lons = data[i].longitude;
+	            var gcjloc = transformFromWGSToGCJ(lons,lats);
+	            tempData = new google.maps.LatLng(gcjloc.lat,gcjloc.lng);
+
+	            flightPlanCoordinates.push(tempData);
+            }
+
+	        // 绘制折线路径
+	        var flightPath = new google.maps.Polyline({
+	          path: flightPlanCoordinates,
+	          geodesic: true,
+	          strokeColor: '#45aeea',
+	          strokeOpacity: 0.6,
+	          strokeWeight: 5
+	        });
+
+	        flightPath.setMap(map);
+	});
+
+
+
+} //get_json
+
+	get_json();
+
+	//setInterval(function() {
+	//	get_json();
+	//}, 60000);
+
+
+});
+
+
+
+
+
+//Google Map Api
+
+window.google = window.google || {};
+google.maps = google.maps || {};
+(function() {
+  
+  function getScript(src) {
+    document.write('<' + 'script src="' + src + '"><' + '/script>');
+  }
+  
+  var modules = google.maps.modules = {};
+  google.maps.__gjsload__ = function(name, text) {
+    modules[name] = text;
+  };
+  
+  google.maps.Load = function(apiLoad) {
+    delete google.maps.Load;
+    apiLoad([0.009999999776482582,[[["http://mt0.google.cn/vt?lyrs=m@160000000\u0026hl=zh\u0026gl=CN\u0026","http://mt1.google.cn/vt?lyrs=m@160000000\u0026hl=zh\u0026gl=CN\u0026"],null,null,null,null,"m@292000000",["https://mts0.google.com/vt?lyrs=m@292000000\u0026src=api\u0026hl=zh\u0026gl=CN\u0026","https://mts1.google.com/vt?lyrs=m@292000000\u0026src=api\u0026hl=zh\u0026gl=CN\u0026"]],[["http://mt0.google.cn/vt?lyrs=s@166\u0026hl=zh\u0026gl=CN\u0026","http://mt1.google.cn/vt?lyrs=s@166\u0026hl=zh\u0026gl=CN\u0026"],null,null,null,1,"166",["https://khms0.google.com/kh?v=166\u0026hl=zh\u0026gl=CN\u0026","https://khms1.google.com/kh?v=166\u0026hl=zh\u0026gl=CN\u0026"]],[["http://mt0.google.cn/vt?imgtp=png32\u0026lyrs=h@160000000\u0026hl=zh\u0026gl=CN\u0026","http://mt1.google.cn/vt?imgtp=png32\u0026lyrs=h@160000000\u0026hl=zh\u0026gl=CN\u0026"],null,null,null,null,"h@292000000",["https://mts0.google.com/vt?lyrs=h@292000000\u0026src=api\u0026hl=zh\u0026gl=CN\u0026","https://mts1.google.com/vt?lyrs=h@292000000\u0026src=api\u0026hl=zh\u0026gl=CN\u0026"]],[["http://mt0.google.cn/vt?lyrs=t@127,r@160000000\u0026hl=zh\u0026gl=CN\u0026","http://mt1.google.cn/vt?lyrs=t@127,r@160000000\u0026hl=zh\u0026gl=CN\u0026"],null,null,null,null,"t@132,r@292000000",["https://mts0.google.com/vt?lyrs=t@132,r@292000000\u0026src=api\u0026hl=zh\u0026gl=CN\u0026","https://mts1.google.com/vt?lyrs=t@132,r@292000000\u0026src=api\u0026hl=zh\u0026gl=CN\u0026"]],null,null,[["http://www.google.cn/cbk?","http://www.google.cn/cbk?"]],[["http://khm0.googleapis.com/kh?v=84\u0026hl=zh\u0026gl=CN\u0026","http://khm1.googleapis.com/kh?v=84\u0026hl=zh\u0026gl=CN\u0026"],null,null,null,null,"84",["https://khms0.google.com/kh?v=84\u0026hl=zh\u0026gl=CN\u0026","https://khms1.google.com/kh?v=84\u0026hl=zh\u0026gl=CN\u0026"]],[["http://mt0.googleapis.com/mapslt?hl=zh\u0026gl=CN\u0026","http://mt1.googleapis.com/mapslt?hl=zh\u0026gl=CN\u0026"]],[["http://mt0.googleapis.com/mapslt/ft?hl=zh\u0026gl=CN\u0026","http://mt1.googleapis.com/mapslt/ft?hl=zh\u0026gl=CN\u0026"]],[["http://mt0.googleapis.com/vt?hl=zh\u0026gl=CN\u0026","http://mt1.googleapis.com/vt?hl=zh\u0026gl=CN\u0026"]],[["http://mt0.googleapis.com/mapslt/loom?hl=zh\u0026gl=CN\u0026","http://mt1.googleapis.com/mapslt/loom?hl=zh\u0026gl=CN\u0026"]],[["https://mts0.googleapis.com/mapslt?hl=zh\u0026gl=CN\u0026","https://mts1.googleapis.com/mapslt?hl=zh\u0026gl=CN\u0026"]],[["https://mts0.googleapis.com/mapslt/ft?hl=zh\u0026gl=CN\u0026","https://mts1.googleapis.com/mapslt/ft?hl=zh\u0026gl=CN\u0026"]],[["https://mts0.googleapis.com/mapslt/loom?hl=zh\u0026gl=CN\u0026","https://mts1.googleapis.com/mapslt/loom?hl=zh\u0026gl=CN\u0026"]]],["zh","CN",null,0,null,null,"http://maps.gstatic.cn/mapfiles/","http://csi.gstatic.com","https://maps.googleapis.com","http://maps.google.cn",null,"https://maps.google.com","https://csi.gstatic.com","http://maps.gstatic.cn/maps-api-v3/api/images/"],["http://maps.gstatic.cn/maps-api-v3/api/js/19/9/intl/zh_ALL","3.19.9"],[813282678],1,null,null,null,null,null,"",null,null,0,"http://khm.googleapis.com/mz?v=166\u0026",null,"https://earthbuilder.googleapis.com","https://earthbuilder.googleapis.com",null,"http://mt.googleapis.com/vt/icon",[["http://mt0.google.cn/vt","http://mt1.google.cn/vt"],["https://mts0.googleapis.com/vt","https://mts1.googleapis.com/vt"],null,null,null,null,null,null,null,null,null,null,["https://mts0.google.com/vt","https://mts1.google.com/vt"],"/maps/vt",292000000,132],2,500,[null,"http://g0.gstatic.com/landmark/tour","http://g0.gstatic.com/landmark/config","","http://www.google.com/maps/preview/log204","","http://static.panoramio.com.storage.googleapis.com/photos/",["http://www.google.cn/cbk"]],["https://www.google.com/maps/api/js/master?pb=!1m2!1u19!2s9!2szh!3sCN!4s19/9/intl/zh_ALL","https://www.google.com/maps/api/js/widget?pb=!1m2!1u19!2s9!2szh"],null,0,0], loadScriptTime);
+  };
+  var loadScriptTime = (new Date).getTime();
+  getScript("http://maps.gstatic.cn/maps-api-v3/api/js/19/9/intl/zh_ALL/main.js");
+})();
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>2015［行者力量］年度评选进行中，投票也有海量奖品！</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm.min.css">
+    <link rel="stylesheet" type="text/css" href="static/dist/css/vote.css">
+</head>
+
+<body>
+    <!-- page list -->
+    <div class="page page-current page-zhengche" id="pageList" data-type="2">
+        <!-- content -->
+        <div class="content">
+            <img src="http://cdn.bi-ci.com/img/2015vote/vote-header-bg.jpg" alt="">
+
+            <!-- tab-bar -->
+            <div class="content-padded">
+                <nav class="bar bar-tab">
+                    <a class="tab-item external" href="/vote_list?type=0">最具影响力<br>骑行领袖</a>
+                    <a class="tab-item external" href="/vote_list?type=1">最具人气<br>骑行俱乐部</a>
+                    <a class="tab-item external active">最受欢迎<br>整车品牌</a>
+                    <a class="tab-item external" href="/vote_list?type=3">最受欢迎<br>装备品牌</a>
+                </nav>
+            </div>
+
+            <!-- search bar -->
+            <div class="content-padded">
+                <div class="searchbar row">
+                    <div class="search-input col-80">
+                        <label class="icon icon-search" for="search"></label>
+                        <input type="search" id='searchInput' placeholder='输入名称或投票号'>
+                    </div>
+                    <a id="searchBtn" class="external button button-fill button-primary col-20" external>搜索</a>
+                </div>
+            </div>
+
+
+
+            <div class="content-padded">
+                {% csrf_token %}
+                <div class="row list-container">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <!-- popup vote -->
+    <div class="popup popup-captcha" id="popupCaptcha">
+        <div class="content-block">
+            <h3>请输入右侧验证码</h3>
+            <div class="row">
+                <div class="col-50">
+                    <input type="text" id="voteCaptchaInput">
+                </div>
+                <div class="col-50">
+                    <img id="voteCaptchaImg">
+                </div>
+            </div>
+            <div id="inputPhoneWrap">
+                <h3>填写手机号有机会取丰厚奖品</h3>
+                <input type="tel" id="voteMobileInput">
+            </div>
+            <p><a class="button button-big button-fill button-primary" id="voteVerifyBtn">确认投票</a></p>
+        </div>
+        <a class="link close-popup"></a>
+    </div>
+
+    <!-- popup share -->
+    <div class="popup popup-share" id="popupShare">
+        <img src="http://cdn.bi-ci.com/img/2015vote/vote-share-head.jpg">
+        <div class="content-block">
+            <h3>据说投满四个奖项可以提高中奖概率哦！<h3>
+            <!-- tab-bar -->
+            <div class="content-padded">
+                <nav class="bar bar-tab">
+                    <a class="tab-item external" href="/vote_list?type=0">最具影响力<br>骑行领袖</a>
+                    <a class="tab-item external" href="/vote_list?type=1">最具人气<br>骑行俱乐部</a>
+                    <a class="tab-item external" href="/vote_list?type=2">最受欢迎<br>整车品牌</a>
+                    <a class="tab-item external" href="/vote_list?type=3">最受欢迎<br>装备品牌</a>
+                </nav>
+            </div>
+            <p><a class="link close-popup">关闭</a></p>
+        </div>
+        <img src="http://cdn.bi-ci.com/img/2015vote/vote-share-cont.jpg">
+        <p><a href="/vote_prizerule/">查看抽奖和奖品详情</a></p>
+    </div>
+
+
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script src="static/src/js/base64tocode.js"></script>
+    <script src="static/src/js/votedate.js"></script>
+    <script src="static/src/js/vote-list-zhengche.js"></script>
+</body>
+
+</html>

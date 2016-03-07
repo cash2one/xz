@@ -1,0 +1,61 @@
+@import "bootstrap";
+@import "base.scss";
+
+.row {
+    margin: 20px 0;
+}
+footer .row {
+    margin: 0;
+}
+.alert {
+    margin: 20px 0 0;
+}
+
+h3.lushu-title {
+    font-size: 17px;
+    color: #222;
+    a {
+        color: #222;
+    }
+}
+
+.lushu-head-info {
+    border: 1px solid #ddd;
+    font-size: 16px;
+    .col-md-6 {
+        padding: 10px 30px;
+    }
+    .col-md-6:first-child {
+        border-right: 1px solid #ddd;
+    }
+    .lushunum {
+        padding: 4px 8px;
+        letter-spacing: 1px;
+        background-color: #f7f7f9;
+        border: 1px solid #e1e1e8;
+        border-radius: 1px;
+        font-weight: normal;
+        color: $color-blue;
+    }
+    h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #222;
+        a {
+            color: #222;
+        }
+    }
+    .operat {
+        margin: 20px 0;
+        .col-md-3 {
+            a {
+                display: block;
+                font-size: 20px;
+                &:hover {
+                    color: #222;
+                }
+            }
+        }
+    }
+}

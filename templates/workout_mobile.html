@@ -1,0 +1,280 @@
+{% extends "root.html" %}
+{% load filters %}
+{% block title %}
+    {{ workout.user.username }}用行者骑行了{{ workout.distance|to_distance }}公里
+{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/workout_mobile.css" rel="stylesheet">
+{% endblock %}
+{% block container %}
+<div class="hide"><img src="" id="loadingImg"></div>
+<!-- HEADER -->
+<div class="header">
+    <div class="container">
+        <img src="{{ pic_url }}" class="default-avatar" width="42" alt="{{ workout.user.username }}的头像">
+        <div id="workoutSport" class="workout-sport"></div>
+        <div id="Starttime" class="workout-starttime data-font">{{ workout.start_time|to_datetime|date:"Y年m月d日 H:i" }}</div>
+    </div>
+</div>
+<!-- HEADER END-->
+
+<!-- MAP -->
+<div id="map_canvas" class="map_canvas"></div>
+<!-- MAP END -->
+
+<!-- DATA -->
+<section class="container">
+    <div class="data-list">
+        <div class="workout-distance">
+            <span class="color-xingzhe-blue data-font" id="workoutDistanceText"></span><small>km</small>
+        </div>
+            <ul>
+                <li><span class="data data-font"><i class="iconfont color-xingzhe-blue" style="font-size:15px">&#xe622;</i><span id="workoutDurationText"></span></span></li>
+                <li><span class="data data-font"><i class="iconfont color-xingzhe-blue">&#xe623;</i><span id="CaloriesText"></span></span><small>kcal</small></li>
+                <li><span class="data data-font"><i class="iconfont color-xingzhe-blue" style="font-size:13px">&#xe625;</i>{{ workout.avg_speed }}</span><small>km/h</small></li>
+                <li><span class="data data-font"><i class="iconfont color-xingzhe-blue">&#xe624;</i>{{ workout.elevation_gain }}</span><small>m</small></li>
+            </ul>
+    </div>
+</section>
+<!-- DATA END -->
+
+<!-- CHART -->
+<section>
+    <div class="container">
+        <header>海拔/速度</header>
+        <div class="row data-more">
+            <div class="col-xs-6 text-center"><strong class="data-font">{{ max_altitude }}<small>m</small></strong><span>最高海拔</span></div>
+            <div class="col-xs-6 text-center"><strong class="data-font">{{ max_speed }}<small>km/h</small></strong><span>最快速度</span></div>
+        </div>
+        <div class="chart-head row">
+            <div class="col-xs-6 text-left"><small class="speed">速度(km/h)</small></div>
+            <div class="col-xs-6 text-right"><small class="altitude">海拔(m)</small></div>
+        </div>    
+    </div>
+    <div id="chart" class="high-chart"></div>
+</section>
+<!-- CHART END-->
+
+<!-- PIE -->
+<section class="container piedata-wrap">
+    <header>爬坡</header>
+    <canvas id="chart-area" class="chart-area" width="100" height="100"></canvas>
+    <div class="pie-data">
+        <ul>
+            <li><span class="tit up-distance">上坡</span><span id="upDistance"></span><span id="upDuration"></span></li>
+            <li><span class="tit flat-distance">平地</span><span id="flatDistance"></span><span id="flatDuration"></span></li>
+            <li><span class="tit down-distance">下坡</span><span id="downDistance"></span><span id="downDuration"></span></li>
+        </ul>
+    </div>
+</section>
+<!-- PIE END -->
+
+<!-- 心率 -->
+{% if workout.heart_source > 0 %}
+<section>
+    <div class="container">
+        <header>心率</header>
+        <div class="row data-more">
+            <div class="col-xs-6 text-center"><strong class="data-font">{{ workout.max_heartrate }}</strong><span>最大心率</span></div>
+            <div class="col-xs-6 text-center"><strong class="data-font">{{ workout.avg_heartrate }}</strong><span>平均心率</span></div>
+        </div>
+    </div>
+    <div id="chartHeart" class="high-chart"></div>
+</section>
+{% endif %}
+
+<!-- 踏频 -->
+{% if workout.cadence_source > 0 %}
+<section>
+    <div class="container">
+        <header>踏频</header>
+        <div class="row data-more">
+            <div class="col-xs-6 text-center"><strong class="data-font">{{ workout.max_cadence }}</strong><span>最大踏频</span></div>
+            <div class="col-xs-6 text-center"><strong class="data-font">{{ workout.avg_cadence }}</strong><span>平均踏频</span></div>
+        </div>
+    </div>
+    <div id="chartCadence" class="high-chart"></div>
+</section>
+
+{% endif %}
+
+
+
+<div class="footer">
+    <div class="container">
+        <h2 class="iconfont">&#xe60c;</h2>
+        <a href="http://www.imxingzhe.com/" class="copy">虽千万里 吾往矣</a><small>#{{ workout.id }}</small>
+    </div>
+
+</div>
+
+</div> <!-- push-wrapper -->
+
+{% endblock %}
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/chart-js/Chart.min.js"></script>
+<script>
+var workoutUserName = "{{ workout.user.username }}"; //User Name
+var workoutDistance = {{ workout.distance|to_distance }}; //总里程数，单位m
+var workoutSport = {{ workout.sport }}; //运动类型 123 //"{{ workout.sport|sport_to_string }}"
+var workoutDuration = {{ workout.duration }}; //运动时间，单位s
+
+var upDuration = {{ workout.up_duration }}; //上升时间
+var flatDuration = {{ workout.flat_duration }}; //平地时间
+var downDuration = {{ workout.down_duration }}; //下降时间
+
+var upDistance = {{ workout.up_distance }}; //上升距离
+var flatDistance = {{ workout.flat_distance }}; //平地距离
+var downDistance = {{ workout.down_distance }}; //下降距离
+
+// 容器
+var workoutSportText = $("#workoutSport");
+var loadingImg = $("#loadingImg");
+var CaloriesText = $("#CaloriesText");
+
+// 总里程计算函数
+function transData (e) {
+    if (e>=100000) {
+        return Math.round(e/10000)+'W';
+    } else if(e>=10000 && e<100000){
+        return (e/10000).toFixed(2)+'w';
+    } else if(e>=1000&&e<10000) {
+        return Math.round(e);
+    } else if (e>=100&&e<1000) {
+         return e.toFixed(1);
+    } else {
+        return e;
+    }
+}
+
+// 卡路里计算函数
+function transKcalData (e) {
+    if (e>=100000) {
+        return Math.round(e/10000)+'W';
+    } else if(e>=10000 && e<100000){
+        return Math.round(e/10000).toFixed(2)+'w';
+    } else {
+        return Math.round(e);
+    }
+}
+
+// 爬坡计算函数
+function transDistanceData (e) {
+    if (e<1000) {
+        return e += 'm';
+    } else if(e>=1000&&e<1000000) {
+        return e = (e/1000).toFixed(1) + 'km';
+    } else if (e>=1000000) {
+        return Math.round(e/1000)+'km';
+    }
+}
+
+// 时间格式化 s
+function transDurationData (e) {
+    var hours = parseInt( e / 3600 );
+    var minutes = parseInt( e / 60 ) % 60;
+    var seconds = e % 60;
+    return e = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+}
+
+// 显示总里程
+$('#workoutDistanceText').text(transData(workoutDistance));
+
+//显示运动时间
+$("#workoutDurationText").text(transDurationData(workoutDuration));
+
+// 显示卡路里
+if (workoutSport == 1) {
+    CaloriesText.text(transKcalData(workoutDistance*56)); //走路
+} else if (workoutSport == 2){
+    CaloriesText.text(transKcalData(70*workoutDistance)); //跑步
+} else if (workoutSport == 3){
+    CaloriesText.text(transKcalData(workoutDistance*35)); //骑车
+}
+
+// 显示运动类型
+if (workoutSport === 1) {
+    loadingImg.attr('src', 'http://cdn.bi-ci.com/dist_v2/image/xingzhe-sporttype_walk.png');
+    workoutSportText.html('<i class="iconfont">&#xe613;</i>');
+} else if (workoutSport === 2){
+    loadingImg.attr('src', 'http://cdn.bi-ci.com/dist_v2/image/xingzhe-sporttype-run.png');
+    workoutSportText.html('<i class="iconfont">&#xe626;</i>');
+} else {
+    loadingImg.attr('src', 'http://cdn.bi-ci.com/dist_v2/image/xingzhe-sporttype-bike.png');
+    workoutSportText.html('<i class="iconfont">&#xe627;</i>');
+}
+
+// 显示爬坡数据
+
+// 时间
+$("#upDuration").text(transDurationData(upDuration));
+$("#flatDuration").text(transDurationData(flatDuration));
+$("#downDuration").text(transDurationData(downDuration));
+
+// 距离
+$("#upDistance").text(transDistanceData(upDistance));
+$("#flatDistance").text(transDistanceData(flatDistance));
+$("#downDistance").text(transDistanceData(downDistance));
+
+// 饼图
+var pieData = [
+    {
+        value: upDistance,
+        color:"#EF5F54"
+    },
+    {
+        value : flatDistance,
+        color : "#F9C557"
+    },
+    {
+        value : downDistance,
+        color : "#4EBD5F"
+    }           
+]
+
+var ctx = document.getElementById("chart-area").getContext("2d");
+window.myPie = new Chart(ctx).Pie(pieData);
+</script>
+<script src="http://cdn.staticfile.org/highcharts/2.3.5/highcharts.min.js"></script>
+<script src="/static/js/workout.mobile.js"></script>
+{% google_map_api %}
+<script src="/static/js/common.js"></script>
+<script>
+	var defaultLagLng = new google.maps.LatLng(37.51975069, 122.04547628);
+	var points = [defaultLagLng]; 
+	var speedData = [];
+	var altitudeData = [];
+    var distanceOfPoints = [0];
+	{% if trackpoints %}
+    points = [{% for p in trackpoints %}new google.maps.LatLng({{ p.latitude }},{{ p.longitude }}){% if not forloop.last %}, {% endif %}{% endfor %}];
+    speedData = [{% for p in trackpoints %}{{ p.speed }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    altitudeData = [{% for p in trackpoints %}{{ p.altitude }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    heartrateData = [{% for p in trackpoints %}{{ p.heartrate }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    cadenceData = [{% for p in trackpoints %}{{ p.cadence }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    timeData = [{% for p in trackpoints %}{{ p.time }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    var distance = 0;
+    for (var i = 1; i < points.length; i++) {
+        var pre = points[i-1];
+        var cur = points[i];
+        distance += getDistance(pre.lat(), pre.lng(), cur.lat(), cur.lng());
+        distanceOfPoints.push(round(distance / 1000, 1));
+    }
+    {% endif %}
+
+
+// 
+    var gpsStartPosition = new google.maps.LatLng({{ gpsStartPosition.latitude }}, {{ gpsStartPosition.longitude }});
+    var is_authenticated = {{ user.is_authenticated|yesno:"true, false" }};
+    var is_owner = {{ is_owner|yesno:"true, false" }};
+    var is_admin = {{ is_admin|yesno:"true, false" }};
+
+    var min_lat = {{ min_lat }};
+    var min_lng = {{ min_lng }};
+    var max_lat = {{ max_lat }};
+    var max_lng = {{ max_lng }};
+    var min_altitude = {{ min_altitude }};
+</script>
+{% endblock %}

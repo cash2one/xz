@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}
+    404，没找到页面 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<style type="text/css">
+.page-404 p {
+	font-size: 1.143em;
+}
+.page-404 h1 {
+	margin: 2em 0 .5em;
+	font-size: 3em;
+    font-weight: normal;
+}
+.page-404 pre {
+	margin: 3em auto;
+	width: 545px;
+    background: #fff;
+    border: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container page-404">
+    <h1 class="text-center">404. Not Found</h1>
+    <p class="text-center">没有找到你要的页面</p>
+    <pre>
+ +-------------------------------------------------------------+
+ |                                                             |
+ |                 o          _        _            _          |
+ |    _o          /\_       _ \\o     (_)\__/o     (_)         |
+ |  _< \_        _>(_)     (_)/<_       \_| \      _|/' \/     |
+ | (_)>(_)      (_)            (_)      (_)       (_)'  _\o_   |
+ | --------^     ---^---   ---^---     -------    -----------  |
+ |                                                             |
+ +-------------------------------------------------------------+
+    </pre>
+    <p class="text-center"><a href="/" class="btn btn-lonk">返回行者首页</a></p>
+</div>
+{% endblock %}

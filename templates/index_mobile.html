@@ -1,0 +1,23 @@
+{% extends "root.html" %}
+{% load filters %}
+{% block title %} 行者 {% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/index.css" rel="stylesheet">
+{% endblock %}
+
+{% block container %}
+<div class="main">
+    <!-- <a href="/allyear/" class="btn btn-primary btn-lg">查看行者年度报告</a>
+    <a href="/one_year/" class="btn btn-primary btn-xs">查看个人年度报告</a> -->
+
+     <div class="div2">
+        <a class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bs-modal-sm" style="display:block;" href="/one_year?uid={{ enuid }}">查看个人年度报告</a>
+        <!-- <img src="http://static.imxingzhe.com/year2015/qrcode.png" width="200" height="200" class="img"/> -->
+    </div>
+    <div class="div1">
+        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target=".bs-modal-sm" style="display:block;" href="/allyear/">查看行者年度报告</a>
+        <!-- <img src="http://static.imxingzhe.com/year2015/qrcode.png" width="200" height="200" class="img"/> -->
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    行者GPS定位问题
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+<div class="container">
+    <div class="row row-help">
+    {% include "help_nav.html" %}
+
+    <ol class="breadcrumb visible-xs">
+    <li><a href="/">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">行者GPS定位问题</li>
+    </ol>
+
+<div class="col-md-10 main">
+            <h2>行者GPS定位问题</h2>
+            <h3>为什么地图可以定位，行者无法定位？</h3>
+            <p>因为地图的定位方式有三种：GPS定位，基站定位，WIFI定位，而行者记录轨迹时只能使用GPS定位，其他两种方式的误差太大。</p>
+
+            <h3>影响GPS定位快慢的因素有哪些？</h3>
+            <ol>
+                <li>不同的手机GPS芯片的质量有好有坏，定位速度也是不同的，这个除了换手机，是没有办法改变的了。</li>
+                <li>手机系统即ROM，可以安装你手机可用的优化过GPS的ROM。</li>
+                <li>你所处位置的GPS信号强度。只有室外才能接收到GPS信号，室内是没有办法进行GPS定位的。另外空旷的地方比高楼林立的地方信号好。</li>
+            </ol>
+
+            <h3>如何加快GPS定位？</h3>
+            <ol>
+                <li>确保你在室外。室内是不能进行GPS定位的。</li>
+                <li>确保手机能够上网。这一步是为AGPS准备的，因为APGS定位时需要用到一点网络流量。</li>
+                <li>确保手机打开了GPS选项，并允许行者使用您的地理位置（各个手机的设置方式可能有些许不同）。</li>
+            </ol>
+
+            <p><mark>切记，测试GPS信号时一定要位于室外。</mark></p>
+            <hr>
+            <p class="text-right"><a href="{% url 'download' %}">安装行者APP</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

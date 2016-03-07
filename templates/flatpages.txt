@@ -1,0 +1,11 @@
+http://{{ request.get_host }}{% url 'index' %}
+http://{{ request.get_host }}{% url 'lixianditu' %}
+http://{{ request.get_host }}{% url 'lushu' %}
+http://{{ request.get_host }}{% url 'lushu_create' %}
+http://{{ request.get_host }}{% url 'lushu_help' %}
+http://{{ request.get_host }}{% url 'gps' %}
+http://{{ request.get_host }}{% url 'yidongdianyuan' %}
+http://{{ request.get_host }}{% url 'download' %}
+http://{{ request.get_host }}{% url 'weibo' %}
+http://{{ request.get_host }}{% url 'wiggle' %}
+http://{{ request.get_host }}{% url 'backup' %}

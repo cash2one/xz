@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}
+    行者路书编号使用说明 - 行者路书 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" class="margin-top-20">
+        <a class="btn btn-lg btn-primary margin-bottom-10" href="{% url 'lushu_show' lushu_id %}">返回查看路书</a>
+            <h4>路书编号：<span class="label label-warning">{{ lushu_id }}</span></h4>
+            <h4>使用说明：</h4>
+            <ul>
+                <li>
+                    <p>打开行者手机端，找到"路书"，点击"下载"，输入编号，即可下载路书。</p>
+                </li>
+                <li>
+                    <p>下载完成后，点击"导入"。</p>
+                </li>
+                <li>
+                    <p>选择成功导入的路书，找到"地图显示路书"选项，勾选"地图显示路书"。</p>
+                </li>
+                <li>
+                    <p>返回行者"运动"->"地图"页面，你可以同时看到路书和您正在骑行的路线。这样就能保证您的骑行路线是按照路书进行的。</p>
+                </li>
+            </ul>
+            <h4>显示效果：</h4>
+            <p>红色路线是路书，蓝色路线是实际骑行轨迹，是不是很有用，再也不怕辩不清方向迷路了，如此神器，还不快试试。</p>
+            <p><img src="/static/images/screenshot/lushu_demo.png" style="width:324px; height:576px" alt="行者路书实际效果" title="行者路书实际效果"/></p>
+        </div>
+    </div>    
+</div>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ event.title }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="span12">
+            <div id="map_canvas" style="height:550px"></div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+{% baidu_map_api %}
+
+<script  type="text/javascript">
+    var map;
+    var defaultCenter = new BMap.Point(105.88888, 37.99999);
+    var defaultZoom = 5;
+    var is_authenticated = {{ user.is_authenticated|yesno:"true, false" }};
+    var is_owner = {{ is_owner|yesno:"true, false" }};
+    
+    $(init);
+    
+    function init() {
+        $("#setAccessToken").click(setAccessToken);
+        initMap();
+    }
+
+    function initMap() {
+        var center = defaultCenter;
+        var zoom = defaultZoom;
+        {% if location %}
+        center = new BMap.Point({{ location.1 }}, {{ location.0 }});
+        zoom = 13;
+        {% endif %}
+
+        map = new BMap.Map("map_canvas");
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]}));
+        map.enableScrollWheelZoom();
+        map.centerAndZoom(center, zoom);
+        
+        {% if location %}
+        var marker = new BMap.Marker(center);
+        map.addOverlay(marker);
+        {% endif %}
+    }
+
+    function setAccessToken() {
+        if(!is_authenticated){
+            alert("登录后才可以操作");
+        } else if(!is_owner) {
+            alert("请到自己的页面进行设置");
+        } else {
+            var accessToken = $.trim($("#accessToken").val());
+            if (accessToken.length > 10) {
+                alert("密码不超过10位");
+                return false;
+            }
+            {% comment %}if (!accessToken) {
+                alert("请输入访问密码");
+                return false;
+            }{% endcomment %}
+            $.ajax({
+                type: "POST",
+                url: "/api/set_access_token",
+                data: {
+                    access_token: accessToken,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }
+            }).success(function(msg) {
+                alert("设置成功");
+            }).error(function(){
+                alert("出错了，刷新网页再试一下");
+            });
+        }
+        return false;
+    }
+
+</script>
+
+{% endblock %}

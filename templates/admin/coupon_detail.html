@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>优惠劵-{{ coupon.title }}</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <style type="text/css">
+    .container {
+        max-width: 60em;
+    }
+    
+    .header {
+        margin-bottom: 7em;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    
+    .header h3 {
+        padding-bottom: 19px;
+        margin-top: 19px;
+        margin-bottom: 0;
+        line-height: 40px;
+    }
+    
+    .table>tbody>tr>td,
+    .table>tbody>tr>th {
+        padding: 12px 8px
+    }
+    
+    .table>tbody>tr>th {
+        max-width: 5em
+    }
+    
+    .table>tbody>tr>td img {
+        max-width: 300px
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="/get_coupons/"><i class="glyphicon glyphicon-list-alt"></i> 优惠券列表</a></li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">优惠券详情</a></h3>
+        </div>
+        <div class="table">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>{{ coupon.title }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">描述</th>
+                        <td>{{ coupon.description }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">兑换需要积分</th>
+                        <td>{{ coupon.credits }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">开始时间</th>
+                        <td>{{ coupon.start_time }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">结束时间</th>
+                        <td>{{ coupon.end_time }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">使用规则</th>
+                        <td>{{ coupon.use_rule }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">库存</th>
+                        <td>{{ coupon.stock }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">是否删除</th>
+                        <td>{{ coupon.deleted }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">类型</th>
+                        <td>{{ coupon.type }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">添加优惠券图片</th>
+                        <td><img src="http://xingzhe-img.b0.upaiyun.com/coupon/{{coupon.head_file_name}}" alt="优惠券图片"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">添加产品图片</th>
+                        <td><img src="http://xingzhe-img.b0.upaiyun.com/coupon/{{coupon.product_file_name}}" alt="产品图片"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center"><a href="/edit_coupon/{{ coupon.id }}/" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> 修改此优惠券</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

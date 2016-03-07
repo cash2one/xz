@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}
+    后台运行异常中断解决办法（安卓） - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<div class="container">
+<div class="row row-help">
+{% include "help_nav.html" %}
+    <ol class="breadcrumb visible-xs text-overflow">
+    <li><a href="/">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">后台运行异常中断解决办法（安卓）</li>
+    </ol>
+
+<div class="col-md-10 main">
+    <h2>后台运行异常中断解决办法（安卓）</h2>
+
+    <h3>华为手机</h3>
+    <ol>
+        <li>系统设置 – 隐私和安全 – <mark>受保护的后台应用</mark> – 确保开启行者</li>
+        <li>系统设置 – 设备 – 省电管理 – 选择“<strong>普通省电</strong>”</li>
+    </ol>
+
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/help/huawei-a.jpg"></p>
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/help/huawei-b.jpg"></p>
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/help/huawei-c.jpg"></p>
+
+    <h3>魅族</h3>
+    
+    <ol>
+        <li>魅族安全中心 – 省电模式 - <strong>不</strong>启用任何模式</li>
+        <li>魅族安全中心 – 进入“<mark>待机耗电管理</mark>” – 确保行者已开启</li>
+    </ol>
+    
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/help/meizu-a.jpg"></p>
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/help/meizu-b.jpg"></p>
+
+    <h3>小米</h3>
+    <ul>
+        <li>手机系统设置 – 其他高级设置 – 电量和性能 – 关闭神隐模式</li>
+        <li>在“神隐模式”开启的状态下，进入应用配置，<strong>不</strong>勾选行者即可</li>
+    </ul>
+
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/help/xiaomi-a.jpg"></p>
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/help/xiaomi-b.jpg"></p>
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/help/xiaomi-c.jpg"></p>
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/help/xiaomi-d.jpg"></p>
+
+    <h3>其他手机</h3>
+    <ul>
+        <li>后台闪退是由于手机上“<mark>内存</mark>”，“<mark>省电</mark>”，“<mark>优化</mark>”等管理软件导致，它们会把长期后台运行且需要使用gps的程序关闭，可以在这些软件中，将行者加入白名单或者关闭这些管理软件；</li>
+        <li>骑行时尽量少开程序，特别是内存在 1G/2G 的手机,确保行者有足够运行空间；</li>
+        <li>将行者开启，<mark>作为手机最前台</mark>，然后直接进入锁屏状态，骑行中途若有打电话，发短信，或者开过其他app，也点一下行者到最前台，再锁屏，保证行者在锁屏运行的高优先级；</li>
+    </ul>
+</div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,248 @@
+@import "var";
+
+/*动画*/
+
+// @-webkit-keyframes downloadButton {
+//     from {
+//         -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 5px rgba(0, 0, 0, .25), 0 2px 10px rgba(255, 255, 255, .1);
+//     }
+//     50% {
+//         -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 5px rgba(0, 0, 0, .25), 0 2px 20px rgba(255, 255, 255, .9);
+//     }
+//     to {
+//         -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 5px rgba(0, 0, 0, .25), 0 2px 10px rgba(255, 255, 255, .1);
+//     }
+// }
+// @keyframes downloadButton {
+//     from {
+//         box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 5px rgba(0, 0, 0, .25), 0 2px 10px rgba(255, 255, 255, .1);
+//     }
+//     50% {
+//         box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 5px rgba(0, 0, 0, .25), 0 2px 20px rgba(255, 255, 255, .9);
+//     }
+//     to {
+//         box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 5px rgba(0, 0, 0, .25), 0 2px 10px rgba(255, 255, 255, .1);
+//     }
+// }
+@keyframes bgiShow {
+    0% {
+        background-image: url(http://cdn.bi-ci.com/dist_v2/image/index/black.png);
+    }
+    100% {
+        background-image: url(http://cdn.bi-ci.com/dist_v2/image/index/xingzheindex-mobile.jpg);
+    }
+}
+
+@-webkit-keyframes bgiShow {
+    0% {
+        background-image: url(http://cdn.bi-ci.com/dist_v2/image/index/black.png);
+    }
+    100% {
+        background-image: url(http://cdn.bi-ci.com/dist_v2/image/index/xingzheindex-mobile.jpg);
+    }
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes show {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes divShow {
+    0% {
+        opacity: 0;
+        top: 20px;
+    }
+    100% {
+        opacity: 1;
+        top: 0;
+    }
+}
+
+@-webkit-keyframes divShow {
+    0% {
+        opacity: 0;
+        top: 20px;
+    }
+    100% {
+        opacity: 1;
+        top: 0;
+    }
+}
+
+.imgShowAnimation {
+    -webkit-transform: translate3d(0, 0, 0);
+    animation: divShow 0.8s 0.5s ease-out both;
+    -webkit-animation: divShow 0.8s 0.5s ease-out both;
+}
+
+.btnShowAnimation {
+    -webkit-transform: translate3d(0, 0, 0);
+    animation: divShow 0.8s 1s ease-out both;
+    -webkit-animation: divShow 0.8s 1s ease-out both;
+}
+
+.showAnimation {
+    -webkit-transform: translate3d(0, 0, 0);
+    animation: show 0.2s 0.5s ease-out both;
+    -webkit-animation: show 0.2s 0.5s ease-out both;
+}
+
+
+/*动画按钮*/
+
+// .masthead {
+//     border: 0;
+//     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 5px rgba(0, 0, 0, .25), 0 2px 10px rgba(0, 68, 204, .01);
+//     -webkit-animation: downloadButton 1.5s infinite;
+//     animation: downloadButton 1.5s infinite;
+//     -webkit-transition: none;
+//     transition: none;
+// }
+// .masthead:active {
+//     box-shadow: inset 0 2px 4px rgba(0, 0, 0, .1), 0 1px 0 rgba(255, 255, 255, .1);
+// }
+// 动画背景
+// .background-show-animation {
+//     -webkit-transform: translate3d(0, 0, 0);
+//     animation: bgshow 1.2s 1s ease-out both;
+//     -webkit-animation: bgshow 1.2s 1s ease-out both;
+// }
+.push-wrapper {
+    margin: 0 auto;
+    height: 100%;
+    background-color: #111;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    @include desktop {
+        background-image: url("http://cdn.bi-ci.com/dist_v2/image/index/xingzheindex.jpg");
+        background-size: cover;
+    }
+    @include tablet {
+        background-image: url("http://cdn.bi-ci.com/dist_v2/image/index/xingzheindex.jpg");
+        background-size: cover;
+    }
+    @include phone {
+        text-align: center;
+        animation: bgiShow 1s 1.5s ease-out both;
+        -webkit-animation: bgiShow 1s 1.5s ease-out both;
+    }
+}
+
+// nav
+.navbar-default {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: none;
+    box-shadow: none;
+    .navbar-nav {
+        li.open {
+            a,
+            a:focus {
+                background-color: transparent;
+            }
+        }
+        .dropdown-menu {
+            box-shadow: none;
+            background-color: transparent;
+        }
+    }
+}
+
+.navbar-default .navbar-collapse {
+    @include phone {
+        background-color: rgba(0, 0, 0, .6);
+    }
+}
+
+// 总里程数字
+.count-blok {
+    position: absolute;
+    bottom: 45px;
+    right: 60px;
+    z-index: 100;
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    @include phone {
+        margin-bottom: 10px;
+        padding-top: 60px;
+        padding-left: 5px;
+        text-align: center;
+    }
+    .total-num {
+        font-weight: 100;
+        margin: 0 6px;
+    }
+}
+
+// main
+.main {
+    text-align: center;
+    margin-top: 14%;
+    img {
+        position: relative;
+        margin: 0 auto 9%;
+        width: 450px;
+        @include desktop-lg {
+            width: 550px;
+        }
+        @include phone {
+            margin: 0 auto 42%;
+            width: 80%;
+            max-width: 320px;
+        }
+    }
+    .btn {
+        position: relative;
+        padding: 0;
+        width: 200px;
+        height: 55px;
+        line-height: 54px;
+        font-size: 24px;
+        font-weight: 200;
+        letter-spacing: 0px;
+        border-radius: 1px;
+        border: none;
+        color: #fff;
+        background-color: #189eea;
+        background-color: $color-xingzhe-blue;
+        &:hover {
+            background-color: #189eea;
+        }
+        @include desktop-lg {
+            width: 240px;
+            height: 65px;
+            line-height: 64px;
+        }
+        @include phone {
+            width: 180px;
+            height: 50px;
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 49px;
+            background-color: rgba(0, 120, 197, .9);
+        }
+    }
+    @include desktop-lg {
+        margin-top: 20%;
+    }
+    @include phone {
+        margin-top: 32%;
+    }
+}

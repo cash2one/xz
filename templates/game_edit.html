@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    修改比赛 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    {% load filters %}
+    <div class="row">
+        <div class="span10">
+            <form action="" method="post" class="form-horizontal">
+                <fieldset>
+                    {% csrf_token %}
+                    <legend>修改比赛</legend>
+                    <div class="control-group">
+                        <label class="control-label" for="title">名称</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="title" name="title" value="{{ game.title }}">
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="description">详情</label>
+                        <div class="controls">
+                            <textarea rows="12" id="description" name="description" class="input-xlarge span8">{{ game.description }}</textarea>
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="min_distance">距离</label>
+                        <div class="controls">
+                            <input type="text" class="input span1" id="min_distance" name="min_distance" value="{{ game.min_distance }}">&nbsp;
+                            <p class="help-block">可以参与比赛的当天最少距离</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="price">得分</label>
+                        <div class="controls">
+                            <input type="text" class="input-small" id="min_score" name="min_score" value="{{ game.min_score }}">&nbsp;&nbsp;至&nbsp;&nbsp;
+                            <input type="text" class="input-small" id="max_score" name="max_score" value="{{ game.max_score }}">&nbsp;
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="price">价格</label>
+                        <div class="controls">
+                            <input type="text" class="input span2" id="price" name="price" value="{{ game.price }}">&nbsp;
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="icon">图标</label>
+                        <div class="controls">
+                            <input type="text" class="span5 input-large" id="icon" name="icon" placeholder="" value="{{ game.icon }}">&nbsp;
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="date">日期</label>
+                        <div class="controls">
+                            <input type="text" class="input-small" id="start_date" name="start_date" value="{{ game.start_time|date:'Y-m-d' }}">
+                            &nbsp;
+                            <select style="width:60px;" name="start_time">
+                                <option value="0">0点</option>
+                                <option value="1">1点</option>
+                                <option value="2">2点</option>
+                                <option value="3">3点</option>
+                                <option value="4">4点</option>
+                                <option value="5">5点</option>
+                                <option value="6">6点</option>
+                                <option value="7">7点</option>
+                                <option value="8">8点</option>
+                                <option value="9">9点</option>
+                                <option value="10">10点</option>
+                                <option value="11">11点</option>
+                                <option value="12">12点</option>
+                                <option value="13">13点</option>
+                                <option value="14">14点</option>
+                                <option value="15">15点</option>
+                                <option value="16">16点</option>
+                                <option value="17">17点</option>
+                                <option value="18">18点</option>
+                                <option value="19">19点</option>
+                                <option value="20">20点</option>
+                                <option value="21">21点</option>
+                                <option value="22">22点</option>
+                                <option value="23">23点</option>
+                            </select>
+                            &nbsp;至&nbsp;
+                            <input type="text" class="input-small" id="end_date" name="end_date" value="{{ game.end_time|date:'Y-m-d' }}">
+                            &nbsp;
+                            <select style="width:60px;" name="end_time">
+                                <option value="0">0点</option>
+                                <option value="1">1点</option>
+                                <option value="2">2点</option>
+                                <option value="3">3点</option>
+                                <option value="4">4点</option>
+                                <option value="5">5点</option>
+                                <option value="6">6点</option>
+                                <option value="7">7点</option>
+                                <option value="8">8点</option>
+                                <option value="9">9点</option>
+                                <option value="10">10点</option>
+                                <option value="11">11点</option>
+                                <option value="12">12点</option>
+                                <option value="13">13点</option>
+                                <option value="14">14点</option>
+                                <option value="15">15点</option>
+                                <option value="16">16点</option>
+                                <option value="17">17点</option>
+                                <option value="18">18点</option>
+                                <option value="19">19点</option>
+                                <option value="20">20点</option>
+                                <option value="21">21点</option>
+                                <option value="22">22点</option>
+                                <option value="23">23点</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="hidden">隐藏</label>
+                        <div class="controls">
+                            <input type="checkbox" id="hidden" name="hidden" {% if game.hidden %}checked{% endif %}>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="order">排序</label>
+                        <div class="controls">
+                            <input type="text" class="input span2" id="order" name="order" value="{{ game.order }}">&nbsp;
+                            <p class="help-block">数字越大，排序靠前</p>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <input type="submit" value="提交" class="btn btn-primary">
+                        <span></span>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}

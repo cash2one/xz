@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load url from future %}
+{% block title %}
+    帐号尚未激活 - 行者骑行软件
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="span8">
+            <br/>
+            <p>帐号尚未激活成功，需要 <a href="{% url 'userena_password_reset' %}">重新激活</a></p>
+            <p>如果重新激活后还是无法登录，请和我联系。</p>
+        </div>
+    </div>
+{% endblock %}

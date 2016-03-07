@@ -1,0 +1,75 @@
+@import "bootstrap";
+@import "admin";
+form,
+.table-wrap {
+    background-color: #fff;
+    padding: 3em 2em;
+    margin-bottom: 3em;
+    overflow: hidden;
+    h3 {
+        color: #111;
+        margin-bottom: 1em;
+    }
+}
+
+.btns-group {
+    margin: 3em auto;
+    .btn {
+        margin: 0 1em;
+    }
+}
+
+.img-rounded {
+    margin: 1em .5em;
+}
+
+td {
+    img {
+        max-width: 300px;
+    }
+}
+
+textarea {
+    min-height: 120px;
+}
+
+
+.medal-types-cont {
+    padding: 2em;
+    margin-bottom: 2em;
+    h4 {
+        margin-bottom: 1em;
+        color: #31708f;
+    }
+    input,
+    textarea {
+        margin-bottom: 1.5em;
+    }
+}
+
+/******
+    sco.message.js
+    server error message
+*****/
+#page_message {
+    display: none;
+    position: fixed;
+    z-index: 10001;
+    width: 100%;
+    left: 0;
+    top: 0;
+    overflow: visible;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+    padding: 30px 0;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.page_mess_error {
+    background-color: #de4343;
+}
+
+.page_mess_ok {
+    background-color: #48bb5e;
+}

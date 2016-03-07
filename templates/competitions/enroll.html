@@ -1,0 +1,579 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} 添加新赛事 {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/competitions_enroll.css">
+<link rel="stylesheet" href="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<header class="header">
+    <div class="container">
+        <h1 class="pull-left">添加新赛事</h1>
+    </div>
+</header>
+
+
+<div class="container">
+    <div class="match-list-wrap col-md-12">
+        <div class="card">
+            <div class="thumbnail" id="match">
+            </div>
+        </div>
+        <div>    
+            <div class="card signIn">
+                <div class="thumbnail">
+                        <p class="tip">*请确保报名人信息的有效性</p>
+                        <div id="step1">
+                        <div class="signInGro">
+                            <h5>组别</h5>
+                            <div id="groupInfo"></div>
+                        </div>
+                        <div class="signInGro form-horizontal bmr">
+                             <button disabled="true" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="cursor: not-allowed;">×</span></button>  
+                            <h5>报名人1</h5>
+                              <div class="form-group">
+                                <label for="realName" class="col-sm-2 control-label" required>真实姓名</label>
+                                <div class="col-sm-5">
+                                  <input type="text" class="form-control" id="realName" placeholder="真实姓名">
+                                </div>
+                                <button class="btn btn-primary btn-xs signing signBtn">收起</button>
+                              </div>
+                              <div class="signBtnContent">
+                              <div class="form-group">
+                                <label for="mobile" class="col-sm-2 control-label">手机</label>
+                                <div class="col-sm-5">
+                                  <input type="text" class="form-control" id="mobile" placeholder="手机号码">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label">性别</label>
+                                <div class="col-sm-5">
+                                  <div class="radio">
+                                    <label>
+                                      <input name="sex"  type="radio" value="2" checked="true">男
+                                    </label>
+                                    <label>
+                                      <input name="sex"  type="radio" value="1">女
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="card" class="col-sm-2 control-label">证件</label>
+                                <div class="col-sm-2">
+                                  <select class="form-control" id="idType">
+                                      <option>0</option>
+                                      <option>1</option>
+                                    </select>
+                                 </div>
+                                 <div class="col-sm-3">   
+                                  <input type="text" class="form-control" id="card" placeholder="证件号码">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="ugentContacter" class="col-sm-2 control-label">紧急联系人</label>
+                                <div class="col-sm-5">
+                                  <input type="text" class="form-control" id="ugentContacter" placeholder="紧急联系人">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="ugentContact" class="col-sm-2 control-label">紧急联系人手机</label>
+                                <div class="col-sm-5">
+                                  <input type="text" class="form-control" id="ugentContact" placeholder="紧急联系人手机号码">
+                                </div>
+                              </div>
+                              <!-- <div class="form-group">
+                                <label class="col-sm-2 control-label">支付选项</label>
+                                <div class="col-sm-offset-2 col-sm-10" id="payOptionContent">
+                                  <div class="radio">
+                                    <label>
+                                      <input type="radio">男子精英组基本报名费  ¥150 
+                                    </label>
+                                  </div>  
+                                  <div class="radio">
+                                    <label>
+                                      <input type="radio">男子精英组基本报名费  ¥150 
+                                    </label>
+                                  </div>  
+                                  <div class="radio">
+                                    <label>
+                                      <input type="radio">男子精英组基本报名费  ¥150 
+                                    </label>
+                                  </div>  
+                                </div>
+                              </div> -->
+                              </div>                            
+                        </div> 
+                        <div class="signInGro form-horizontal add">
+                             <div class="form-group">
+                                <div class="col-sm-12">
+                                  <button class="btn btn-default addSigner" disabled="true">新增报名人</button>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="signInGro form-horizontal">
+                            <h5>车队</h5>
+                              <div class="form-group">
+                                <label for="carName" class="col-sm-2 control-label">车队名</label>
+                                <div class="col-sm-5">
+                                  <input type="text" class="form-control" id="carName" placeholder="个人报名选填，团队报名选填">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="carContacter" class="col-sm-2 control-label">车队联系人</label>
+                                <div class="col-sm-5">
+                                  <input type="text" class="form-control" id="carContacter" placeholder="个人报名选填，团队报名选填">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="ugentContact" class="col-sm-2 control-label">联系人电话</label>
+                                <div class="col-sm-5">
+                                  <input type="text" class="form-control" id="ugentContact" placeholder="个人报名选填，团队报名选填">
+                                </div>
+                              </div>
+                        </div>
+                        <!-- <div class="signInGro form-horizontal total">
+                              <div class="form-group">
+                                <label for="carName" class="col-sm-2 control-label">报名人数</label>
+                                <div class="col-sm-5">
+                                  <span>5</span>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="carName" class="col-sm-2 control-label">总金额</label>
+                                <div class="col-sm-5">
+                                  <span> ¥150 </span>
+                                </div>
+                              </div>
+                        </div> -->
+                        <div class="submit">
+                            <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="agreeState">我已阅读并同意<a href="#">《免责声明》</a>
+                                </label>
+                            </div>
+                            <button type="submit"  class="btn btn-default step1">提交报名</button>
+                        </div>
+                </div>  
+                <!-- <div id="step2">
+                        <div class="signInGro form-horizontal">
+                            <h5>报名人1</h5>
+                              <div class="form-group">
+                                <label for="realName" class="col-sm-2 control-label">真实姓名</label>
+                                <div class="col-sm-5">
+                                    <span>杨大锤</span>
+                                </div>    
+                              </div>
+                              <div class="form-group">
+                                <label for="mobile" class="col-sm-2 control-label">手机</label>
+                                <div class="col-sm-5">
+                                  <span>15212360633</span>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label">性别</label>
+                                <div class="col-sm-5">
+                                  <span>男</span>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="card" class="col-sm-2 control-label">身份证</label>
+                                <div class="col-sm-5">
+                                  <span>421202199203030028</span>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="ugentContacter" class="col-sm-2 control-label">紧急联系人</label>
+                                <div class="col-sm-5">
+                                  <span>养颜</span>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="ugentContact" class="col-sm-2 control-label">紧急联系人手机</label>
+                                <div class="col-sm-10">
+                                  <span>18355559425</span>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label">支付选项</label>
+                                <div class="col-sm-10">
+                                  <span>男子精英组报名＋保险¥150 </span> 
+                                </div>
+                              </div>
+                        </div>
+                        <div class="signInGro form-horizontal">
+                            <h5>车队信息</h5>
+                              <div class="form-group">
+                                <label for="carName" class="col-sm-2 control-label">车队名</label>
+                                <div class="col-sm-10">
+                                  <span>bici骑行队</span> 
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="carContacter" class="col-sm-2 control-label">车队联系人</label>
+                                <div class="col-sm-10">
+                                 <span>福老师</span> 
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="ugentContact" class="col-sm-2 control-label">联系人电话</label>
+                                <div class="col-sm-10">
+                                <span>15212306335   </span>  
+                                </div>
+                              </div>
+                        </div>
+                        <div class="signInGro form-horizontal">
+                              <div class="form-group">
+                                <label for="carName" class="col-sm-2 control-label">支付合计</label>
+                                <div class="col-sm-10">
+                                  <span> ¥150 </span>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="submit">
+                            <div class="checkbox">
+                                <a href="#" class="step21">返回上一步</a>
+                            </div>
+                            <a href="#" class="btn btn-primary step2">确认并支付</a>
+                        </div>
+                </div>
+                <div class="step33">
+                <div class="pay">
+                    <p class="order">订单已提交成功，订单号：  <span>22312312312312312</span></p> 
+                    <p>请在1小时内完成支付，否则订单会自动取消</p>
+                    <p class="orderMoney">订单总金额： <span>¥ 150.00</span></p>
+                </div>
+                <div id="step3">
+                        <div class="signInGro form-horizontal">
+                           <div class="form-group rad">
+                                <div class="col-sm-12">
+                                  <div class="radio">
+                                    <label>
+                                      <input type="radio">支付宝支付
+                                    </label>
+                                  </div>
+                                  <div class="radio">  
+                                    <label>
+                                      <input type="radio">微信支付
+                                    </label>
+                                  </div>
+                                </div>
+                          </div>
+                        <div class="submitOver">
+                            <a href="#" class="btn btn-primary step2">确认支付</a>
+                        </div>
+                </div>    -->
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-md-2 org">
+            <div class="thumbnail">
+                    <div class="caption">
+                        <h4 class="organizers">主办方</h4>
+                        <div class="org_pic">
+                            <img src="http://static.imxingzhe.com/year2015/f1.jpg">
+                            <img src="http://static.imxingzhe.com/year2015/f1.jpg">
+                            <img src="http://static.imxingzhe.com/year2015/f1.jpg">
+                        </div>
+                        <button class="btn btn-primary btn-sm btn-block">查看更多</button>
+                    </div>
+            </div>
+    </div> -->
+</div>
+<!-- <div class="container form-container">
+    <form id="createMatchForm">
+
+        <div class="form-group">
+            <label class="required" for="matchTitle">赛事标题</label>
+            <input type="text" class="form-control input-lg" name="title" id="matchTitle" maxlength="30" required>
+        </div>
+
+        <div class="form-group">
+            <label class="required" for="matchDescription">赛事内容简介</label>
+            <textarea class="form-control" id="matchDescription" rows="10" name="description" maxlength="1000" required></textarea>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-6">
+                <label class="required" for="matchStartTime">赛事开始时间</label>
+                <input class="form-control match-time" id="matchStartTime" type="text" readonly required>
+            </div>
+            <div class="col-md-6">
+                <label class="required" for="matchEndTime">赛事结束时间</label>
+                <input class="form-control match-time" id="matchEndTime" type="text" readonly required>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-6">
+                <label class="required" for="matchCreateTime">报名开始时间</label>
+                <input class="form-control match-time" id="matchCreateTime" type="text" readonly required>
+            </div>
+            <div class="col-md-6">
+                <label class="required" for="matchClosingTime">报名结束时间</label>
+                <input class="form-control match-time" id="matchClosingTime" type="text" readonly required>
+            </div>
+        </div>
+
+        <input type="hidden" name="start_time" value="">
+        <input type="hidden" name="end_time" value="">
+        <input type="hidden" name="create_time" value="">
+        <input type="hidden" name="closing_time" value="">
+
+        <button type="submit" id="submitBtn" class="btn btn-primary btn-lg btn-block">添加</button>
+    </form> 
+</div>-->
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script>
+$(function() {
+    $('#step2').hide();
+    $('.step33').hide();
+    var locationhrefLength=location.href.split('=').length-1,
+    id=location.href.split('=')[locationhrefLength].split('/')[0];
+  
+    function show_date(s)
+    {
+        var mydate = new Date(s);
+        var today = '';
+        today += mydate.getFullYear() + '年';   
+        today += mydate.getMonth()+1 + '月';   
+        today += mydate.getDate() + '日'; 
+        today += ' ';   
+        today += mydate.getHours();
+        today += ':' + mydate.getMinutes();
+        return today;       
+    }
+    function show_time(s)
+    {
+        var mydate = new Date(s);
+        var today = '';
+        today += mydate.getHours();
+        today += ':' + mydate.getMinutes();
+        return today;       
+    }
+
+    
+
+    //请求赛事信息
+    $.ajax({
+            url: '/api/v4/competition_detail',
+            type: 'GET',
+            data: {
+                competition_id:id
+            }
+    })
+    .done(function(data) {
+        var object=data.data,str="",payOptionStr="";
+        $('#match').append('<img class="pic col-sm-6 col-md-5" src="'+object.pic_url+'" />'+
+                '<div class="caption col-sm-6 col-md-7">'+
+                    '<h4 class="text-overflow">'+object.title+'</h4>'+
+                    '<div class="captionDetail">'+
+                        
+                        '<p class="palce"><i class="iconfont">&#xe60b;</i>签到地点 :<span>'+object.place+'</span></p>'+
+                        '<p class="time"><i class="iconfont">&#xe622;</i>比赛时间：<span>'+show_date(object.start_time)+'至'+show_time(object.end_time)+'</span></p>'+
+                        '<p><i class="iconfont">&#xe622;</i>报名截止时间 ：<span>'+show_date(object.create_time)+'至'+show_time(object.closing_time)+'</span></p>'+
+
+                        '<p class="host"><i class="iconfont">&#xe634;</i>主办方 ：<span>'+object.host+'</span></p>'+
+                    '</div>'+
+                '</div>'); 
+        for(var i=0;i<object.group.length;i++){
+            console.log(object.group.length);
+            if(((i+1)%2)==1){
+                str+=' <div class="radio">'+
+                            '<label>'+
+                                '<input type="radio" name="groupRadios1" value="'+object.group[i].id+'" checked>'+
+                                object.group[i].group_name+
+                              '</label>';
+                    
+            }else if(((i+1)%2)==0){
+                str+='<label>'+
+                        '<input type="radio" name="groupRadios1" value="'+object.group[i].id+'" checked>'+
+                        object.group[i].group_name+
+                      '</label>'+
+                      '</div>';
+            }
+            // payOptionStr+='<div class="radio">'+
+            //                 '<label>'+
+            //                   '<input type="radio" name="optionsRadios2" id="optionsRadios2" value="option1" checked>'+object.group[i].group_name+'<span> ¥'+object.group[i].group_money+'</span>'+
+            //                 '</label>'+
+            //               '</div>';
+            
+
+        }
+        $('#groupInfo').append(str);
+        // $('#payOptionContent').append(payOptionStr);
+    //         var aaa='<div class="signInGro form-horizontal bmr">'+
+    //      '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>'+  
+    //     '<h5>报名人1</h5>'+
+    //       '<div class="form-group">'+
+    //         '<label for="realName" class="col-sm-2 control-label">真实姓名</label>'+
+    //         '<div class="col-sm-5">'+
+    //           '<input type="text" class="form-control" id="realName" placeholder="真实姓名">'+
+    //         '</div>'+
+    //         '<button class="btn btn-primary btn-xs signing signBtn">收起</button>'+
+    //       '</div>'+
+    //       '<div class="signBtnContent">'+
+    //       '<div class="form-group">'+
+    //         '<label for="mobile" class="col-sm-2 control-label">手机</label>'+
+    //         '<div class="col-sm-5">'+
+    //           '<input type="text" class="form-control" id="mobile" placeholder="手机号码">'+
+    //         '</div>'+
+    //       '</div>'+
+    //       '<div class="form-group">'+
+    //         '<label class="col-sm-2 control-label">性别</label>'+
+    //         '<div class="col-sm-5">'+
+    //           '<div class="radio">'+
+    //             '<label>'+
+    //               '<input type="radio">男'+
+    //             '</label>'+
+    //             '<label>'+
+    //               '<input type="radio">女'+
+    //             '</label>'+
+    //           '</div>'+
+    //         '</div>'+
+    //       '</div>'+
+    //       '<div class="form-group">'+
+    //         '<label for="card" class="col-sm-2 control-label">证件</label>'+
+    //         '<div class="col-sm-2">'+
+    //           '<select class="form-control">'+
+    //               '<option>1</option>'+
+    //               '<option>2</option>'+
+    //               '<option>3</option>'+
+    //               '<option>4</option>'+
+    //               '<option>5</option>'+
+    //             '</select>'+
+    //          '</div>'+
+    //          '<div class="col-sm-3">'+  
+    //           '<input type="text" class="form-control" id="card" placeholder="证件号码">'+
+    //         '</div>'+
+    //       '</div>'+
+    //       '<div class="form-group">'+
+    //         '<label for="ugentContacter" class="col-sm-2 control-label">紧急联系人</label>'+
+    //         '<div class="col-sm-5">'+
+    //           '<input type="text" class="form-control" id="ugentContacter" placeholder="紧急联系人">'+
+    //         '</div>'+
+    //       '</div>'+
+    //       '<div class="form-group">'+
+    //         '<label for="ugentContact" class="col-sm-2 control-label">紧急联系人手机</label>'+
+    //         '<div class="col-sm-5">'+
+    //           '<input type="text" class="form-control" id="ugentContact" placeholder="紧急联系人手机号码">'+
+    //         '</div>'+
+    //       '</div>'+
+    //       '<div class="form-group">'+
+    //         '<label class="col-sm-2 control-label">支付选项</label>'+
+    //         '<div class="col-sm-offset-2 col-sm-10" id＝"payOption">'+payOptionStr
+    //         '</div>'+
+    //       '</div>'+
+    //       '</div>'+
+    // '</div>';  
+
+
+        $('.signBtn').click(function(){
+        if($(this).parent().next('.signBtnContent').css("display")!='none'){
+            $(this).parent().next('.signBtnContent').hide();
+             $(this).text('详情');
+        }else{
+             $(this).parent().next('.signBtnContent').show();
+             $(this).text('收起');
+        }
+        
+        });
+        // $('.close').click(function(){
+        //     $(this).parent('.bmr').hide();    
+        // });
+        // $('.addSigner').click(function(){
+        //     $(this).parents('.add').prev().append(aaa);
+        // });
+        // $('.step1').click(function(e){
+        //     e.preventDefault(); 
+        //     $(this).parents('#step1').hide();
+        //     $('#step2').show();
+        // })
+        // $('.step2').click(function(){
+        //     $('.tip').hide();
+        //     $(this).parents('#step2').hide();
+        //     $('.step33').show();
+        // });
+
+        //将填写信息提交给服务器
+         //发送报名信息到服务器
+         $('.submit').children('.step1').click(function(e){
+          e.preventDefault();
+          if(!document.getElementById('agreeState').checked){
+            alert('请先阅读并同意《免责声明》');
+          }else{
+          $.ajax({
+                url:  '/api/v4/enroll_competition',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType:'json',
+                data: JSON.stringify({
+                    true_name: $('#realName').val(),
+                    competition_id: parseInt(id),
+                    group_id:parseInt($('input[name=groupRadios1]:checked').attr('value')),
+                    sex:parseInt($('input[name=sex]:checked').attr('value')),
+                    id_type:parseInt($('#idType').val()),
+                    id_card:$('#card').val(),
+                    contact_mobile:$('#mobile').val(),
+                    urgency_contacts:$('#ugentContacter').val(),
+                    urgency_phone:$('#ugentContact').val(),
+                    extra_team:$('#carName').val(),
+                    team_contact:$('#carContacter').val(),
+                    team_mobile:$('#ugentContact').val()
+                })
+            })
+            .done(function(data) {
+              alert(data);
+                console.log(data);
+                console.log("success!");
+
+                function showTime(count) {
+                    submitBtn.text('添加成功 ' + count);
+                    if (count === 0) {
+                        window.location = '/match/list/';
+                    } else {
+                        count -= 1;
+                        setTimeout(function() {
+                            showTime(count);
+                        }, 1000);
+                    }
+                }
+                showTime(5);
+
+            })
+            .fail(function(data, textStatus, request) {
+              console.log('fail');
+
+            })
+            .always(function(xhr, data) {
+                var txt = JSON.parse(xhr.responseText);
+                alert("ERROR:" + txt.error_message);
+            });  }
+        });
+
+    })
+    .fail(function() {
+        console.log("请求赛事信息 error");
+    })
+    .always(function() {
+        console.log("请求赛事信息 complete");
+    });
+
+   
+    });
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{{ user.username }}</title>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/normalize/3.0.1/normalize.min.css">
+    <style>
+    html,
+    body {
+        height: 100%
+    }
+    
+    #map-canvas {
+        width: 100%;
+        height: 100%
+    }
+    
+    .container {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        background: rgba(255, 255, 255, 0.8);
+        text-align: center
+    }
+    
+    .container h1 {
+        color: #34495e
+    }
+    
+    .button-group {
+        margin: 20px auto;
+        list-style: none;
+        overflow: hidden
+    }
+    
+    .button-group li {
+        float: left;
+        width: 20%;
+        text-align: center
+    }
+    
+    @media (max-width: 480px) {
+        .container h1 {
+            font-size: 1.2em;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">{{ title }}  <small>当前速度:<span id='Rate'></span></small></h1>
+    </div>
+    <div id="map-canvas"></div>
+    <script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
+    <script src="http://cdn.bi-ci.com/xingzhesite/static/maps/wgs2mars.min.js"></script>
+    <script  type="text/javascript" src="http://ditu.google.cn/maps/api/js?sensor=false&language=zh"></script>
+    <script>
+    $(function() {
+        var current_user = document.location.pathname.split('/')[2];
+        // 地图样式
+        var styleArray = [{
+            featureType: "poi.business",
+            elementType: "labels",
+            stylers: [{
+                visibility: "off"
+            }]
+        }];
+        
+
+        // 地图设置
+        var init_latitude = {{ point.latitude }};
+        var init_longitude = {{ point.longitude }};
+        var init_trans_point = transformFromWGSToGCJ(init_longitude, init_latitude);
+        var mapOptions = {
+            zoom: 11,
+            center: new google.maps.LatLng(init_trans_point.lat, init_trans_point.lng),
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+        };
+
+        // 初始化地图
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        map.setOptions({
+            styles: styleArray
+        });
+
+        // marker 图片
+        var markerimg = new google.maps.MarkerImage("{{ user.pic_url }}!avatar ", null, null, null, new google.maps.Size(60, 60));
+
+        // json URL
+        var url = "http://www.imxingzhe.com/api/v2/get_live_route?user_id=" + current_user;
+        var Rate = $("#Rate");
+
+        function get_json() {
+            // 绘制 Polyline
+            $.ajax({
+                type: "GET",
+                url: url,
+                beforeSend: function(x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/json;charset=UTF-8");
+                    }
+                },
+                dataType: "json",
+                success: function(data, success) {
+
+                    var latLongArr = data;
+                    var pathCoordinates = new google.maps.MVCArray();
+                    var latLongArrLength = data.length - 1;
+                    var message = '{{ user.username }}';
+
+                    // 最新位置坐标
+
+                    var newLayLng = new google.maps.LatLng(data[latLongArrLength].latitude, data[latLongArrLength].longitude);
+
+                    var rate = data[latLongArrLength].speed * 3.6;
+                    Rate.text(rate.toFixed(1));
+
+                    // 绘制 marker
+                    var marker = new google.maps.Marker({
+                        position: newLayLng,
+                        map: map,
+                        // animation: google.maps.Animation.DROP,
+                        title: '',
+                        icon: markerimg
+                    });
+                    var infowindow = new google.maps.InfoWindow({
+                        content: message
+                    });
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.open(marker.get('map'), marker);
+                    });
+
+                    for (var i = 0; i < latLongArr.length; i++) {
+                        lats = latLongArr[i].latitude;
+                        lons = latLongArr[i].longitude;
+                        var gcjloc = transformFromWGSToGCJ(lons, lats);
+                        var latlng = new google.maps.LatLng(gcjloc.lat, gcjloc.lng);
+                        //var latlng = new google.maps.LatLng(latLongArr[i]['latitude'],latLongArr[i]['longitude']);
+                        pathCoordinates.insertAt(i, latlng);
+                    }
+
+                    var polyOptions = {
+                        path: pathCoordinates,
+                        strokeColor: '#1abc9c',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 3
+                    };
+                    poly = new google.maps.Polyline(polyOptions);
+                    poly.setMap(map);
+                }
+            });
+        }
+        get_json();
+        setInterval(function() {
+            get_json();
+        }, 60000);
+    });
+
+    </script>
+</body>
+
+</html>

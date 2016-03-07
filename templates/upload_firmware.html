@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}
+    固件更新
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/firmware.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<h1 class="header">固件更新</h1>
+    <form class="form-horizontal" action="/upload_firmware/" method="post" enctype="multipart/form-data">
+        <div class="control-group">
+            <label class="control-label" for="inputEmail">选择固件文件</label>
+            <div class="controls">
+                <input type="file" id="inputFile" name="file" required="required" accept="application/octet-stream">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="inputVersion">固件版本</label>
+            <div class="controls">
+                <input type="text" id="inputVersion" name="update_version" required="required">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="inputLog">更新日志</label>
+            <div class="controls">
+                <textarea rows="3" id="inputLog" name="update_log" required="required"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">上传提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- /container -->
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    创建车队 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    {% load filters %}
+    <div class="row">
+        <div class="span10 well">
+            最新版支持手机直接创建队伍，且无需审核，欢迎<a href="{% url 'download' %}">下载使用</a>
+        </div>
+    </div>
+{% endblock %}

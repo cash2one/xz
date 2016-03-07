@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>添加新启动画面图</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <style type="text/css">
+    .container {
+        max-width: 60em;
+    }
+    
+    header {
+        padding: 3em;
+    }
+    
+    .btns-group {
+        margin: 3em auto;
+    }
+    
+    .btns-group .btn {
+        margin: 0 1em;
+    }
+    
+    .img-rounded {
+        margin: 1em .5em;
+    }
+    
+    .modal-body {
+        font-size: 1.4em
+    }
+    
+    .modal-body strong {
+        color: #00ccff;
+        font-weight: normal;
+    }
+    table td img {
+        max-width: 150px
+    }
+    </style>
+</head>
+<body>
+{% load filters %}
+
+    <div class="container">
+    <header class="text-center">
+        <div class="page-header">
+            <h1>添加新启动画面图<small> 没时间美化了，将就着用吧</small></h1>
+        </div>
+    </header>
+
+        <form id="myForm" class="form-horizontal" method="post" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label>是否播放</label>
+                <div id="radioGroup">
+                    <label class="radio-inline">
+                        <input type="radio" name="isPlay" value="1"> 是
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="isPlay" value="0"> 否
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputStartTime">失效日期</label>
+                <input type="text" class="form-control" id="inputStartTime" name="expireTime" placeholder="2015-01-01" data-toggle="tooltip" data-placement="right" title="格式为:2015-01-01 (注意英文-)" required="required">
+                <span id="StartTimehelpBlock" class="help-block"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="inputFile">添加启动图片</label>
+                <input type="file" id="inputFile" name="noticeImg" accept="image/*" onchange="handleFiles(this.files)">
+            </div>
+
+            <div class="form-group">
+                <label>图片预览</label>
+                <div id="headerImgThumb"></div>
+            </div>
+
+            <div class="text-right btns-group">
+                <button type="submit" id="buttonSubmit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> 确认添加</button>
+            </div>
+
+        </form>
+
+<hr>
+
+        <table class="table table-hover table-bordered">
+            <caption>
+                <h2>所有启动图片</h2>
+            </caption>
+            <thead>
+                <tr>
+                    <th>版本</th>
+                    <th>是否播放</th>
+                    <th>过期时间</th>
+                    <th>图片</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for version in versions  %}
+                <tr>
+                    <th scope="row">{{ version.version }}</th>
+                    <td>{% if version.is_play == '1' %} 是 {% endif %} {% if version.is_play == '2' %} 否 {% endif %} </td>
+                    <td>{% if version.expire_time %} {{ version.expire_time|to_data_time }}{% endif %}</td>
+                    <td><img src="http://static.imxingzhe.com/notice/notice{{ version.version }}!notice" alt="{{ version.version }}图片"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    var inputFile = document.getElementById('inputFile'),
+        headerImgThumb = document.getElementById('headerImgThumb');
+
+    // 显示上传图片的缩略图
+    function handleFiles(files) {
+        for (var i = 0; i < files.length; i++) {
+            var img = document.createElement("img");
+            img.className = 'img-rounded';
+            img.src = window.URL.createObjectURL(files[i]);
+            img.height = 200;
+            img.onload = function(e) {
+                window.URL.revokeObjectURL(this.src);
+            };
+            headerImgThumb.appendChild(img);
+        }
+    }
+
+    // 时间戳转换函数
+    function datetime_to_unix(datetime) {
+        var tmp_datetime = datetime.replace(/:/g, '-');
+        tmp_datetime = tmp_datetime.replace(/ /g, '-');
+        var arr = tmp_datetime.split("-");
+        var now = new Date(Date.UTC(arr[0], arr[1] - 1, arr[2], arr[3] - 8, arr[4], arr[5]));
+        return parseInt(now.getTime() / 1000);
+    }
+
+    var inputStartTime = document.querySelector('#inputStartTime');
+    inputStartTime.onchange = function(val) {
+        document.querySelector('#StartTimehelpBlock').innerHTML = '你填写的是：' + this.value;
+        inputStartTime.value = datetime_to_unix(String(inputStartTime.value) + ' 00:00:00');
+    }
+
+    // 开始
+    window.addEventListener("load", function() {
+
+        // sendData
+        function sendData() {
+            // HMLHttpRequest
+            var XHR = new XMLHttpRequest();
+            var FD = new FormData(form);
+            var buttonSubmit = document.querySelector("#buttonSubmit");
+            // 数据成功发送并返回后执行的操作
+            XHR.addEventListener("load", function(event) {
+                console.log(XHR.responseText); //返回json
+                var jsonParseJson = JSON.parse(event.target.responseText); // 解析 json
+                // 根据json返回值进行的操作（成功添加/添加失败）
+                if (jsonParseJson.res) {
+                    console.log(jsonParseJson.res);
+                    buttonSubmit.setAttribute("class", "btn btn-success");
+                    buttonSubmit.disabled = "disabled";
+                    buttonSubmit.innerHTML = '添加成功！';
+                    window.location.href = '/add_notice/'; // 页面跳转到返回的 id URL
+                } else{
+                    console.log(jsonParseJson.error_msg);
+                    buttonSubmit.innerHTML = '<i class="glyphicon glyphicon-ok"></i> 确认添加';
+                    buttonSubmit.removeAttribute('disabled');
+                    alert('提交失败：' + jsonParseJson.error_msg);
+                };
+                
+                
+            });
+            XHR.addEventListener("error", function(event) {
+                alert('发生未知错误，请尝试重新提交');
+            });
+            XHR.open("POST", "/add_notice/");
+            XHR.send(FD);
+        }
+        var form = document.getElementById("myForm");
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            buttonSubmit.innerHTML = '正在添加..';
+            buttonSubmit.disabled = "disabled";
+            sendData();
+        });
+    });
+    </script>
+</body>
+</html>

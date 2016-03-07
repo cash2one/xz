@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}
+{{ city.name }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/explore.css">
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+
+<div class="container">
+
+    <nav class="explore-nav-header">
+        <div class="row">
+            <div class="col-md-6 alist"><a href="/explore/">行者用户总里程排名</a></div>
+            <div class="col-md-6 alist active">{{ city.name }}用户排名</div>
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-12 ranking-list">
+            <ol>
+            {% for user in users %}
+                <li class="item row badges{{ forloop.counter }}">
+                    <div class="left col-md-10">
+                        <span class="badges">{{ forloop.counter }}</span>
+                        <a href="{% url 'user_new' user.encode_id %}" class="user-name">
+                            <img src="{{ user.pic_url }}!avatar" alt="{{ user.username }}的头像" class="default-avatar" width="56">{{ user.username }}
+                        </a>
+                    </div>
+                    <div class="right col-md-2">
+                        <span class="data-font">{{ user.profile.valid_distance|to_distance }}</span>公里
+                    </div>
+                </li>
+            {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+<div id="Pagination" class="pagination-wrap"></div>
+</div>
+
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/kkpager/kkpager.min.js"></script>
+<script>
+//init
+$(function(){
+    //生成分页
+    kkpager.generPageHtml({
+        pagerid : 'Pagination', // 分页展示控件容器ID
+        pno : {{ number }}, //当前页码
+        total : {{ num_pages }}, //总页码
+        totalRecords : {{ num_pages }}*20, //总数据条数
+        isShowCurrPage : false, // 显示当前页
+        isShowTotalPage : false, //总页数
+        isGoPage : false,
+        isShowFirstPageBtn : false, //显示首页按钮
+        getLink : function(n){
+            return "?page="+n;
+        }
+    });
+});
+</script>
+{% endblock %}

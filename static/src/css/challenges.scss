@@ -1,0 +1,98 @@
+@import "bootstrap";
+@import "base.scss";
+
+body {
+    background-color: #f5f5f5;
+}
+
+.loading-wrap {
+    padding-top: 5em;
+}
+
+.challenges-wrap {
+    margin: 30px 0 60px;
+    h4 {
+        margin-bottom: 20px;
+        font-weight: normal;
+        font-size: 18px;
+    }
+    .card {
+        .thumbnail {
+            .challenge-pic {
+                height: 160px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+            }
+            .caption {
+                padding-bottom: 18px;
+            }
+            p {
+                margin-bottom: 5px;
+            }
+        }
+    }
+}
+
+.challenges-wrap-past {
+    color: #aaa;
+    img {
+        -webkit-filter: grayscale(0.8);
+    }
+}
+
+.challenge-detail {
+    margin: 40px 0;
+    position: relative;
+    width: 100%;
+    padding: 40px;
+    background-color: #fff;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2);
+    .data-title {
+        h1 {
+            margin-bottom: 20px;
+            font-size: 46px;
+            font-weight: normal;
+            color: #424242;
+        }
+    }
+    .data-time {
+        margin-bottom: 20px;
+        font-size: 16px;
+        color: #777;
+    }
+    .data-reward {
+        margin-bottom: 40px;
+    }
+    .data-pic {
+        img {
+            max-width: 140px;
+        }
+    }
+    a {
+        text-decoration: none;
+        color: #007ac2;
+    }
+    .data-content {
+        border-top: 1px solid #ccc;
+        padding-top: 70px;
+        margin-top: 70px;
+        margin-bottom: 70px;
+        hr {
+            width: 75%;
+            margin: 4em auto;
+        }
+        img {
+            max-width: 100%;
+        }
+        em {
+            background: #fff;
+            font-style: normal;
+            font-weight: bold;
+            color: #ec971f;
+            margin: 0 1px;
+            padding-left: 1px;
+            padding-right: 1px;
+        }
+    }
+}

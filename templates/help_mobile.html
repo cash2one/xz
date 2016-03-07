@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>行者帮助</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="renderer" content="webkit">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/normalize/3.0.2/normalize.min.css">
+    <!-- <link rel="stylesheet" href="http://typo.sofi.sh/typo.css"> -->
+    <style type="text/css">
+        ::selection {background: #fff;}
+        body{
+            /*ios浏览器横屏时会重置字体大小*/
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            /*禁用用户选择*/
+            -webkit-touch-callout:none;
+            -webkit-user-select:none;
+            font: 400 14px/1.6 "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+        }
+        .container {margin: 20px;}
+        .header {
+            background-color: #33b5e5;
+            position: fixed;
+            height: 44px;
+            z-index: 10;
+            right: 0;
+            left: 0;
+            top: 0
+        }
+        .header ul {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .header li {
+            margin: 0;
+            padding: 0;
+            width: 33.3%;
+            list-style: none;
+            float: left;
+            text-align: center;
+            line-height: 44px;
+        }
+        .header li a,.header li a:visited,.header li a:hover {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            border: 0;
+            font-size: 12px;
+            outline: 0;
+        }
+
+        article {margin-top: 80px;}
+        article strong {font-weight: bold;}
+        article .text-right {text-align: right;}
+        article li {word-break:break-all;}
+        article a {color: #33b5e5;}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <ul>
+            <li><a href="#n1">GPS常见问题</a></li>
+            <li><a href="#n2">离线地图</a></li>
+            <li><a href="#n3">路书导航</a></li>
+        </ul>
+    </header>
+
+
+    <div class="container">
+
+    <article>
+
+        <h2><a name="n1"></a>GPS常见问题</h2>
+        <p>为什么地图可以定位，行者无法定位：</p>
+        <p>因为地图的定位方式有三种：GPS定位，基站定位，WIFI定位，而行者记录轨迹时只能使用GPS定位，其他两种方式的误差太大。</p>
+        <p><strong>影响GPS定位快慢的因素：（切记，测试GPS信号时一定要位于室外）。</strong></p>
+        <ol>
+            <li>不同的手机GPS芯片的质量有好有坏，定位速度也是不同的，这个除了换手机，是没有办法改变的了。</li>
+            <li>手机系统即ROM，可以安装你手机可用的优化过GPS的ROM。</li>
+            <li>是否使用AGPS以及/etc/gps.conf的设置。如果你不想刷手机ROM，那么可以试试打开AGPS选项和修改/etc/gps.conf的相关设置。</li>
+            <li>你所处位置的GPS信号强度。只有室外才能接收到GPS信号，室内是没有办法进行GPS定位的。另外空旷的地方比高楼林立的地方信号好。</li>
+        </ol>
+        <p><strong>如何加快GPS定位：</strong></p>
+        <ol>
+            <li>确保你在室外。室内是不能进行GPS定位的。</li>
+            <li>确保手机能够上网。这一步是为AGPS准备的，因为APGS定位时需要用到一点网络流量。</li>
+            <li>找到手机的 设置->位置和安全，勾选 "使用GPS卫星"和"使用快速GPS"这两项(这里快速GPS就是指的AGPS)。各个手机的设置方式可能有些许不同，但绝大多数手机都能找到相关设置。</li>
+            <li>打开行者，看看是不是定位速度快了。</li>
+        </ol>
+        <p class="text-right"><a href="#">顶部</a></p>
+
+        <h2><a name="n2"></a>离线地图</h2>
+        <p><strong>通过APP下载离线地图：（打开行者，找到 "离线地图" 即可方便的下载。）</strong></p>
+        <p>这是最简单的方式，此种方式适合连接WiFi或手机上网流量多的用户。</p>
+        <p>下载时如果下载进度一直不变，请检查存储卡是否还有空间。</p>
+        <p>很多用户手机上已经装了百度地图官方软件，通过官方软件下载了离线地图，行者无法使用通过百度地图已经下载好的离线地图。</p>
+        <p>如果andriod手机有两个存储卡：内置卡和外置卡，离线地图放置在哪个卡上与具体的手机有关，请分别尝试放在内置卡和外置卡。</p>
+        <p>目前发现QQ手机管家不知什么原因，会清理掉百度离线地图，所以如果下载好的百度离线地图消失，请检查是否有类似软件。</p>
+        <p><strong>手动下载离线地图：</strong></p>
+        <p>此种方式适合无WiFi或手机上网流量不多的用户，这一种方式下载的百度离线包和内置方式下载的百度离线包是完全一样的。</p>
+        <ol>
+            <li>通过电脑打开网址 <a href="http://shouji.baidu.com/map/map.html" target="_blank">http://shouji.baidu.com/map/map.html</a></li>
+            <li>选择你的手机品牌和手机型号， 选择城市，然后点击下载。</li>
+            <li>解压缩下载的zip文件。</li>
+            <li>找到vmp文件夹，把它拷贝到手机SD卡的BaiduMapSDK文件夹里。如果你的手机SD卡上没有BaiduMapSDK，需要先创建它。在上述过程中如遇提示“是否移动或复制文件夹”，点击“是”即可。最终手机上的正确的路径为 <mark>/sdcard/BaiduMapSDK/vmp/</mark></li>
+            <li>完成，现在重启行者，关掉网络，看能不能浏览离线地图。</li>
+        </ol>
+        <p class="text-right"><a href="#">顶部</a></p>
+
+        <h2><a name="n3"></a>路书导航</h2>
+        <p>在行者网站做路书可以直接看到海拔了，可以预估路线难度，提前做好规划，非常有用。</p>
+        <p>简单两步，即可使用：路书是提前规划好的路线，可以导入到行者手机端进行导航。目前使用行者也可以直接在手机上制作路书。</p>
+        <p>行者使用的是谷歌地图来制作和显示路书，由于某些原因，谷歌服务器可能出现故障，所以行者有时会无法制作和显示路书。</p>
+        <p class="text-right"><a href="#">顶部</a></p>
+    </article>
+    </div>
+</body>
+</html>

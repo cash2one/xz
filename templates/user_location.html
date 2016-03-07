@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ the_user.username }}的最新位置 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/user.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+
+<div class="container">
+
+<div class="row">
+    
+    <!-- 左栏 -->
+    <div class="col-md-4 wrap-left pinned">
+
+            <div class="user-info">
+                <img src="{{ the_user.pic_url }}!eventSmall" alt="{{ the_user.username }}的头像" class="default-avatar">
+                <p><span class="user-name">{{ the_user.username }}</span></p>
+
+                <p>
+                {% if the_user.city_id %}
+                    <a class="data-city" href="/profile/" target="_blank" data-toggle="tooltip" data-placement="left" title="点击修改我的城市"><i class="iconfont">&#xe60b;</i>{{ the_user.city_name }}</a>
+                {% endif %}
+
+                {% if sex = 1 and age %}
+                    <span class="age-and-sex sex-male"><i class="iconfont">&#xe62e;</i>{{ age }}</span> <!-- 男 -->
+                {% elif sex = 0 and age %}
+                    <span class="age-and-sex sex-female"><i class="iconfont">&#xe62f;</i>{{ age }}</span> <!-- 女 -->
+                {% else %}
+                {% endif %}
+
+                    <a class="data-jifen" target="_blank" href="{% url 'help_jifen' %}" data-toggle="tooltip" data-placement="right">{{ the_user.credits }}积分</a>
+                </p>
+                <hr> 
+
+                <div class="data-distance-title">有效里程（公里）</div>
+                <div class="data-distance data-font">{{ the_user.valid_distance|to_distance }}</div>
+
+
+                {% if status == 1 %}
+                    <div>
+                        <a class="admin-link btn btn-link" id="topicForbiddenBtn">[禁言Ta]</a>
+                        <a class="admin-link btn btn-link" data-toggle="modal" data-target=".bs-example-modal-lg">[私信Ta]</a>
+                    </div>
+                    
+                    <div class="modal fade bs-example-modal-lg text-left" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">私信Ta</h4>
+                          </div>
+                            <form method="post" style="margin:20px 30px 30px" id="msgForm" action="/im/{{ the_user.encode_id }}/message/">
+                                <div class="form-group">
+                                    <textarea name="content" id="msgContent" class="form-control" rows="7"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button id="msgBtn" type="submit" class="btn btn-default">发送</button>
+                                </div>
+                                
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                {% endif %}
+
+                <div class="user-nav">
+                    <ul class="nav">
+                        <li><a href="{% url 'user_new' the_user.encode_id %}">历史记录</a></li>
+                        <li><a href="{% url 'user_lushus_new' the_user.encode_id %}">我的路书</a></li>
+                        <li class="active"><a href="{% url 'user_location_new' the_user.encode_id %}">我的位置</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- user info end -->
+
+    </div>
+    <!-- 左栏结束 -->
+
+    <!-- 右栏 -->
+    <div class="col-md-8 wrap-right">
+    <div class="wrap-location">
+        {% if block_access %}
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-inline" method="post">
+                    {% csrf_token %}
+                    <input name="access_token" type="text" class="form-control" placeholder="请输入访问密码" />
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </form>
+            </div>
+        </div>
+
+        {% else %}
+            <div class="row">
+                <div class="col-md-12">
+                    <p>{% if time %}最后更新时间： {{ time|to_datetime|date:"Y-m-d H:i"}}{% endif %}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="map_canvas" style="height:550px"></div>
+                </div>
+            </div>
+            <div class="row userLocaTip">
+                <div class="col-md-12">
+                <h3>外出骑行，让家人更放心</h3>
+                <p>打开行者App，在“辅助功能－位置共享”中选中。然后在这个页面显示出来，这样家人或朋友就可以随时查看你的位置。</p>
+                <p>把这个页面的网址发给家人或朋友：<mark>www.imxingzhe.com{% url 'user_location_new' the_user.encode_id %}</mark></p>
+                    {% if request.user.is_authenticated and is_owner %}
+                        <form class="form-inline">
+                            <input type="text" id="accessToken" class="form-control" placeholder="设置访问密码" value="{{ the_user.access_token }}"/>
+                            <button type="submit" class="btn btn-primary" id="setAccessToken">提交</button>
+                            <span class="help-inline">设置密码后，其他人需输入密码才能查看</span>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    </div>
+
+</div>
+
+</div>
+{% endblock %}
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script>
+    $(function() {
+        // 添加随即背景
+        $(".user-info").addClass('user-info-bgi-' + Math.round( Math.random() * 3 ));
+    });
+</script>
+
+{% baidu_map_api %}
+
+<script>
+    {% if not block_access %}
+    var map;
+    var defaultCenter = new BMap.Point(105.88888, 37.99999);
+    var defaultZoom = 5;
+    var is_authenticated = {{ user.is_authenticated|yesno:"true, false" }};
+    var is_owner = {{ is_owner|yesno:"true, false" }};
+    
+    $(init);
+    
+    function init() {
+        $("#setAccessToken").click(setAccessToken);
+        initMap();
+    }
+
+    function initMap() {
+        var center = defaultCenter;
+        var zoom = defaultZoom;
+        {% if location %}
+        center = new BMap.Point({{ location.1 }}, {{ location.0 }});
+        zoom = 13;
+        {% endif %}
+
+        map = new BMap.Map("map_canvas");
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]}));
+        map.enableScrollWheelZoom();
+        map.centerAndZoom(center, zoom);
+        
+        {% if location %}
+        var marker = new BMap.Marker(center);
+        map.addOverlay(marker);
+        {% endif %}
+    }
+
+    function setAccessToken() {
+        if(!is_authenticated){
+            alert("登录后才可以操作");
+        } else if(!is_owner) {
+            alert("请到自己的页面进行设置");
+        } else {
+            var accessToken = $.trim($("#accessToken").val());
+            if (accessToken.length > 10) {
+                alert("密码不超过10位");
+                return false;
+            }
+            {% comment %}if (!accessToken) {
+                alert("请输入访问密码");
+                return false;
+            }{% endcomment %}
+            $.ajax({
+                type: "POST",
+                url: "/api/set_access_token",
+                data: {
+                    access_token: accessToken,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }
+            }).success(function(msg) {
+                alert("设置成功");
+            }).error(function(){
+                alert("出错了，刷新网页再试一下");
+            });
+        }
+        return false;
+    }
+
+    {% endif %}
+
+</script>
+
+{% endblock %}

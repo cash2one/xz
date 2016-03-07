@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>赛事列表</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/dist/css/competitions_h5.css">
+</head>
+
+<body>
+    <div class="page-group" id="xzList">
+        <div class="page page-current">
+            <header class="bar bar-nav">
+                <h1 class="title">行者赛事</h1>
+                <a class="external icon icon-me pull-right" href="/personal.html"></a>
+            </header>
+            <div class="content" id="contentWrap">
+            </div>
+        </div>
+    </div>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script>
+    var appendStr = '',
+        competitionStatus,
+        competitionStatusClass;
+    $.get('/api/v4/get_competitions', function(response) {
+        $.each(response.data, function(index, item) {
+            switch (item.status) {
+                case 0:
+                    competitionStatus = '未开始';
+                    break;
+                case 1:
+                    competitionStatus = '报名中';
+                    break;
+                case 2:
+                    competitionStatus = '报名结束';
+                    break;
+                case 3:
+                    competitionStatus = '比赛进行中';
+                    break;
+                case 4:
+                    competitionStatus = '比赛结束';
+                    break;
+            }
+
+            appendStr = '<div class="card">' +
+                '<div valign="bottom" class="card-header color-white no-border no-padding">' +
+                '<span class="mark-status mark-status'+ item.status +'">'+ competitionStatus +'</span>' +
+                '<a class="external" href="/competitions/detail/?id='+ item.id +'"><img class="card-cover" src="' + item.pic_url + '" alt="赛事图片"></a>' +
+                '<h2 class="title">' + item.title + '</h2>' +
+                '</div>' +
+                '</div>';
+
+            $('#contentWrap').append(appendStr);
+        })
+    })
+    </script>
+</body>
+
+</html>

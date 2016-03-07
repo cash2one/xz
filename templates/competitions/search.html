@@ -1,0 +1,239 @@
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>个人赛参信息查询</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="个人赛参信息查询">
+    <meta name="format-detection" content="telephone=no">
+    <style>
+     /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{box-sizing:content-box;height:0}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto}input[type="search"]{-webkit-appearance:textfield;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:bold}table{border-collapse:collapse;border-spacing:0}td,th{padding:0}
+    * {
+        margin: 0;
+    }
+    html,
+    body {
+        font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+        height: 100%;
+    }
+    html {
+        font-size: 62.5%;
+    }
+    body {
+        font-size: 1.4rem;
+        background-color: #FBF9FE;
+    }
+    button,
+    input {
+        line-height: normal;
+        font-size: 1.4rem;
+        margin: 0;
+        vertical-align: baseline;
+    }
+    a {
+        color: #3b8bba;
+        text-decoration: none;
+    }
+    .wrapper {
+        min-height: 100%;
+        margin: 0 0 -3rem;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .tip {
+        color: #f00;
+        font-size: 1.2rem;
+    }
+    footer,
+    .push {
+        height: 3rem;
+    }
+    header {
+        margin-bottom: 16%;
+        text-align: center;
+    }
+    header h1 {
+        margin: 0 0 1rem;
+        padding-top: 18%;
+        font-size: 200%;
+        font-weight: 300;
+    }
+    header small {
+        color: #777;
+    }
+    .form,
+    .section {
+        margin: 0 2rem;
+    }
+    .form {
+        margin-bottom: 2rem;
+    }
+    input[type="text"],
+    input[type="tel"] {
+        width: 100%;
+        font-size: 1.8rem;
+        padding: 0.6em 0.6em;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-shadow: none;
+        border-radius: 2px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        margin-bottom: 1.2em;
+    }
+    button {
+        width: 100%;
+        font-family: inherit;
+        font-size: 1.8rem;
+        padding: 0.5em 1em;
+        color: rgba(0, 0, 0, 0.80);
+        border: 1px solid #999;
+        border: none rgba(0, 0, 0, 0);
+        background-color: rgb(0, 120, 231);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 2px;
+        display: inline-block;
+        zoom: 1;
+        line-height: normal;
+        white-space: nowrap;
+        vertical-align: baseline;
+        text-align: center;
+        cursor: pointer;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    button.disabled, button[disabled] {
+        cursor: not-allowed;
+        filter: alpha(opacity=65);
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        opacity: .65;
+    }
+    .section p {
+        text-align: center;
+        font-size: 1.5rem;
+        margin-bottom: .5rem;
+    }
+    .section p small {
+        color: #777;
+    }
+    /*    .section .name {
+        margin-bottom: .2rem;
+        font-size: 1.8rem;
+    }
+    .section .team {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: #777;
+    }
+    .section .num {
+        font-size: 4.2rem;
+        color:#0078E7;
+    }*/
+    footer {
+        color: #777;
+        text-align: center;
+        font-size: .875em;
+    }
+    </style>
+</head>
+<body ontouchstart>
+    <div class="wrapper">
+        <header>
+            <h1>赛事信息查询</h1>
+            <small>“虎撒杯”2016年度中国 PBP 1200 公里国际挑战体验赛</small>
+        </header>
+        <form class="form">
+            <div id="tip" class="tip"></div>
+            <input type="text" id="searchKey" name="true_name" class="input-name" placeholder="请输入姓名" required>
+            <button id="btn" class="button-submit">查询</button>
+        </form>
+        <section class="section" id="resultSection">
+        </section>
+        <div class="push"></div>
+    </div>
+    <footer>
+        <p><a href="http://www.imxingzhe.com/">行者骑行软件</a> 提供支持</p>
+    </footer>
+    <script>
+    var submitBtn = document.getElementById('btn'),
+        resultSection = document.getElementById('resultSection');
+    // 正则函数
+    var isName = function(str) {
+        var pattern = /[0-9A-Za-z\u4e00-\u9fa5]/;
+        return pattern.test(str);
+    }
+    submitBtn.onclick = function(event) {
+        event.preventDefault();
+        var searchKey = document.getElementById('searchKey').value;
+        while(resultSection.firstChild)
+            resultSection.removeChild(resultSection.firstChild);
+         if (isName(searchKey) === false) {
+            alert('请正确输入您的姓名');
+        } else {
+            var URL = '/api/v4/search_self_info?true_name=' + searchKey;
+            var request = new XMLHttpRequest();
+            submitBtn.innerHTML = "查询中…";
+            submitBtn.setAttribute('disabled', 'disabled');
+            request.open('GET', URL, true);
+            request.onreadystatechange = function() {
+                if (this.readyState === 4) {
+                    if (this.status >= 200 && this.status < 400) {
+                        // Success!
+                        submitBtn.innerHTML = "查询";
+                        submitBtn.removeAttribute('disabled');
+                        var data = JSON.parse(this.responseText);
+                        // console.log(data);
+                        if (data.length === 0) {
+                            resultSection.innerHTML = '<p><small>未查到信息，请确认您输入了正确的姓名或手机号，或稍后再试</small></p>';
+                        } else {
+                            mydata = data[0];
+                            if (mydata.true_name.length > 0) {
+                                var p0 = document.createElement("p");
+                                resultSection.appendChild(p0);
+                                p0.innerHTML = '姓名：' + mydata.true_name;
+                            }
+                            if (mydata.cmp_grade.length > 0) {
+                                var p1 = document.createElement("p");
+                                resultSection.appendChild(p1);
+                                p1.innerHTML = '成绩：' + mydata.cmp_grade;
+                            }
+                            if (mydata.cmp_number.length > 0) {
+                                var p2 = document.createElement("p");
+                                resultSection.appendChild(p2);
+                                p2.innerHTML = '号码：' + mydata.cmp_number;
+                            };
+                            if (mydata.ctype.length > 0) {
+                                var p3 = document.createElement("p");
+                                resultSection.appendChild(p3);
+                                p3.innerHTML = '组别：' + mydata.ctype;
+                            }
+                            if (mydata.team.length > 0) {
+                                if (mydata.team != '') {
+                                    var p4 = document.createElement("p");
+                                    resultSection.appendChild(p4);
+                                    p4.innerHTML = '所属车队：' + mydata.team;
+                                }
+                            }
+                        };
+                    }
+                }
+            };
+            request.onerror = function() {
+                submitBtn.innerHTML = "查询";
+                submitBtn.removeAttribute('disabled');
+                resultSection.innerHTML = '<p><small>网络连接错误：请检查您的网络连接，或稍后再试</small></p>'
+            };
+            request.send();
+            request = null;
+        };
+    }
+    </script>
+</body>
+</html>

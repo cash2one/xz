@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load filters %}
+{% block title %}
+    查积分 - 行者骑行软件
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="span12">
+            <form class="form-inline" method="get">
+                <input name="keyword" type="text" placeholder="请输入用户名或邮箱" value="{{ keyword }}"/>
+                <button type="submit" class="btn btn-primary">查找</button>
+            </form>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="span8">
+            {% if users %}
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>积分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>
+                                <a target="_blank" href="{% url 'user_new' user.encode_id %}">{{ user.username }}</a>&nbsp;{{ user.id }}
+                            </td>
+                            <td>
+                                {{ user.email }}
+                            </td>
+                            <td>
+                                {{ user.valid_distance|to_points }} 积分
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                没有找到用户信息
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

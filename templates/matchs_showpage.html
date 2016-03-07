@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    匹配路线精选 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+    <link href="/static/dist/css/combine/bootstrapbase.min.css" rel="stylesheet">
+<style type="text/css">
+
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <table id="matchShow" border="1" cellpadding="10">
+    <tr>
+        <th>lushu ID</th>
+        <th>lushu title</th>
+        <th>缩略图</th>
+        <th>匹配人数</th>
+        <th>最高相似度</th>
+        <th>最高均速</th>
+        <th>最长距离</th>
+        <th>最短时间</th>
+        <th>最高圈数</th>
+        <th>最早时间</th>
+    </tr>
+    {% for lushu in lushus %}
+        <tr>
+            <td><a href="/match_showpage?lushu_id={{ lushu.id }}">{{ lushu.id }}</a> </td>
+            <td><a href="/match_showpage?lushu_id={{ lushu.id }}">{{ lushu.title }}</a> </td>
+            <td><img src="http://static.imxingzhe.com/lushu/{{ lushu.uuid }}.png" height="140" width="320"/> </td>
+            <td>{{ lushu.match_count }}</td>
+            <td>{{ lushu.max_similarity }}</td>
+            <td>{{ lushu.max_avg }}</td>
+            <td>{{ lushu.max_distance }}</td>
+            <td>{{ lushu.min_duration }}</td>
+            <td>{{ lushu.max_circle }}</td>
+            <td>{{ lushu.min_start_time|to_datetime }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

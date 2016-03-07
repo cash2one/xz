@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}
+路书导航，骑行必备 - 行者路书 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/lushu.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<div class="container">
+    
+    <div class="clearfix">
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>无法制作、显示路书？</strong><a target="_blank" href="{% url 'lushu_help' %}">点击查看解决办法</a>
+        </div>        
+    </div>
+
+    <div class="clearfix">
+        <h1>路书导航，行者独创</h1>
+        <p><strong>路书是提前规划好的路线，可以导入到行者手机端进行导航</strong>。现在使用行者可以直接在<a href="{% url 'download' %}">手机上</a>制作路书了。</p>
+        <div class="pull-left btns-group">
+            <a target="_blank" href="{% url 'lushu_create' %}" class="btn btn-primary"><i class="iconfont">&#xe61e;</i> 制作路书</a>
+            <a target="_blank" href="{% url 'lushu_upload' %}" class="btn btn-primary"><i class="iconfont">&#xe614;</i> 上传gpx路书</a>
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="iconfont">&#xe60e;</i> 搜索路书 <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a target="_blank" href="{% url 'lushu_search' %}">范围搜索</a></li>
+                <li class="divider"></li>
+                <li><a target="_blank" href="{% url 'lushu_search_id' %}">编号搜索</a></li>
+              </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+        <h3>最新路书</h3>
+        <div class="row new-lushu">
+        {% for lushu in lushus|slice:"0:12" %}
+          <div class="col-md-3">
+            <div class="thumbnail">
+            <a href="{% url 'lushu_show' lushu.id %}" title="{{ lushu.title }}" target="_blank">
+              <img src="http://static.imxingzhe.com/lushu/{{ lushu.uuid }}.png!webActivityPhotos" alt="路书图" onerror="this.src='http://cdn.bi-ci.com/dist_v2/image/user/lushu_default_map.jpg';this.onerror=null">
+              <div class="caption">
+                <h3 class="text-overflow">{{ lushu.title }}</h3>
+                <p>{{ lushu.distance|to_distance }}公里 {{ lushu.user.username }}的路书</p>
+              </div>
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+
+
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+{% endblock %}

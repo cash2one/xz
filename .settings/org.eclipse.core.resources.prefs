@@ -1,0 +1,16 @@
+eclipse.preferences.version=1
+encoding//account/forms.py=utf-8
+encoding//djangobb_forum/context_processors.py=utf-8
+encoding//djangobb_forum/forms.py=utf-8
+encoding//djangobb_forum/models.py=utf-8
+encoding//djangobb_forum/settings.py=utf-8
+encoding//djangobb_forum/templatetags/forum_extras.py=utf-8
+encoding//djangobb_forum/util.py=utf-8
+encoding//djangobb_forum/views.py=utf-8
+encoding//web/adminviews.py=utf-8
+encoding//web/api.py=utf-8
+encoding//web/forms.py=utf8
+encoding//web/helper.py=utf8
+encoding//web/models.py=utf8
+encoding//web/templatetags/filters.py=utf-8
+encoding//web/views.py=utf-8

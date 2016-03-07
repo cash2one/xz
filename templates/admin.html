@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %} Admin Admin {% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<style type="text/css">
+.admin-wrap h3 {
+    margin: 50px 0 30px;
+    color: #333;
+    font-size: 20px;
+}
+.admin-wrap h4 {
+	font-weight: normal;
+    color: #555;
+}
+.admin-wrap ul {
+	display: block;
+	width: 100%;
+	border:1px solid #ecf0f1;
+    margin-bottom: 50px;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+<div class="container admin-wrap">
+    <div class="page-header">
+        <h1>管理管理员 <small>Admin admin</small></h1>
+    </div>
+    <h3>删除管理员组内的用户</h3>
+    {% for key,values in group_admin.items %}
+    <h4>{{ key }}</h4>
+    <ul id="challenges" class="list-unstyled">
+        {% for value in values %}
+        <li>{{ value }} <a class="btn btn-link btn-delete" data-group="{{ key }}" data-id="{{ value }}">删除</a></li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+    <h3>添加用户到组管理员</h3>
+    <form class="form-inline" id="updateAdminform" action="/update_admin/">
+        <div class="form-group">
+            <label class="sr-only" for="inputUserID">用户ID</label>
+            <input type="text" class="form-control" name="addUserId" id="inputUserID" name="" placeholder="用户ID">
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="group_name">
+                <option value="challenge_group">Challenge_group</option>
+                <option value="firmware_group">Firmware_group</option>
+                <option value="topic_group">Topic_group</option>
+                <option value="coupon_group">Coupon_group</option>
+            </select>
+        </div>
+        <button type="submit" id="addUserBtn" class="btn btn-default">添加</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script>
+// Add Admin User
+$("#updateAdminform").submit(function(event) {
+    event.preventDefault();
+    var $form = $(this),
+        inputuserID = $form.find('input[name="addUserId"]').val(),
+        groupname = $form.find('select[name="group_name"]').val(),
+        URL = $form.attr('action');
+
+    $.ajax({
+            url: URL,
+            type: 'POST',
+            data: {
+                addUserId: inputuserID,
+                group_name: groupname
+            }
+        })
+        .done(function() {
+            console.log("success");
+            alert("添加成功！");
+        })
+        .fail(function(jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        })
+        .always(function() {
+            console.log("complete");
+        });
+
+});
+
+// Delete Admin User
+$(".btn-delete").on('click', function(event) {
+    event.preventDefault();
+    var URL = '/update_admin/',
+        userID = $(this).data('id'),
+        groupname = $(this).data('group'),
+        thisBtn = $(this);
+
+    $.ajax({
+            url: URL,
+            type: 'POST',
+            data: {
+                group_name: groupname,
+                deleteUserId: userID
+            }
+        })
+        .done(function(data) {
+            console.log("success");
+            alert('删除成功！');
+            thisBtn.parent('li').remove();
+        })
+        .fail(function(jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        })
+        .always(function() {
+            console.log("complete");
+        });
+
+});
+</script>
+{% endblock %}

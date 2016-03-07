@@ -1,0 +1,77 @@
+{% extends "root_admin.html" %}
+{% block css %}
+<link href="/static/dist/css/add_medal.css" rel="stylesheet"> 
+<link href="http://cdn.bootcss.com/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block container %}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <header class="header">
+                <h1 class="page-header">添加勋章</h1>
+                <ol class="breadcrumb">
+                    <li><a href="#">后台首页</a></li>
+                    <li><a href="#">勋章管理</a></li>
+                    <li class="active"><i class="fa fa-edit"></i>添加勋章</li>
+                </ol>    
+            </header>
+            
+
+            <div class="block-shadow">
+            <form id="addMedalForm" action="" method="post" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label for="inputTitle">勋章标题</label>
+                        <input type="text" class="form-control" id="inputTitle" name="medal_title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDescription">勋章描述</label>
+                        <textarea class="form-control" id="inputDescription" name="medal_desc" maxlength="600"></textarea required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStarttime">开始时间</label>
+                        <input type="text" class="form-control datepicker" id="inputStarttime">
+                        <input type="hidden" id="inputStarttimeHid" name="start_time">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEndtime">结束时间</label>
+                        <input type="text" class="form-control datepicker" id="inputEndtime">
+                        <input type="hidden" id="inputEndtimeHid" name="end_time">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputFileMedalJin">未开始勋章图片</label>
+                        <input type="file" class="file-upyun" id="inputFileMedalUnactived" accept="image/*">
+                        <input type="hidden" name="medal_unactived_img">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputFileMedalYin">未获得勋章图片</label>
+                        <input type="file" class="file-upyun" id="inputFileMedalExpired" accept="image/*">
+                        <input type="hidden" name="medal_expired_img">
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <button type="button" id="addMedalTypeBtn" class="btn btn-info btn-default"><i class="glyphicon glyphicon-plus"></i> 创建一个勋章类型（等级）</button>
+                    </div>
+                    <!-- 类型勋章容器 -->
+                    <div id="medalTypesWrap">
+                        <input type="hidden" id="mtype" name="mtype">
+                    </div>
+
+                    <div>
+                        <button type="submit" id="buttonSubmit" class="pull-right btn btn-primary btn-lg">确认添加</button>
+                    </div>
+
+
+            </form>                
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bootcss.com/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap-datepicker/1.5.1/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/md5.js"></script>
+<script src="/static/dist/js/add_medal.js"></script>
+{% endblock %}

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>赛事报名</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="/static/dist/css/competitions_h5.css">
+</head>
+
+<body>
+    <div class="page-group" id="xzEnrool">
+        <div class="page page-current" id="pageEnrollInfo">
+            <header class="bar bar-nav">
+                <h1 class="title">添加报名信息</h1>
+            </header>
+            <div class="content">
+                <div class="list-block">
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">赛事：<strong id="dataTitle"></strong></div>
+                            </div>
+                        </li>
+                        <li class="item-content item-link">
+                            <div class="item-inner">
+                                <div class="item-title">组别：<span id="dataGroupName"></span></div>
+                                <div class="item-after"><a href="#pageSelectGroup">选择组别</a></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">报名费用：¥<span id="dataGroupCost"></span></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="list-block media-list">
+                    <div class="content-block-title">报名人信息</div>
+                    <ul>
+                        <li class="item-content item-link link-to-pageaddmember">
+                            <div class="item-inner">
+                                <a>添加/修改报名人</a>
+                            </div>
+                        </li>
+                        <li class="people-info-list">
+                            <div class="item-content">
+                                <div class="item-media"><span class="ico-remove"></span></div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title" id="anchorTrueName"></div>
+                                    </div>
+                                    <div class="item-subtitle" id="anchorContactMobile"></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="list-block">
+                    <div class="content-block-title">车队信息（个人报名选填）</div>
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">车队名称</div>
+                                    <div class="item-input">
+                                        <input type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">联系人姓名</div>
+                                    <div class="item-input">
+                                        <input type="text" placeholder="车队联系人姓名">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">联系人手机</div>
+                                    <div class="item-input">
+                                        <input type="tel" placeholder="车队联系人手机号">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="list-block">
+                    <div class="content-block-title">备注信息（选填）</div>
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <textarea name="extra_team" placeholder=""></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                    <p><a href="#" id="submitBtn" class="button button-big button-fill">报名</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="page" id="pageSelectGroup">
+            <header class="bar bar-nav">
+                <a class="icon icon-left pull-left back"></a>
+                <h1 class="title">选择组别</h1>
+            </header>
+            <div class="content">
+                <div class="content-block-title">选择组别</div>
+                <div class="list-block media-list">
+                    <ul id="groupList">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--         <div class="page" id="PageMemberList">
+            <header class="bar bar-nav">
+                <a class="icon icon-left pull-left back"></a>
+                <h1 class="title">添加报名人</h1>
+            </header>
+            <div class="content">
+                <div class="list-block">
+                    <ul>
+                        <li class="item-content item-link">
+                            <div class="item-inner link-btn-addmember">
+                                <div class="item-title"><a>+ 新增报名人</a></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <label class="label-checkbox item-content">
+                                <input type="radio" name="my-radio">
+                                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">张全蛋<small>18656552637</small></div>
+                                    </div>
+                                    <div class="item-text"><span class="icon icon-edit"></span></div>
+                                </div>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
+        <div class="page" id="pageAddMember">
+            <header class="bar bar-nav">
+                <a class="icon icon-left pull-left back" href="pageEnrollInfo"></a>
+                <h1 class="title">新增报名人</h1>
+            </header>
+            <div class="content">
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">姓名</div>
+                                    <div class="item-input">
+                                        <input type="text" name="true_name" placeholder="报名人真实姓名" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">手机</div>
+                                    <div class="item-input">
+                                        <input type="tel" name="contact_mobile" placeholder="11位手机号" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">性别</div>
+                                    <div class="item-input">
+                                        <select required="required" name="sex">
+                                            <option value="2">男</option>
+                                            <option value="1">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">证件类型</div>
+                                    <div class="item-input">
+                                        <select name="id_type">
+                                            <option value="0">身份证</option>
+                                            <option value="1">护照</option>
+                                            <option value="2">港澳通行证</option>
+                                            <option value="3">台湾通行证</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">证件号码</div>
+                                    <div class="item-input">
+                                        <input type="text" name="id_card" placeholder="请正确输入证件号码" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">紧急联系人</div>
+                                    <div class="item-input">
+                                        <input type="text" name="urgency_contacts" placeholder="紧急联系人姓名" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">联系人手机</div>
+                                    <div class="item-input">
+                                        <input type="tel" name="urgency_phone" placeholder="紧急联系人手机号码" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                    <div class="row">
+                        <div class="col-50"><a href="#pageEnrollInfo" class="button button-big back">取消</a></div>
+                        <div class="col-50"><a id="btnSavePeople" class="button button-big button-fill">保存</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+        <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+        <script>
+        // 正则验证手机号
+        var isPhone = function(str) {
+            var pattern = /^(13[0-9]|14[57]|15[0-9]|17[0-9]|18[0-9])\d{8}$/;
+            return pattern.test(str);
+        };
+
+        // 正则验证邮箱
+        var isEmail = function(str) {
+            var pattern = /^([a-zA-Z0-9]+[-_.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[-_.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,6}$/;
+            return pattern.test(str);
+        };
+
+        // 正则验证是否为空
+        var isEmpty = function(str) {
+            return str === null || typeof str === "undefined" || str.trim() === "" ? true : false;
+        };
+
+        // 正则验证身份证
+        var isIdCard = function(str) {
+            var pattern = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            return pattern.test(str);
+        }
+
+        // 时间戳转换格式时间
+        var toStrTime = function(e) {
+            var date = new Date(e);
+            Y = date.getFullYear() + '/';
+            M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
+            D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+            h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
+            m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes());
+            return Y + M + D + h + m;
+        };
+
+        var truename = $('input[name=true_name]'),
+            contactmobile = $('input[name=contact_mobile]'),
+            sex = $('select[name=sex]'),
+            idtype = $('select[name=id_type]'),
+            idcard = $('input[name=id_card]'),
+            urgencycontacts = $('input[name=urgency_contacts]'),
+            urgencyphone = $('input[name=urgency_phone]'),
+            extrateam = $('textarea[name=extra_team]'),
+            groupid = $('.group-radio');
+
+        $(document).on('click', '.link-to-pageaddmember', function() {
+            $.router.load("#pageAddMember");
+        });
+
+        // 是否添加了报名人信息
+        var isFormOk = false;
+
+        // 添加报名人信息
+        $(document).on('click', '#btnSavePeople', function() {
+            if (isEmpty(truename.val())) {
+                $.alert('姓名不能为空');
+                return;
+            } else if (isPhone(contactmobile.val()) === false) {
+                $.alert('请正确输入手机号');
+                return;
+            } else if (idtype.val() === '0' && isIdCard(idcard.val()) === false) {
+                $.alert('身份证格式不正确');
+                return;
+            } else if (isEmpty(urgencycontacts.val())) {
+                $.alert('请输入紧急联系人姓名');
+                return;
+            } else if (isPhone(urgencyphone.val()) === false) {
+                $.alert('请正确输入紧急联系人手机号');
+                return;
+            } else {
+                $('#anchorTrueName').text(truename.val());
+                $('#anchorContactMobile').text(contactmobile.val());
+                $('.people-info-list').show();
+                isFormOk = true;
+                $.router.back();
+            }
+        });
+
+        var competitionId = location.search.substring(4),
+            getURL = '/api/v4/competition_detail?competition_id=' + competitionId,
+            postURL = 'api/v4/enroll_competition',
+            selectGroupStr = '';
+
+        $.get(getURL, function(response) {
+            var data = response.data,
+                group = data.group;
+
+            // 赛事标题
+            $('#dataTitle').text(data.title);
+
+            // 选择组列表
+            $.each(group, function(index, val) {
+                groupStr = '<li>' +
+                    '<label class="label-checkbox item-content">' +
+                    '<input type="radio" class="group-radio" name="group-radio" value="' + val.id + '" data-groupid="' + index + '">' +
+                    '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
+                    '<div class="item-inner">' +
+                    '<div class="item-title-row">' +
+                    '<div class="item-title">' + val.group_name + '</div>' +
+                    '<div class="item-after">¥' + val.group_money + '</div>' +
+                    '</div>' +
+                    '<div class="item-subtitle">报名人数上限：' + val.group_quoto + '</div>' +
+                    '<div class="item-text">开始时间：' + toStrTime(val.start_time) + '</div>' +
+                    '</div>' +
+                    '</label>' +
+                    '</li>';
+
+                $('#groupList').append(groupStr);
+            });
+
+
+            $(document).on('change', '.group-radio', function() {
+                var ind = $(this).data('groupid');
+                $('#dataGroupCost').text(group[ind].group_money);
+                $('#dataGroupName').text(group[ind].group_name);
+                // $.router.load("#pageEnrollInfo");
+                $.router.back();
+            });
+        })
+
+
+        $(document).on('click', '#submitBtn', function(event) {
+            event.preventDefault();
+            var groupidval = $("input[name='group-radio']:checked").val();
+
+            if (groupidval === undefined) {
+                $.alert('请选择组别');
+            } else if (isFormOk === false) {
+                $.alert('请添加报名人信息');
+            } else {
+                var datajson = {
+                    'competition_id': parseInt(competitionId),
+                    'group_id': parseInt(groupidval),
+                    'true_name': truename.val(),
+                    'contact_mobile': contactmobile.val(),
+                    'sex': parseInt(sex.val()),
+                    'id_type': parseInt(idtype.val()),
+                    'id_card': idcard.val(),
+                    'urgency_contacts': urgencycontacts.val(),
+                    'urgency_phone': urgencyphone.val(),
+                    'extra_team': extrateam.val()
+                };
+
+                console.log(datajson);
+
+                $(document).on('ajaxBeforeSend', function(e, xhr, options) {
+                    $('#submitBtn').addClass('disabled').attr('disabled', 'disabled').text('信息提交中…');
+                })
+
+                $.ajax({
+                    type: 'POST',
+                    url: postURL,
+                    data: JSON.stringify(datajson),
+                    contentType: 'application/json',
+                    async: false,
+                    dataType: 'json',
+                    success: function(data) {
+                        $.toast("报名成功！");
+                        setTimeout("location.reload()", 3000);
+                    },
+                    error: function(xhr, type) {
+                        $.toast(JSON.parse(xhr.response).error_message);
+                        $('#submitBtn').removeClass('disabled').removeAttr('disabled').text('报名');
+                    }
+                })
+            }
+
+        });
+        </script>
+</body>
+
+</html>

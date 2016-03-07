@@ -1,0 +1,118 @@
+/*
+ * media query
+ */
+.explore-nav-header {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-weight: normal; }
+  .explore-nav-header .alist {
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    border-bottom: 2px solid #ccc;
+    background-color: rgba(0, 0, 0, 0.0313726); }
+    .explore-nav-header .alist a {
+      display: block;
+      color: #555; }
+      .explore-nav-header .alist a:hover {
+        color: #007ac2;
+        text-decoration: none; }
+  .explore-nav-header .alist.active {
+    border-bottom: 2px solid #007ac2; }
+
+.pagination-wrap {
+  float: left;
+  position: relative;
+  left: 50%;
+  clear: both;
+  color: #999;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 6px 0px 6px 6px;
+  font-size: 13px; }
+  .pagination-wrap > div {
+    position: relative;
+    left: -50%; }
+  .pagination-wrap a {
+    float: left;
+    border: 1px solid #ccc;
+    display: inline;
+    padding: 5px 12px 5px 12px;
+    margin-right: 5px;
+    cursor: pointer;
+    background: #fff;
+    text-decoration: none;
+    color: #999; }
+    .pagination-wrap a:hover {
+      border: 1px solid #007ac2;
+      background-color: #007ac2;
+      background-color: rgba(0, 122, 194, 0.9);
+      color: #fff; }
+  .pagination-wrap span.disabled {
+    float: left;
+    display: inline;
+    padding: 5px 12px 5px 12px;
+    margin-right: 5px;
+    border: 1px solid #DFDFDF;
+    background-color: #FFF;
+    color: #DFDFDF; }
+  .pagination-wrap span.curr {
+    float: left;
+    border: 1px solid #007ac2;
+    display: inline;
+    padding: 5px 12px 5px 12px;
+    margin-right: 5px;
+    color: #007ac2; }
+  .pagination-wrap .spanDot {
+    float: left;
+    margin-right: 5px;
+    line-height: 24px; }
+
+.ranking-list ol {
+  float: left;
+  padding: 0;
+  list-style: none;
+  width: 100%; }
+  .ranking-list ol .item {
+    border-bottom: 1px solid #eee; }
+  .ranking-list ol .item.badges1 .badges {
+    color: #efa102; }
+  .ranking-list ol .item.badges1 .user-name {
+    color: #efa102; }
+  .ranking-list ol .item.badges2 .badges {
+    color: #a58143; }
+  .ranking-list ol .item.badges2 .user-name {
+    color: #a58143; }
+  .ranking-list ol .item.badges3 .badges {
+    color: #5b5243; }
+  .ranking-list ol .item.badges3 .user-name {
+    color: #5b5243; }
+  .ranking-list ol .left {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 96px;
+    line-height: 96px; }
+    .ranking-list ol .left .badges {
+      display: inline-block;
+      width: 45px;
+      color: #222;
+      font-size: 22px; }
+    .ranking-list ol .left .default-avatar {
+      width: 56px;
+      height: 56px;
+      margin-right: 10px;
+      border: 0; }
+    .ranking-list ol .left .user-name {
+      font-size: 22px;
+      color: #333; }
+  .ranking-list ol .right {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 96px;
+    line-height: 96px;
+    text-align: right;
+    font-size: 16px; }
+    .ranking-list ol .right .data-font {
+      margin-right: 2px;
+      font-size: 28px;
+      font-family: "Din Alternate", "Helvetica Neue", Helvetica, sans-serif; }

@@ -1,0 +1,1 @@
+function rad(a){return a*Math.PI/180}function getDistance(a,t,r,n){var h=rad(a),M=rad(r),o=h-M,u=rad(t)-rad(n),d=2*Math.asin(Math.sqrt(Math.pow(Math.sin(o/2),2)+Math.cos(h)*Math.cos(M)*Math.pow(Math.sin(u/2),2)));return d*=EARTH_RADIUS,d=Math.round(1e4*d)/1e4}function round(a,t){var r=Math.pow(10,t);return Math.round(a*r)/r}var EARTH_RADIUS=6378137;

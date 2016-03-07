@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %} 最新上传的路线 - 行者骑行软件 {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/explore.css">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<div class="container">
+    <div class="row">
+        {% comment %}
+        <div class="col-xs-6">
+            <h3>最新上传</h3>
+            <br /> {% for workout in workouts %}
+            <div class="clearfix"></div>
+            <div class="track">
+                <div style="width:105px;" class="float-left">
+                    <a href="{% url 'workout' workout.id %}" target="_blank"><img style="width:75;height:75;" class="thumbnail float-left" src="{% baidu_static_map %}width=75&height=75&pathStyles=0x3F9FD9,3,1&paths={% for p in workout.trackpoints %}{{ p.longitude }},{{ p.latitude }}{% if not forloop.last %};{% endif %}{% endfor %}"></a>
+                    &nbsp;
+                </div>
+                <div class="float-left">
+                    <a style="font-size:15px;" target="_blank" href="{% url 'workout' workout.id %}">{{ workout.sport|sport_to_string }}{{ workout.distance|to_distance }}公里，时间{{ workout.duration|to_duration }}，平均速度{{ workout.avg_speed }}公里/小时</a>
+                    <p class="track_author">
+                        <span style="color:gray">{{ workout.start_time|to_datetime|date:"Y-m-d"}}</span> 来自 <a style="color:gray" href="{% url 'user_new' workout.user.encode_id %}">{{ workout.user.username }}</a>
+                    </p>
+                    <p style="margin:3px 3px 3px 0px;padding:0px;">
+                        {{ workout.title }}
+                    </p>
+                    <!-- <a href="/tag:btt" class="label">btt</a> -->
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>{% endcomment %}
+</div>
+
+<div class="container">
+
+    <nav class="explore-nav-header">
+        <div class="row">
+            <div class="col-md-6 alist active">行者用户总里程排名</div>
+            {% if the_user.city_id %}
+            <div class="col-md-6 alist"><a href="{% url 'city' the_user.city_id %}">{{ the_user.city_name }}用户排名</a></div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-12 ranking-list">
+            <ol>
+                {% for user in users %}
+                <li class="item row badges{{ number|to_rank:forloop.counter }}">
+                    <div class="left col-md-10">
+                        <span class="badges">{{ number|to_rank:forloop.counter }}</span>
+                        <a href="{% url 'user_new' user.encode_id %}" class="user-name">
+                            <img src="{{ user.pic_url }}" alt="" class="default-avatar" width="56">{{ user.username }}
+                        </a>
+                    </div>
+                    <div class="right col-md-2">
+                        <span class="data-font">{{ user.profile.valid_distance|to_distance }}</span>公里
+                    </div>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+</div>
+
+<div id="Pagination" class="pagination-wrap"></div>
+
+</div>
+{% endblock %}
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/kkpager/kkpager.min.js"></script>
+<script>
+//init
+$(function() {
+    //生成分页
+    kkpager.generPageHtml({
+        pagerid: 'Pagination', // 分页展示控件容器ID
+        pno: {{ number }}, //当前页码
+        total: 100, //总页码
+        totalRecords: 2000, //总数据条数
+        isShowCurrPage: false, // 显示当前页
+        isShowTotalPage: false, //总页数
+        isGoPage: false,
+        isShowFirstPageBtn: false, //显示首页按钮
+        getLink: function(n) {
+            return "?page=" + n;
+        }
+    });
+});
+</script>
+{% endblock %}

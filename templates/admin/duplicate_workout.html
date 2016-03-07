@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}
+删除重复路线 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+    {% for workout in workouts %}
+        <div class="row" style="margin-top: 10px;">
+            <div class="span12">
+                <div class="float-left">
+                    <a style="font-size:15px;" target="_blank" href="{% url 'workout' workout.id %}">{{ workout.sport|sport_to_string }}{{ workout.distance|to_distance }}公里，时间{{ workout.duration|to_duration }}，平均速度{{ workout.avg_speed }}公里/小时</a>
+                    <p class="track_author">
+                        <span style="color:gray">{{ workout.start_time|to_datetime|date:"Y-m-d"}}</span>
+                    </p>
+                    <div style="margin-top:5px; width:450px;">
+                        {{ workout.title }}
+                    </div>
+                    {% if workout.hidden %}
+                        <span class="label" title="只有自己可见">已隐藏</span>
+                    {% endif %}
+                </div>
+                <div class="clearfix" style="margin-bottom: 10px;"></div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <ul class="pager">
+            <li>
+                {% if workouts.has_previous %}
+                    <a href="?page={{ workouts.previous_page_number }}" title="{{ workouts.previous_page_number }}">上一页</a>
+                {% endif %}
+            </li>
+            <li>
+                {{ workouts.number }} / {{ workouts.paginator.num_pages }}
+            </li>
+            <li>
+                {% if workouts.has_next %}
+                    <a href="?page={{ workouts.next_page_number }}" title="{{ workouts.next_page_number }}">下一页</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,8 @@
+{% load i18n %}{% autoescape off %}{% load url from future %}
+{% if not without_usernames %}{% blocktrans with user.username as username %}{{ username }} 您好：{% endblocktrans %}
+{% endif %}
+请点击以下链接完成激活，如果无法点击，请复制以下链接，然后在浏览器里打开：
+http://www.imxingzhe.com{% url 'userena_activate' activation_key %}
+
+感谢使用行者骑行软件
+{% endautoescape %}

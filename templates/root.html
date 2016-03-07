@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta property="qc:admins" content="353421363161501672056375" />
+    <title>{% block title %}行者{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="format-detection" content="telephone=no"> {% block css %}{% endblock %}
+    <link rel="dns-prefetch" href="http://cdn.bi-ci.com/">
+    <link rel="apple-touch-icon-precomposed" href="/static/images/icon72x72@2x.png">
+    <link rel="icon" type="image/png" href="http://cdn.bi-ci.com/static/commonimg/favicon/favicon32.png">
+    <meta name="apple-mobile-web-app-title" content="行者官网">
+    <meta name="apple-itunes-app" content="app-id=id779325629">
+    <meta name="description" content="行者骑行软件官网，最好用的骑行App。">
+    <meta name="keywords" content="行者骑行软件，行者，单车，骑行记录，行者路书导航，手机骑行软件，安卓手机骑行软件，骑行软件，行者im，行者apk，无偏移，离线地图, xingzhe.im，队友，行者app，骑行app，路书，山地车软件，骑行导航软件，轨迹软件，码表软件，行者路书，组队，行者GPS">
+    <meta name="baidu-site-verification" content="lIMYkV04qs" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/static/dist/js/vendor/html5shiv.min.js"></script>
+      <script src="/static/dist/js/vendor/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="push-wrapper">
+        <!-- Nav -->
+        {% block navbar %}
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand iconfont" href="{% url 'index' %}">&#xe60c;</a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse" style="display:none">
+                        <ul class="nav navbar-nav navbar-left hidden-xs">
+                            <li class="dropdown">
+                                <a href="{% url 'lushu' %}">路书<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/lushu/create/">制作路书</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a data-toggle="dropdown">发现<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'challenges' %}">挑战</a></li>
+                                    <li><a href="{% url 'activities' %}">活动</a></li>
+                                    <li><a href="/insurance/">保险</a></li>
+                                    <!-- <li><a href="">新闻</a></li> -->
+                                    <li><a href="/competitions/list/">赛事</a></li>
+                                    <li><a href="http://24.imxingzhe.com" target="_blank">24小时</a></li>
+                                    <li><a href="{% url 'explore' %}">排名</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'xzb_show' %}">行者帮</a></li>
+                            <li><a href="{% url 'clubs_list_hot' %}">俱乐部</a></li>
+                            <li><a href="/download/">下载</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="{% url 'help' %}">帮助中心<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/jifen/">积分优惠</a></li>
+                                    <li><a href="/lushu/help/">路书相关</a></li>
+                                    <li><a href="/help_app/">APP使用</a></li>
+                                    <li><a href="/contact/">联系我们</a></li>
+                                    <li><a href="/help/feedback_form/">问题反馈</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <!-- left navbar mobile -->
+                        <ul class="nav navbar-nav navbar-left visible-xs-block">
+                            <li><a href="{% url 'lushu' %}">路书</a></li>
+                            <li><a href="{% url 'challenges' %}">挑战</a></li>
+                            <li><a href="{% url 'activities' %}">活动</a></li>
+                            <li><a href="/insurance/">保险</a></li>
+                            <li><a href="{% url 'explore' %}">排名</a></li>
+                            <li><a href="{% url 'xzb_show' %}">行者帮</a></li>
+                            <li><a href="{% url 'clubs_list_hot' %}">俱乐部</a></li>
+                            <li><a href="/download/">下载</a></li>
+                            <li><a href="{% url 'help' %}">帮助中心</a></li>
+                        </ul>
+
+                        {% block login %}
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if user.is_authenticated %}
+                            <li class="visible-xs-block">
+                                <a href="{% url 'user_new' user.encode_id %}">
+                                    <img class="user-avatar" src="http://static.imxingzhe.com/default-avatar/default-avatar.png!eventSmall" alt=""><!--{{ user.pic_url }}-->
+                                    <span class="user-name">{{ user.username }}</span>
+                                </a>
+                            </li>
+                            <li class="visible-xs-block"><a href="{% url 'userena_signout' %}"><i class="iconfont">&#xe63d;</i>退出</a></li>
+                            <li class="dropdown hidden-xs">
+                                <a href="{% url 'user_new' user.encode_id %}">
+                                    <img class="user-avatar" src="http://static.imxingzhe.com/default-avatar/default-avatar.png!eventSmall" alt="">{{ user.username }}<span class="caret"></span></a><!--{{ the_user.pic_url }}-->
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'profile' %}"><i class="iconfont">&#xe63c;</i>设置</a></li>
+                                    <li><a href="{% url 'userena_signout' %}"><i class="iconfont">&#xe63d;</i>退出</a></li>
+                                </ul>
+                            </li>
+                            {% else %}
+                            <li class="dropdown">
+                                <a href="/user/login"><i class="iconfont">&#xe63b;</i> 登录</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/user/register"><i class="iconfont">&#xe61b;</i>注册</a></li>
+                                </ul>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% endblock %}
+        <!-- Nav End -->
+        {% block container %}
+        {% endblock %}
+        <script src="/static/dist/js/common.js"></script>
+        {% block js %}
+        {% endblock %}
+        <script>
+
+        </script>
+        <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-71062163-1', 'auto');
+        ga('send', 'pageview');
+        </script>
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?7b262f3838ed313bc65b9ec6316c79c4";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</body>
+
+</html>

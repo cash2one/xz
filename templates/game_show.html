@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ game.title }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    {% load filters %}
+
+    <div class="page-header">
+        <h3>
+            {{ game.title }}
+        </h3>
+        <!--form action="" method="post" class="form-horizontal">
+            <input type="submit" value="拼人品" class="btn btn-primary {% if disable %}disabled{% endif %}">
+        </form-->
+    </div>
+    <div class="row">
+        <div class="span10" style="color:grey;">
+            参与人数：<span>{{ play_count }}</span>
+            {% comment %}&nbsp;&nbsp;组织者：<span><a style="color:gray" href="{% url 'user_new' game.user.encode_id %}">{{ game.user.username }}</a></span>
+            &nbsp;&nbsp;参赛人数：<span>{{ game.player_count }}</span>{% endcomment %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10" style="color:grey;">
+            有效时间：<span>{{ game.start_time|date:"Y-m-d H" }}点&nbsp;至&nbsp;{{ game.end_time|date:'Y-m-d H' }}点</span>
+            {% comment %}&nbsp;&nbsp;组织者：<span><a style="color:gray" href="{% url 'user_new' game.user.encode_id %}">{{ game.user.username }}</a></span>
+            &nbsp;&nbsp;参赛人数：<span>{{ game.player_count }}</span>{% endcomment %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10" style="color:grey;">
+            得分范围：<span>{{ game.min_score }}&nbsp;至&nbsp;{{ game.max_score }}</span>
+        </div>
+    </div>
+    <div class="row" style="color:grey;">
+        <div class="span10">
+            参与条件：每天上传的数据超过{{ game.min_distance }}个<a target="_blank" href="{% url 'help_jifen' %}">积分</a>，则有一次机会抽取一个分数，活动最后累计每个人的分数之和，分数最多的获得奖品
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="span12">
+            {{ game.description|linebreaksbr }}
+        </div>
+    </div>
+    <hr />
+    得分TOP20:<br />
+    {% for stat in play_stat %}
+        <div class="row" style="margin-top:5px">
+            <div class="span2">
+                <a style="color:gray" href="{% url 'user_new' stat.user.encode_id %}">{{ stat.user.username }}</a>
+            </div>
+            <div class="span3">{{ stat.total_score }}分</div>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+

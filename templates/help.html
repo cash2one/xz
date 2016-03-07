@@ -1,0 +1,70 @@
+{% extends "base.html" %} 
+{% block title %} 使用帮助 - 行者骑行软件 {% endblock %} 
+
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet"> 
+{% endblock %} 
+
+{% block content %} 
+
+{% load filters %}
+
+<div class="app-header">
+    <div class="container">
+        <h1 class="pull-left">帮助中心</h1>
+    </div>
+</div>
+<div class="container row-help">
+    <div class="row keywords">
+        <div class="col-md-2 col-xs-6 wrap">
+            <a href="/help_app/"><i class="iconfont">&#xe62d;</i><span>App使用</span></a>
+        </div>
+        <div class="col-md-2 col-xs-6 wrap">
+            <a href="/lushu/help/"><i class="iconfont">&#xe628;</i><span>路书相关</span></a>
+        </div>
+        <div class="col-md-2 col-xs-6 wrap">
+            <a href="/help_videos/"><i class="iconfont">&#xe62c;</i><span>视频介绍</span></a>
+        </div>
+        <div class="col-md-2 col-xs-6 wrap">
+            <a href="/jifen/"><i class="iconfont">&#xe60a;</i><span>积分优惠</span></a>
+        </div>
+        <div class="col-md-2 col-xs-6 wrap">
+            <a href="/contact/"><i class="iconfont">&#xe62a;</i><span>联系我们</span></a>
+        </div>
+        <div class="col-md-2 col-xs-6 wrap">
+            <a href="/help/feedback_form/"><i class="iconfont">&#xe601;</i><span>问题反馈</span></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>常见问题解答</h3>
+            <div class="row faq">
+                <div class="col-md-6">
+                    <a href="/help_gps/">GPS定位常见问题</a>
+                </div>
+                <div class="col-md-6">
+                    <a href="/help_motionhome/">运动首页设置</a>
+                </div>
+                <div class="col-md-6">
+                    <a href="/help_speech/">语音播报问题</a>
+                </div>
+                <div class="col-md-6">
+                    <a href="/help_offlinemaps/">离线地图问题</a>
+                </div>
+                <div class="col-md-6">
+                    <a href="/help_login/">注册和登录问题</a>
+                </div>
+                <div class="col-md-6">
+                    <a href="/jifen/">行者积分问题</a>
+                </div>
+                <div class="col-md-6">
+                    <a href="/help_flashback_android/">后台运行异常中断解决办法（安卓）</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <p>没有找到遇到的问题？您可以<a href="/contact/">与我们取得联系</a>。</p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+{% load crispy_forms_tags %}
+
+{% block title %} 登录 - 行者骑行软件 {% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="/static/dist/css/user-login.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form id="loginForm" class="form-accounts form-accounts-login" role="form" data-toggle="validator" autocomplete="off" autocorrect="off" autocapitalize="off">
+      <header class="text-center">
+        <h1 title="登录" class="iconfont">&#xe60c;</h1>
+        <h2 class="text-center">虽千万里，吾往矣</h2>
+      </header>
+        <div class="form-group">
+            <label for="loginAccount">
+              <i class="iconfont">&#xe63b;</i>
+              <input type="text" class="form-control input-lg input-block" id="loginAccount" name="account" tabindex="1" placeholder="手机号码/邮箱" required pattern="(^1[0-9]{10}$)|(^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$)" data-error="请输入正确的手机号码/邮箱">
+            </label>
+            <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+            <label for="loginPassword">
+              <i class="iconfont">&#xe639;</i>
+              <input type="password" class="form-control input-lg" id="loginPassword" name="password" tabindex="2" placeholder="密码" data-minlength="6" required data-error="密码长度不少于6位">
+            </label>
+            <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="3">登录</button>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-xs-6 margin-top-10 margin-bottom-10">
+            <a href="/user/register" tabindex="4">注册新账号»</a>
+          </div>
+          <div class="login-reset-password col-sm-6 col-xs-6 margin-top-10 margin-bottom-10 text-right">
+            <a class="visible-xs-block" href="/user/find_password">找回密码</a>
+            <a class="hidden-xs" href="/user/find_password?type=pc">找回密码</a>
+          </div>
+        </div>
+
+        <div class="login-thirdpart">
+          <span class="login-thirdpart-tit">社交账号登录</span>
+          <a id="wechatLoginBtn" href="/wechat/authorize" title="微信登录" class="iconfont tooltip login-thirdpart-wechat" data-placement="top" tabindex="6">&#xe605;</a>
+          <a href="/weibo/authorize" title="微博登录" class="iconfont tooltip login-thirdpart-weibo" data-placement="top" tabindex="7">&#xe600;</a>
+          <a id="qqLoginBtn" href="/qq/authorize" title="QQ登录" class="iconfont tooltip login-thirdpart-qq" data-placement="top" tabindex="8">&#xe609;</a>
+        </div>
+    </form>
+</div>
+
+<textarea class="hidden" hidden id="pubkey">{{ pk }}</textarea>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="/static/dist/js/base64tocode.js"></script>
+<script src="/static/dist/js/componet/validator.min.js"></script>
+<script src="/static/dist/js/componet/jsencrypt.min.js"></script>
+<script src="/static/dist/js/user-login.js"></script>
+{% endblock %}

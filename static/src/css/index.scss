@@ -1,0 +1,166 @@
+@import "bootstrap";
+@import "base.scss";
+
+html {
+    background-color: #d4e8fb;
+}
+.push-wrapper {
+    margin: 0 auto;
+    height: 100%;
+    background-color: #d4e8fb;
+    @include desktop {
+        background: #b5d9f5 url(http://static.imxingzhe.com/challenges/2016120/annualreport_webcover.png) center no-repeat;
+        background-size: contain;
+    }
+    @include tablet {
+        background: #d4e8fb url(http://static.imxingzhe.com/year2015/f1.jpg) center no-repeat;
+        background-size: contain;
+    }
+    @include phone {
+        background: #d4e8fb url(http://static.imxingzhe.com/year2015/f1.jpg) center no-repeat;
+        background-size: 100%;
+    }
+}
+//allyear
+.navbar-default .navbar-brand {
+    color: #0033a0;
+}
+.navbar-default .navbar-brand:visited, .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:active {
+    color: #0033a0;
+}
+.navbar-default .navbar-nav li a {
+    color: #0033a0;
+}
+.navbar-default .navbar-nav li a:hover, .navbar-default .navbar-nav li a:focus {
+    color: #0033a0;
+}
+// nav
+.navbar-default {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: none;
+    box-shadow: none;
+    .navbar-nav {
+        li.open {
+            a,
+            a:focus {
+                background-color: transparent;
+            }
+        }
+        .dropdown-menu {
+            box-shadow: none;
+            background-color: transparent;
+        }
+    }
+}
+
+.navbar-default .navbar-collapse {
+    @include phone {
+        background-color: rgba(0, 0, 0, .6);
+    }
+}
+
+// 总里程数字
+.count-blok {
+    position: absolute;
+    bottom: 45px;
+    right: 60px;
+    z-index: 100;
+    text-align: right;
+    font-size: 16px;
+    color: #0033a0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    .total-num {
+        display: inline-block;
+        min-width: 88px;
+        font-weight: 100;
+        margin: 0 6px;
+    }
+}
+.modal-dialog {
+    margin: 20% auto 0;
+}
+.modal-content {
+    padding: 40px 0;
+    text-align: center;
+    font-size: 18px;
+    .qr-code {
+        margin-bottom: 20px;
+        img {
+            margin: 0 auto;
+        }
+    }
+}
+    
+
+// main
+.main {
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .div1:hover .img{
+        display: block !important;
+    }
+    .img{
+        display: none !important;
+    }
+    .btn {
+        width: 11em;
+        position: relative;
+        top: 50px;
+        border-radius: 1px;
+        @include phone {
+            width: 10em;
+            border-radius: 5px;
+            font-weight: 200;
+            top: 29%;
+            font-size: 1rem;
+        }
+    }
+    .btn-lg, .btn-group-lg>.btn {
+          @include phone {
+             padding: 6px 2px;
+            font-size: 18px;
+            line-height: 1.3333333;
+            @include desktop-lg {}
+        }
+    }
+    .btn-sm, .btn-group-sm>.btn {
+        @include phone {
+        padding: 4px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+        }
+    }
+    .div1{
+                position: absolute;
+                top: 10rem;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                height: 0rem;
+                width: 14rem;
+                @include phone {
+                    top: 20rem;
+                    width: 18rem;
+                }
+    }
+     .div2{
+        position: absolute;
+        top: 19rem;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: 0;
+        width: 8rem;
+        @include phone {
+            top: 29rem;
+            width: 12rem;
+        }
+    }
+}

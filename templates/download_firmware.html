@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}
+    固件列表
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/firmware.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="header">固件列表</h1>
+  <div class="table-responsive">
+    <table class="table-bordered">
+      <thead>
+        <tr>
+          <th>固件版本</th>
+          <th>固件版本号</th>
+          <th>更新日志</th>
+          <th>下载固件</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ firmware_info.newest_version }}</td>
+          <td>{{ firmware_info.newest_version2 }}</td>
+          <td class="text-left">{{ firmware_info.update_log }}</td>
+          <td><a href="{{ firmware_info.file_path }}" download class="btn btn-primary">下载</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<!-- /container -->
+
+{% endblock %}

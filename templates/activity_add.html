@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    发起新活动
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/activity.css">
+<link rel="stylesheet" href="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<div class="activity-header">
+	<div class="container">
+	    <h1 class="pull-left">创建新活动</h1>
+	</div>    
+</div>
+
+<div class="container form-container">
+
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">拖拽图标到集合地点，或输入关键词后选择搜索结果</h4>
+      </div>
+      <div class="modal-body locationWrap">
+        <div id="l-map" class="l-map"></div>
+        <input type="text" class="form-control input-lg" id="suggestId" size="20" placeholder="输入地址搜索，如：江湾体育场" required>
+        <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:100%;height:auto; display:none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="addLocaBtn" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form id="activityAddForm">
+
+<!-- 图片地址 -->
+ <!-- <input type="hidden" name="activityCoverPic" id="activityCoverPic"> -->
+
+<!-- city code -->
+ <input type="hidden" name="activityCity" id="activityCity">
+ 
+ <!-- 活动坐标 -->
+ <input type="hidden" name="activityLat" id="activityLat">
+ <input type="hidden" name="activityLon" id="activityLon">
+
+<!-- 活动日期 -->
+ <input type="hidden" name="activityStartTime">
+ <input type="hidden" name="activityEndTime">
+
+  <div class="form-group">
+    <label class="required" for="activityTitle">活动标题（30字以内）</label>
+    <input type="text" class="form-control input-lg" name="activityTitle" id="activityTitle" maxlength="30" required>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-md-6">
+      <label class="required" for="activityStartTime">开始时间</label>
+      <input class="form-control form_datetime_start" id="activityStartTime" type="text" readonly required>
+    </div>
+    <div class="col-md-6">
+      <label class="required" for="activityEndTime">结束时间</label>
+      <input class="form-control form_datetime_end" id="activityEndTime" type="text" readonly required>
+    </div>
+  </div>
+
+  <div class="form-group">
+  	<label class="required" for="activityContent">活动内容简介</label>
+  	<textarea class="form-control" id="activityContent" rows="10" name="activityContent" maxlength="1000" required></textarea>
+  </div>
+
+  <div class="form-group">
+    <label id="r-result" class="required" for="activityTitle">活动集合地</label>
+    <input class="form-control" id="activityAddress" name="activityAddress" type="text" readonly required data-toggle="modal" data-target="#myModal">
+  </div>
+
+  <div class="form-group">
+    <label for="activityLushuId">路书编号（纯数字）<a href='/im/{{ user.encode_id }}/lushu/' target="_blank">查看我的路书<i class="iconfont">&#xe635;</i></a></label>
+    <input type="number" class="form-control input-lg" id="activityLushuId" name="activityLushuId" min="0" maxlength="12" pattern="^\d+$">
+  </div>
+
+  <div class="form-group">
+    <label class="required" for="activityMiles">活动里程（单位：km）</label>
+    <input type="text" class="form-control input-lg" id="activityMiles" name="activityMiles" maxlength="11" placeholder="0" required pattern="^\d+$">
+    <!-- 非负整数 -->
+  </div>
+
+  <div class="form-group">
+    <label class="required" for="activityType">难度</label>
+    <div>
+	    <label class="radio-inline">
+		  <input type="radio" name="activityType" id="activityType1" value="0" checked="checked"> 简单
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="activityType" id="activityType2" value="1"> 休闲
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="activityType" id="activityType3" value="2"> 困难
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="activityType" id="activityType4" value="3"> 疯狂
+		</label>
+		<label class="radio-inline">
+		  <input type="radio" name="activityType" id="activityType5" value="4"> 地狱
+		</label>    	
+    </div>
+
+  </div>
+
+  <div class="form-group">
+    <label for="activityCost">费用（元/人）</label>
+    <input type="number" name="activityCost" id="activityCost" class="form-control input-lg" placeholder="-" min="-1" maxlength="11" pattern="^\d+$">
+    <!-- 非负整数 -->
+  </div>
+
+  <div class="form-group">
+    <label for="activityUserMaxCount">活动最多人数（2-50人）</label>
+    <input type="number" class="form-control input-lg" name="activityUserMaxCount" value="50" id="activityUserMaxCount" min="2" max="50">
+  </div>
+
+  <div class="form-group">
+    <label class="required" for="activityContactMobile">联系人手机号（非常重要）</label>
+    <input type="tel" class="form-control input-lg" name="activityContactMobile" id="activityContactMobile" maxlength="11" required pattern="^(13[0-9]|14[0－9]|15[0-9]|17[0-9]|18[0-9])\d{8}$">
+  </div>
+
+<div class="form-group">
+  <label for="activityContent">活动图片（0-4张，图片点击可删除）</label>
+  
+  <div class="file-wrap">
+    <input type="file" id="file" accept="image/*" onchange="autoUploadImg()">
+    <button type="button" class="visibility-file btn btn-default btn-block">点击选择图片</button>
+  </div>
+  
+  <div class="upload-img">
+      <div class="form-group">
+          <div id="log" class="visibility-input">
+          </div>
+      </div>
+  </div>
+</div>
+
+  <button type="submit" id="submitBtn" class="btn btn-primary btn-lg btn-block">发布</button>
+</form>
+
+
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script>
+  var myUserId = {{ user_id }};
+</script>
+<script src="http://cdn.bi-ci.com/static/upyun-api/spark-md5.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/upyun-api/async.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/upyun-api/upyun-mu.js"></script>
+
+<script src="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script>
+var confi = {
+    language: 'zh-CN',
+    format: "yyyy-mm-dd hh:ii",
+    autoclose: true,
+    // todayBtn: true,
+    pickerPosition: "bottom-left",
+    todayHighlight: true
+}
+$(".form_datetime_end").datetimepicker(confi);
+$(".form_datetime_start").datetimepicker(confi);
+</script>
+
+<script src="/static/dist/js/combine/activity-app.js"></script>
+<script src="/static/dist/js/activity-bdmapoption.js"></script>
+ {% endblock %}

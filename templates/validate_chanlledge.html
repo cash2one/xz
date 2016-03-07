@@ -1,0 +1,204 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://cdn.bi-ci.com/static/normalize/normalize-3.0.3.min.css">
+    <style type="text/css">
+    html,
+    body {
+        height: 100%;t
+    }
+    #map-canvas {
+        width: 100%;
+        height: 75%;
+        top: 80px;
+    }
+    header {
+        margin: 0 auto;
+        padding: 0;
+        width: 100%;
+        height: 8%;
+        background-color: #fff;
+    }
+    header form {
+        margin: 20px 20px 0;
+    }
+    header form label {
+        margin-right: 20px;
+    }
+    footer {
+        height: 8%;
+        padding: 0;
+        background-color: #fff;
+    }
+    footer ul {
+        margin: 25px auto;
+        list-style: none;
+        overflow: hidden;
+    }
+    footer ul li {
+        float: left;
+        margin-right: 20px;
+        text-align: center;
+    }
+    footer li strong {
+        color: #e74c3c;
+    }
+    </style>
+</head>
+
+<body>
+    <header>
+        <p>填入需要匹配的 workout 的 ID 和 路书的 ID, 圈数默认为 1. 只有当是绕圈的情况, 需要填入你的workout绕的圈数. 之后会展示匹配度.</p>
+        <p>当匹配度大于0.8, 会将此次匹配结果记录.</p>
+        <form action="" id="myForm1">
+            <label>待匹配轨迹:
+                <input type="text" name="workoutId" id="workoutId">
+            </label>
+            <label>路书ID:
+                <input type="text" name="lushuId" id="lushuId">
+            </label>
+            <label>圈数:
+                <input type="text" name="circle" id="circle" value="1">
+            </label>
+            <label>匹配度:
+                <input type="text" name="similarity" id="similarity" value="0">
+            </label>
+            <label>
+                <button id="submitBtn">提交</button>
+            </label>
+        </form>
+
+    </header>
+    <div id="map-canvas"></div>
+    <footer>
+    </footer>
+    <script src="http://cdn.bi-ci.com/static/jquery/jquery-2.1.4.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+        var mapOptions = {
+            zoom: 8,
+            center: new google.maps.LatLng(31.309, 121.508)
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        var styleArray = [{
+            featureType: "poi.business",
+            elementType: "labels",
+            stylers: [{
+                visibility: "off"
+            }]
+        }];
+        map.setOptions({
+            styles: styleArray
+        });
+
+
+    $("#submitBtn").on('click', function(event) {
+        event.preventDefault();
+        var workoutId = $("#workoutId").val();
+        var lushuId = $("#lushuId").val();
+        var circle = $("#circle").val();
+
+        var URL = 'http://post.imxingzhe.com/api/v3/validate_chanlledge';
+
+        $.post(URL, {workoutId: workoutId, lushuId: lushuId, circle: circle}, function(data) {
+            console.log(data);
+            cratePolyline(data);
+        });
+    });
+    function cratePolyline(argument) {
+{#        map.setZoom();#}
+        $("#similarity").val(argument.similarity);
+
+
+        // 地图样式
+
+
+        // marker 图片
+        var workoutStartPng = new google.maps.MarkerImage("http://static.imxingzhe.com/start.png", null, null, null, new google.maps.Size(60, 60));
+        var workoutEndPng = new google.maps.MarkerImage("http://static.imxingzhe.com/end.png", null, null, null, new google.maps.Size(60, 60));
+        var lushuStartPng = new google.maps.MarkerImage("http://cdn.bi-ci.com/xingzhesite/static/img/map-marker-icon-2.png", null, null, null, new google.maps.Size(60, 60));
+        var lushuEndPng = new google.maps.MarkerImage("http://cdn.bi-ci.com/xingzhesite/static/img/map-marker-icon-1.png", null, null, null, new google.maps.Size(60, 60));
+
+        var workoutPointArr = argument.workoutPoint;
+        var lushuPointArr = argument.lushuPoint;
+
+
+        var workoutPointArrLen = workoutPointArr.length;
+        var lushuPointArrLen = lushuPointArr.length;
+
+
+        var workoutStartPosition = new google.maps.LatLng(workoutPointArr[0].lat, workoutPointArr[0].lng);
+
+        var marker = new google.maps.Marker({
+            position: workoutStartPosition,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: '轨迹 Start',
+            icon: workoutStartPng
+        });
+
+        var workoutEndPosition = new google.maps.LatLng(workoutPointArr[workoutPointArrLen-1].lat, workoutPointArr[workoutPointArrLen-1].lng);
+
+        var marker = new google.maps.Marker({
+            position: workoutEndPosition,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: '轨迹 End',
+            icon: workoutEndPng
+        });
+
+        var lushuStartPosition = new google.maps.LatLng(lushuPointArr[0].lat, lushuPointArr[0].lng);
+
+        var marker = new google.maps.Marker({
+            position: lushuStartPosition,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: '路书 Start',
+            icon: lushuStartPng
+        });
+        var lushuEndPosition = new google.maps.LatLng(lushuPointArr[lushuPointArrLen-1].lat, lushuPointArr[lushuPointArrLen-1].lng);
+
+        var marker = new google.maps.Marker({
+            position: lushuEndPosition,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: '路书 End',
+            icon: lushuEndPng
+        });
+
+
+        var workoutPolyOptions = {
+            path: workoutPointArr,
+            strokeColor: '#00ff00',
+            strokeOpacity: 0.8,
+            strokeWeight: 3
+        };
+        workoutPoly = new google.maps.Polyline(workoutPolyOptions);
+        workoutPoly.setMap(map);
+
+
+
+        var lushuPolyOptions = {
+            path: lushuPointArr,
+            strokeColor: '#0000ff',
+            strokeOpacity: 0.8,
+            strokeWeight: 3
+        };
+        lushuPoly = new google.maps.Polyline(lushuPolyOptions);
+        lushuPoly.setMap(map);
+
+
+    }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/challenges.css">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+<div class="challenges-header"></div>
+<div class="container">
+    <div class="challenge-detail">
+        <div class="data-pic pull-right"><img src="{{ challenge.small_pic }}"></div>
+        <div class="data-title"><h1>{{ challenge.title }}</h1></div>
+        <div class="data-time">时间：{{ challenge.start_time|to_data_time }} - {{ challenge.end_time|to_data_time }}<small id="dataType"></small></div>
+        <!-- <div class="data-reward" >奖励：{{ challenge.reward }}</div> -->
+        <div class="data-content">{% autoescape off %} {{ challenge.content }} {% endautoescape %}</div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script>
+$(function() {
+    $(".data-content table").addClass('table table-bordered');
+    $(".data-content img").addClass('img-thumbnail');
+});
+</script>
+{% endblock %}

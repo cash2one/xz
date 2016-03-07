@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}报名最具影响力骑行领袖 - 行者骑行软件 {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/dist/css/xingzhe_power_vote_pc.css"> 
+{% endblock %}
+
+{% block content %}
+<div class="container container-vote">
+    <img class="header-img" src="http://cdn.bi-ci.com/dist_v2/image/pages/choice2015/vote_persional_in.jpg" alt="年度最具影响力骑行领袖">
+    <div class="content">
+        <form>
+        {% csrf_token %}
+            <div class="form-group">
+                <label for="voteName">姓名<span class="text-danger">*</span></label>
+                <input type="text" name="name" class="form-control input-lg" id="voteName" maxlength="50" required>
+            </div>
+            <div class="form-group">
+                <label for="voteCity">所在城市<span class="text-danger">*</span></label>
+                <input type="text" name="city" class="form-control input-lg" id="voteCity" placeholder="如：上海市" maxlength="20" required>
+            </div>
+            <div class="form-group">
+                <label for="voteTel">手机号<span class="text-danger">*</span><small>（请务必填写正确）</small></label>
+                <input type="tel" name="tel" class="form-control input-lg" id="voteTel" placeholder="" maxlength="11" required>
+            </div>
+            <div class="form-group">
+                <label for="voteWechat">微信号<small>（选填，非昵称）</small></label>
+                <input type="tel" name="wechatid" class="form-control input-lg" id="voteWechat" maxlength="50">
+            </div>
+            <div class="form-group">
+                <label for="voteQQ">QQ号<small>（选填）</small></label>
+                <input type="tel" name="qqid" class="form-control input-lg" id="voteQQ" maxlength="20">
+            </div>
+            <div class="form-group">
+                <label for="voteSummarytext">一句话介绍<span class="text-danger">*</span></label>
+                <textarea id="voteSummarytext" class="form-control input-lg" rows="10" name="summarytext" placeholder="60字以内" maxlength="60" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="voteReasontext">参选理由<small>（选填）</small></label>
+                <textarea id="voteReasontext" class="form-control input-lg" rows="10" name="reasontext" placeholder="完善资料有助于评选" maxlength="10000"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputFile">上传评选主图<span class="text-danger">*</span><small>（必选）</small></label>
+                <div id="fileWrap" class="file-input-wrap">
+                    <input type="file" id="file" class="file-input" accept="image/*">
+                    <label class="file-input-trigger iconfont">&#xe608;</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputFile">上传更多图片有助于评选<small>（可选，1-4张）</small></label>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div id="fileWrap2" class="file-input-wrap file-input-wrap-sm">
+                            <input type="file" id="file2" class="file-input" accept="image/*">
+                            <label class="file-input-trigger iconfont">&#xe608;</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div id="fileWrap3" class="file-input-wrap file-input-wrap-sm">
+                            <input type="file" id="file3" class="file-input" accept="image/*">
+                            <label class="file-input-trigger iconfont">&#xe608;</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div id="fileWrap4" class="file-input-wrap file-input-wrap-sm">
+                            <input type="file" id="file4" class="file-input" accept="image/*">
+                            <label class="file-input-trigger iconfont">&#xe608;</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div id="fileWrap5" class="file-input-wrap file-input-wrap-sm">
+                            <input type="file" id="file5" class="file-input" accept="image/*">
+                            <label class="file-input-trigger iconfont">&#xe608;</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="submitBtn" data-vtype='0' type="submit" class="pull-right btn btn-primary btn-lg">提交</button>
+        </form>
+    </div>
+</div>
+{% endblock %} {% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="/static/dist/js/componet/canvasResize/binaryajax-min.js"></script>
+<script src="/static/dist/js/componet/canvasResize/exif-min.js"></script>
+<script src="/static/dist/js/componet/canvasResize/canvasResize-min.js"></script>
+<script src="/static/dist/js/xingzhe_power_vote_pc.js"></script>
+{% endblock %}

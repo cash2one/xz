@@ -1,0 +1,243 @@
+@import "bootstrap";
+@import "base.scss";
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.eot');
+    src: url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.woff2') format('woff2'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.woff') format('woff'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.ttf') format('truetype'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-arrow-left:before {
+    content: "\e091";
+}
+
+.glyphicon-arrow-right:before {
+    content: "\e092";
+}
+
+body {
+    background-color: #F5F5F5;
+}
+
+.form-container {
+    max-width: 720px;
+    margin: 0 auto 30px;
+    padding: 50px;
+    background-color: #fff;
+    .form-group {
+        margin-bottom: 40px;
+    }
+    .form-control {
+        position: relative;
+    }
+    textarea {
+        max-width: 620px;
+    }
+}
+
+header.header {
+    margin-bottom: 20px;
+    padding: 20px 0;
+    background-color: #fff;
+    padding-bottom:0px;
+    h1 {
+        margin-top: 10px;
+        font-weight: normal;
+        font-size: 22px;
+        margin-left: 10px;
+        a {
+            color: #555;
+            text-decoration: none;
+        }
+    }
+    .publish_com{
+        button{
+            margin: 0 60px 5px;
+        }
+    }
+}
+
+.nav-tabs{
+    padding-bottom: 5px;
+    border-bottom: 2px solid #007ac2;
+    li{
+        a,a:hover,a:focus{
+            color: #fff !important;    
+            border: 1px solid #868686;    
+            text-decoration: none;
+            background-color: #868686;
+            padding: 4px 15px;
+        }
+    }
+    li.active{
+        a{
+            border-color: #007ac2!important;
+            background-color: #007ac2!important;
+        }
+    }
+}
+.match-list-wrap {
+    .pic {
+        padding: 0;
+        max-width: 280px;
+    }
+    .text-overflow{
+        margin: 0;
+        margin-bottom: 10px;
+    }
+    .thumbnail{
+        .caption{
+        padding: 20px 0 0 30px;
+            .captionDetail{
+                position: relative;
+                p{
+                    margin: 5px 0;
+                    font-size: 12px;
+                }
+                .host{
+                    .iconfont{
+                        color:#195fa4;
+                    }
+                }
+                .place{
+                    .iconfont{
+                        color:#fa3708;
+                    }
+                }
+                .time{
+                    .iconfont{
+                        color:#f3a622;
+                    }
+                }
+                .signUpIng{
+                    color: #fff;
+                    margin-top: 5px;
+                }
+                img{
+                    position: absolute;
+                    right: 0;
+                    width: 50px;
+                    height: 50px;
+                    bottom: 0;
+                }
+            } 
+        }
+    } 
+    
+}
+.org{
+    .organizers{
+        color: #000;
+        font-size: 13px;
+        text-align: center;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #eee;
+    }
+    .org_pic{
+        width: 145px;
+        overflow: hidden;
+        img{
+            overflow: hidden;
+            height: 70px;
+            width: 70px;
+            float: left;
+            margin: 1px
+        }
+
+    }
+    button{
+        margin-top:10px;
+    }
+}
+.tab-content{
+    .card{
+        margin-top: 10px;
+    }
+    #des{
+        width: 100%;
+        overflow: visible;
+        white-space: normal;
+        padding: 20px;
+    }
+    .thumbnail{
+        min-height: 420px;
+        .groupS{
+            margin: 20px;
+            .nav-tabs{
+                border-bottom: 2px solid #eee;
+                li{
+                    a{
+                        color: #000000 !important;
+                        background-color: #ffffff !important;
+                        border: 1px solid rgba(0,0,0,.14);
+                        padding:10px;
+                        position:relative;
+                        width: 200px;
+                        .span{
+                                display: inline-block;
+                                width: 150px;
+                                overflow: hidden;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                        }
+                        .monney{
+                            color:red;
+                            position:absolute;
+                            right: 5px;
+                        }
+                    }
+                    a:hover{
+                        border: 1px solid #007ac2;
+                    }
+                }
+            }
+            .tab-content{
+                .caption{
+                    .captionDetail{
+                        p{
+                            margin: 5px 0;
+                        }
+
+                    }
+                    .lushu{
+                        width:100%;
+                        max-height: 200px;
+                    }
+                }
+            }
+        }
+        .search{
+                input{
+                    height: 30px;
+                    width: 250px;
+                    font-size: 12px;
+                }    
+        }
+        .gradeSer{
+                width:90%;
+                margin-top:10px;
+                th{
+                     background-color:#e4e4e4;
+                     margin-top: 10px;
+                     font-weight: normal;
+                }
+                td{
+                    color:#797979;
+                }
+               
+        }
+    }        
+}

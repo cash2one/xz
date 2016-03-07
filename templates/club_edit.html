@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}
+    修改车队信息 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+    <div class="row">
+        <div class="span10">
+            <form action="" method="post" class="form-horizontal">
+                <fieldset>
+                    {% csrf_token %}
+                    <legend>修改车队信息</legend>
+                    <div class="control-group">
+                        <div class="controls">
+                            <p class="muted">
+                                车队需要有固定的活动场所，有一定数量的队员，并能够定期举办活动<br />
+                                车队创建的活动，车队成员加入无需确认，稍后还会添加更多功能，方便车队管理<br />
+                                此功能为车店或者骑行俱乐部设计，个人用户可以直接使用行者”活动“功能
+                            </p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="title">队长</label>
+                        <div class="controls">
+                            <p style="margin-top: 5px;"><a href="{% url 'user' club.user.id %}" target="_blank">{{ club.user.username }}</a></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="title">队名</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="title" name="title" value="{{ club.title }}">
+                            <p class="help-block">比如：xx车队，xx俱乐部...（必填）</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="description">详情</label>
+                        <div class="controls">
+                            <textarea rows="3" id="description" name="description" class="input-xlarge span5">{{ club.description }}</textarea>
+                            <p class="help-block">可以输入车队的具体介绍，联系方式，QQ群号或者公告等信息（必填）</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="latlng">位置</label>
+                        <div class="controls">
+                            <div id="map_canvas" style="height:400px"></div>
+                            <p class="help-block">车队位置（必填）</p>
+                        </div>
+                    </div>
+                    {% if request.user.is_superuser %}
+                        <div class="control-group">
+                            <label class="control-label" for="show">审核通过</label>
+                            <div class="controls">
+                                <input type="checkbox" id="show" name="show" {% if not club.hidden %}checked{% endif %}>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <input type="hidden" name="latitude" value="{{ club.latitude }}" />
+                    <input type="hidden" name="longitude" value="{{ club.longitude }}" />
+                    <div class="form-actions">
+                        <input type="submit" value="提交" class="btn btn-primary">
+                        <span>请填写真实准确信息，提交后会进行审核，审核通过后会显示在行者手机端的车队列表里</span>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+    {% baidu_map_api %}
+    <script type="text/javascript">
+        var map = new BMap.Map("map_canvas");
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]}));
+        map.enableScrollWheelZoom();
+
+        var center = new BMap.Point({{ club.longitude }}, {{ club.latitude }});
+        map.centerAndZoom(center, 15);
+
+        var marker = new BMap.Marker(center);
+        map.addOverlay(marker);
+        marker.enableDragging();
+
+        var label = new BMap.Label("鼠标拖拽图标到车队位置", {offset: new BMap.Size(20, -10)});
+        marker.setLabel(label);
+
+        marker.addEventListener("dragend", function(e){
+            $("input[name='latitude']").val(e.point.lat);
+            $("input[name='longitude']").val(e.point.lng);
+        })
+
+
+    </script>
+{% endblock %}

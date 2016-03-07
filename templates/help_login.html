@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    注册登录问题
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+<div class="container">
+    <div class="row row-help">
+    {% include "help_nav.html" %}
+
+    <ol class="breadcrumb visible-xs">
+    <li><a href="/">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">注册登录问题</li>
+    </ol>
+
+<div class="col-md-10 main">
+            <h2>注册登录问题</h2>
+            <p>行者支持邮箱注册登录和QQ直接登录。邮箱登录的账号不可以和QQ登陆账号合并数据，行者账号也不能合并其他APP的数据。如果碰到每次开行者都需要重新登录的问题，可以尝试上传轨迹后卸载重装。</p>
+            <hr>
+            <p class="text-right"><a href="{% url 'download' %}">安装行者APP</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

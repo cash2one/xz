@@ -1,0 +1,128 @@
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -webkit-user-select: none;
+    /*禁止选中内容*/
+    -webkit-touch-callout: none;
+}
+
+body {
+    margin: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+
+/*禁止保存或拷贝图像*/
+
+img {
+    -webkit-touch-callout: none;
+}
+
+@-webkit-keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(.3)
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.03)
+    }
+    70% {
+        transform: scale(.96)
+    }
+    100% {
+        transform: scale(1)
+    }
+}
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(.3)
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.03)
+    }
+    70% {
+        transform: scale(.96)
+    }
+    100% {
+        transform: scale(1)
+    }
+}
+
+
+
+
+body {
+    background: #000 url("http://cdn.bi-ci.com/img/app_medal/app_medal_bg.jpg") no-repeat center;
+    background-size: 100%;
+}
+
+.animateionBox {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 184px;
+    
+    -webkit-animation: bounceIn 1s .5s ease both;
+    animation: bounceIn 1s .5s ease both;
+    
+
+    /*向上偏移20像素并开启硬件加速*/
+    transform: translate3d(0, -20px, 0);
+    -webkit-transform: translate3d(0, -20px, 0);
+    
+}
+
+.medal {
+    display: block;
+    margin: 0 auto;
+    width: 184px;
+    height: 184px;
+}
+
+.modifyband {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 57px;
+}
+
+.mofify_band_normal {
+    background: url("http://cdn.bi-ci.com/img/app_medal/medal_tape_normal.png") no-repeat center bottom;
+    background-size: 320px 57px;
+}
+
+.mofify_band_gold {
+    background: url("http://cdn.bi-ci.com/img/app_medal/medal_tape_gold.png") no-repeat center bottom;
+    background-size: 320px 57px;
+}
+
+.mofify_band_silver {
+    background: url("http://cdn.bi-ci.com/img/app_medal/medal_tape_silver.png") no-repeat center bottom;
+    background-size: 320px 57px;
+}
+
+.mofify_band_copper {
+    background: url("http://cdn.bi-ci.com/img/app_medal/medal_tape_copper.png") no-repeat center bottom;
+    background-size: 320px 57px;
+}
+
+.medalDes {
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+}

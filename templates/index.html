@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %} 行者，最好用的骑行软件 {% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/index.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="main">
+    <!-- <div class="div1"></div> -->
+    <!-- <div class="div2"><a class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bs-modal-sm" href="http://www.imxingzhe.com/one_year?uid={{ enuid }}">查看个人年度报告</a></div> -->
+<!--     <div class="div2">
+        <a class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bs-modal-sm" style="display:block;">查看个人年度报告</a>
+        <img src="http://static.imxingzhe.com/year2015/qrcode.png" width="200" height="200" class="img"/>
+    </div>
+    <div class="div1">
+        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target=".bs-modal-sm" style="display:block;">查看行者年度报告</a>
+        <img src="http://static.imxingzhe.com/year2015/qrcode.png" width="200" height="200" class="img"/>
+    </div> -->
+    <div class="div2">
+        <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" style="display:block;">查看个人年度报告</a>
+        <!-- <img src="http://static.imxingzhe.com/year2015/qrcode.png" width="200" height="200" class="img"/> -->
+    </div>
+    <div class="div1">
+        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myAllModal" style="display:block;">查看行者年度报告</a>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" id="myAllModal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <img src="http://static.imxingzhe.com/year2015/qrcode.png" width="200" height="200"/>
+      <p style="margin:20px">扫一扫查看行者年度报告</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" id="myModal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div id="qrcode" class="qr-code"></div>
+      <p>扫一扫查看个人报告</p>
+    </div>
+  </div>
+</div>
+
+<div class="count-blok">行者运动总里程<span id="totalNum" class="total-num">192000000</span>公里</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block js %}
+<script src="/static/dist/js/componet/qrcode.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script>
+var qrcode = new QRCode(document.getElementById("qrcode"), {
+    text: "http://www.imxingzhe.com/one_year?uid={{ enuid }}",
+    width: 200,
+    height: 200,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+});
+</script>
+<script>
+window.onload = function(){
+    var totalNum = document.getElementById('totalNum');
+
+    // 数字动画
+    function animateValue(id, start, end, duration) {
+        var obj = document.getElementById(id);
+        var range = end - start;
+        var minTimer = 50;
+        var stepTime = Math.abs(Math.floor(duration / range));
+        stepTime = Math.max(stepTime, minTimer);
+        var startTime = new Date().getTime();
+        var endTime = startTime + duration;
+        var timer;
+        function run() {
+            var now = new Date().getTime();
+            var remaining = Math.max((endTime - now) / duration, 0);
+            var value = Math.round(end - (remaining * range));
+            obj.innerHTML = value;
+            if (value == end) {
+                clearInterval(timer);
+            }
+        }
+        timer = setInterval(run, stepTime);
+        run();
+    }
+
+
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function() {
+        var beforeNum = totalNum.textContent;
+      if (this.readyState === 4) {
+        if (this.status >= 200 && this.status < 400) {
+          // Success!
+          var resp = JSON.parse(this.responseText).total_distance;
+          animateValue("totalNum", beforeNum, resp, 5000);
+        } else {
+          // Error :(
+            console.log('Error');
+        }
+      }
+    };
+
+    function updateCount () {
+        request.open('GET', 'api/v3/total_distance/', true);
+        request.send();
+    };
+    updateCount();
+
+    setInterval(updateCount, 5000);
+}
+
+</script>
+{% endblock %}

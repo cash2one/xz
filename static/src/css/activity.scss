@@ -1,0 +1,235 @@
+@import "bootstrap";
+@import "base.scss";
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.eot');
+  src: url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.woff2') format('woff2'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.woff') format('woff'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.ttf') format('truetype'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-arrow-left:before {
+  content: "\e091";
+}
+.glyphicon-arrow-right:before {
+  content: "\e092";
+}
+
+
+body {
+    background-color: #F5F5F5;
+}
+
+.activity-header {
+    margin-bottom: 50px;
+    padding: 20px 0;
+    background-color: #fff;
+    h1 {
+        margin-top: 10px;
+        font-weight: normal;
+        font-size: 22px;
+        a {
+            color: #555;
+            text-decoration: none;
+        }
+    }
+    @include phone {
+        margin-bottom: 20px;
+        padding: 10px 0;
+        h1 {
+            font-size: 18px;
+        }
+    }
+}
+
+.activity-wrap {
+    .tit {
+        margin-bottom: 20px;
+        font-weight: normal;
+        font-size: 18px;
+    }
+    .thumbnail {
+        .pic {
+            height: 150px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+        .caption {
+            h3 {
+                display: block;
+                font-size: 16px;
+                mark {
+                    font-size: 1.4rem;
+                    color: inherit;
+                    display: inline-block;
+                    margin-right: 4px;
+                    border-radius: 4px;
+                    padding: 1px 3px;
+                    color: #fff;
+                    text-shadow: none;
+                }
+                .jiandan {
+                    background-color: #4990e2;
+                }
+                .xiuxian {
+                    background-color: #21d394;
+                }
+                .kunnan {
+                    background-color: #ff9f00;
+                }
+                .fengkuang {
+                    background-color: #f00;
+                }
+                .diyu {
+                    background-color: #000;
+                }
+            }
+            .activity-address {
+                font-size: 13px;
+                color: #9B9B9B;
+            }
+        }
+        ul {
+            padding: 0;
+            border-top: 1px solid #ccc;
+            list-style: none;
+            li {
+                padding: 0;
+                width: 33.33%;
+                height: 50px;
+                line-height: 50px;
+                font-size: 13px;
+                text-align: center;
+                float: left;
+                .iconfont {
+                    margin-right: 3px;
+                }
+                .icon1 {
+                    color: #7BD500;
+                }
+                .icon1s {
+                    color: #F3590F;
+                }
+                .icon2 {
+                    color: #0078C5;
+                }
+                .icon3 {
+                    color: #7BD500;
+                }
+            }
+            .line {
+                border-right: 1px solid #ccc;
+            }
+        }
+    }
+}
+
+// activity_add.html
+.form-container {
+    max-width: 720px;
+    margin: 0 auto 30px;
+    padding: 50px;
+    background-color: #fff;
+    .form-group {
+        margin-bottom: 40px;
+    }
+    .form-control {
+        position: relative;
+    }
+    textarea {
+        max-width: 620px;
+    }
+    label.required:before {
+        content: '*';
+        margin-right: 3px;
+        font-weight: bold;
+        color: #ED0909;
+    }
+    label .iconfont {
+        font-weight: normal;
+    }
+    .file-wrap {
+        position: relative;
+        margin-bottom: 15px;
+        height: 38px;
+    }
+    input[type="file"] {
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+        height: 38px;
+        z-index: 4;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        cursor: pointer;
+    }
+    .visibility-file {
+        position: absolute;
+        width: 100%;
+        z-index: 3;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 2px;
+        background: #eee;
+    }
+    .upload-img {
+        width: 100%;
+        height: 200px;
+        position: relative;
+        border: 2px dashed #ccc;
+        background: white;
+        .visibility-input {
+            width: 100%;
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+            .log-text {
+                font-size: 24px;
+                color: #999;
+            }
+            img {
+                width: 120px;
+                height: 120px;
+                margin: 30px 10px;
+                float: left;
+                border-radius: 4px;
+                &:after {
+                    content: '删除';
+                }
+                &:hover {
+                    border: 2px solid #f00;
+                }
+            }
+        }
+    }
+    .locationWrap {
+        .l-map {
+            height: 400px;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .r-result {
+            width: 100%;
+        }
+    }
+}
+
+.tangram-suggestion-main {
+    z-index: 99999;
+}

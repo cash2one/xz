@@ -1,0 +1,101 @@
+{% extends "base-fluid.html" %}
+{% block title %}
+路书导航，骑行必备 - 行者路书 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+    <link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+    <link href="/static/css/gmap-contextmenu.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+    <div class="modal" id="myModal" style="display: none;">
+        <div class="modal-header">
+            <h3>制作路书，请先登录</h3>
+        </div>
+        <div class="modal-body" style="max-height: 500px;">
+            <p>目前路书对服务器存储空间占用较多，所以暂时只对登录用户开放制作路书功能。</p>
+            <p style="text-align: center;"><a class="btn btn-primary" href="{% url 'userena_signin' %}?next={% url 'lushu_create_draw' %}">登录</a></p>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+    <div class="span8 offset1">
+        <p id="note" style="text-align: center; height: 18px;">
+            <span class="label label-important">在地图上点击鼠标，设置路线的途经点</span>
+        </p>
+    </div>
+</div>
+<div style="display: none">
+<form class="form-inline" id="searchContainer" style="margin-top:5px;">
+    <div class="well well-small">
+    <input id="searchTxt" type="text" placeholder="输入地点">
+    <a id="searchBtn" class="btn btn-primary">查找</a>
+    </div>
+</form>
+</div>
+<div class="row-fluid">
+    <div class="span9">
+        <div id="map_canvas"></div>
+    </div>
+    <div class="span3">
+        <div class="row-fluid">
+            <a id="deleteLastPoint" class="btn btn-primary btn-small">删除最后一个点</a>&nbsp;最多100个，当前<span id="pointCount">0</span>个
+        </div>
+        <br />
+        <div class="row-fluid">
+            <div class="span12">
+                总距离：<span id="totalDistance">0</span>公里&nbsp;
+            </div>
+        </div>
+        <form id="saveForm" class="form-horizontal" method="post" action="">
+            <fieldset>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <textarea rows="12" name="title" class="span12" placeholder="简要说明"></textarea>
+                    </div>
+                </div>
+                <input type="hidden" name="distance" />
+                <input type="hidden" name="points" />
+                <input type="hidden" name="waypoints" />
+                <br />
+                <div class="row-fluid">
+                    <div class="span12">
+                        <p><a id="export" class="btn btn-primary">保存</a></p>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<br />
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script type="text/javascript">
+
+    {% if not request.user.is_authenticated %}
+    $(function () {
+        $('#myModal').modal({
+            backdrop: true,
+            keyboard: false,
+            show: true
+        });
+        $('#myModal').on('hidden', function () {
+            location.href = "{% url 'userena_signin' %}?next={% url 'lushu_create_draw' %}";
+        });
+    });
+    {% endif %}
+</script>
+    {% google_map_api %}
+    {% baidu_map_api %}
+    <script type="text/javascript" src="/static/js/gmap-contexmenu.js"></script>
+
+<script type="text/javascript" src="/static/js/of.min.js"></script>
+<script type="text/javascript" src="/static/js/lushu_create_draw.min.js"></script>
+{% endblock %}

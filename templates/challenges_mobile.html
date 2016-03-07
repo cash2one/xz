@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>挑战</title>
+    <link rel="stylesheet" href="http://cdn.bi-ci.com/webapp/challenge/css/framework7.min.css">
+    <link rel="stylesheet" href="http://cdn.bi-ci.com/webapp/challenge/css/my-app.css">
+</head>
+
+<body>
+{% load filters %}
+
+    <!-- Views -->
+    <div class="views">
+        <!-- View -->
+        <div class="view view-main">
+            <!-- Pages -->
+            <div class="pages">
+                <!-- Home page -->
+                <div class="page" data-page="index">
+                    <div class="page-content pull-to-refresh-content" data-ptr-distance="55">
+                        <div class="pull-to-refresh-layer">
+                            <div class="preloader"></div>
+                            <div class="pull-to-refresh-arrow"></div>
+                        </div>
+                        <img src="http://cdn.bi-ci.com/dist_v2/image/challenges/challenges_mobile_banner.jpg" alt="" class="banner-img">
+                        <div class="list-block media-list">
+                            <ul id="listWrap">
+                                {% for challenge in challenges_enable %}
+                                <li>
+                                    <a href="#page{{ challenge.id }}" class="item-link">
+                                        <div class="item-content">
+                                            <div class="item-media">
+                                                <img src="{{ challenge.small_pic }}" width="70">
+                                            </div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">{{ challenge.title }}</div>
+                                                </div>
+                                                <div class="item-subtitle">时间：{{ challenge.start_time|to_data_time }} - {{ challenge.end_time|to_data_time }}</div>
+                                                <div class="item-subtitle">奖励：{{ challenge.reward }}</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                                {% for challenge in challenges_due %}
+                                <!-- 不可触 li.disabled -->
+                                <li class="disabled-li">
+                                    <a href="#page{{ challenge.id }}" class="item-link">
+                                        <div class="item-content">
+                                            <div class="item-media">
+                                                <img src="{{ challenge.small_pic }}" width="70">
+                                            </div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">{{ challenge.title }}</div>
+                                                </div>
+                                                <div class="item-subtitle">时间：{{ challenge.start_time|to_data_time }} - {{ challenge.end_time|to_data_time }}</div>
+                                                <div class="item-subtitle">奖励：{{ challenge.reward }}</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <p class="text-center color-gray">敬请期待更多挑战！</p>
+                    </div>
+
+                    {% for challenge in challenges_enable %}
+                    <div class="page cached" data-page="page{{ challenge.id }}">
+                        <div class="page-content">
+                            <div class="demo-card-header-pic">
+                                <div class="card-header card-header-{{ challenge.id }} color-white no-border embed-responsive embed-responsive-2by1" style="background-image: url('{{ challenge.big_pic }}')">
+                                    <a href="#index" class="back link">
+                                        <i class="icon icon-back"></i>
+                                        <span>返回</span>
+                                    </a>
+                                    <h1>{{ challenge.title }}</h1>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-content-inner">
+                                        <div class="challenge-article"><h2>时间：</h2><div>{{ challenge.start_time|to_data_time }} - {{ challenge.end_time|to_data_time }}</div>{% autoescape off %} {{ challenge.content }} {% endautoescape %}</div>
+                                        <p><a href="#index" class="back button button-big">返回挑战列表</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% for challenge in challenges_due %}
+                    <div class="page cached" data-page="page{{ challenge.id }}">
+                        <div class="page-content">
+                            <div class="demo-card-header-pic">
+                                <div class="card-header card-header-{{ challenge.id }} color-white no-border embed-responsive embed-responsive-2by1" style="background-image: url('{{ challenge.big_pic }}')">
+                                    <a href="#index" class="back link">
+                                        <i class="icon icon-back"></i>
+                                        <span>返回</span>
+                                    </a>
+                                    <h1>{{ challenge.title }}</h1>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-content-inner">
+                                        <div class="challenge-article mdcontent"><h2>时间：</h2><div>{{ challenge.start_time|to_data_time }} - {{ challenge.end_time|to_data_time }}</div>{% autoescape off %} {{ challenge.content }} {% endautoescape %}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <script src="http://cdn.bi-ci.com/webapp/challenge/js/framework7.min.js"></script>
+        <script src="http://cdn.bi-ci.com/webapp/challenge/js/my-app.js?v=0610"></script>
+</body>
+
+</html>

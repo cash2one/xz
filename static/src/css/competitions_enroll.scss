@@ -1,0 +1,284 @@
+@import "bootstrap";
+@import "base.scss";
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.eot');
+    src: url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.woff2') format('woff2'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.woff') format('woff'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.ttf') format('truetype'), url('http://cdn.bi-ci.com/dist_v2/font/glyphicons/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-arrow-left:before {
+    content: "\e091";
+}
+
+.glyphicon-arrow-right:before {
+    content: "\e092";
+}
+
+body {
+    background-color: #F5F5F5;
+}
+
+.form-container {
+    margin: 0 auto 30px;
+    padding: 50px;
+    background-color: #fff;
+    .form-group {
+        margin-bottom: 40px;
+    }
+    .form-control {
+        position: relative;
+    }
+    textarea {
+        max-width: 620px;
+    }
+}
+
+header.header {
+    margin-bottom: 50px;
+    padding: 20px 0;
+    background-color: #fff;
+    padding-bottom:0px;
+    h1 {
+        margin-top: 10px;
+        font-weight: normal;
+        font-size: 22px;
+        margin-left: 10px;
+        a {
+            color: #555;
+            text-decoration: none;
+        }
+    }
+    .publish_com{
+        button{
+            margin: 0 60px 5px;
+        }
+    }
+}
+.match-list-wrap {
+    .pic {
+        padding: 0;
+        max-width: 280px;
+    }
+    .text-overflow{
+        margin: 0;
+        margin-bottom: 10px;
+    }
+    .thumbnail{
+        .caption{
+        padding: 20px 0 0 30px;
+            .captionDetail{
+                position: relative;
+                p{
+                    margin: 5px 0;
+                    font-size: 12px;
+                }
+                .host{
+                    .iconfont{
+                        color:#195fa4;
+                    }
+                }
+                .place{
+                    .iconfont{
+                        color:#fa3708;
+                    }
+                }
+                .time{
+                    .iconfont{
+                        color:#f3a622;
+                    }
+                }
+                .signUpIng{
+                    color: #fff;
+                    margin-bottom: 15px;
+                    margin-top: 5px;
+                }
+                img{
+                    position: absolute;
+                    right: 0;
+                    width: 50px;
+                    height: 50px;
+                    bottom: 0;
+                }
+            } 
+        }
+    } 
+    
+}
+.org{
+    .organizers{
+        color: #000;
+        font-size: 13px;
+        text-align: center;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #eee;
+    }
+    .org_pic{
+        width: 145px;
+        overflow: hidden;
+        img{
+            overflow: hidden;
+            height: 70px;
+            width: 70px;
+            float: left;
+            margin: 1px
+        }
+
+    }
+    button{
+        margin-top:10px;
+    }
+}
+.signIn{
+    .tip{
+        border-bottom: 1px solid #eee;
+    }
+    .thumbnail{
+        padding:5px 30px;
+        min-height: 505px;
+        .add{
+            text-align: center;
+        }
+        #step2{
+            .signInGro{
+                .form-group{
+                    margin-bottom:0px;
+                }
+            }
+        }
+        .total{
+            span{
+                color:#000;
+            }
+        }
+        .signInGro{
+            color:#007ac2;
+            border-bottom: 1px solid #eee;
+            h5{
+                font-weight: 600;
+            }
+            .radio{
+                padding: 5px 80px;
+                color: #000;
+                label{
+                    margin-right: 20px;
+                    width: 40%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    span{
+                        line-height: 0px;
+                        color: red;
+                    }
+                }
+            }
+            .form-group{
+                span{
+                    line-height: 35px;
+                }
+                button.signing{
+                    float: right;
+                    margin-top: 5px;
+                    padding: 2px 20px;
+                    margin-right: 50px;
+                }
+                label{
+                    color: #000;
+                }
+                .radio{
+                    padding:5px 0px;
+                }
+                .addSigner{
+                    margin: 10px;
+                    padding: 7px 40px;
+                    color: #fff;
+                    background-color: #ccc;
+                }
+            }
+        }
+        .pay{
+            position: relative;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ccc;
+            .order{
+                font-weight: bolder;
+                span{
+                    color: #007ac2;
+                }
+            }
+            .orderMoney{
+                position: absolute;
+                right: 0px;
+                bottom: 5px;
+                span{
+                    color: red;
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+            }
+        }   
+        #step1{
+            .step1{
+                color: #fff;
+                background-color: #ccc;
+            }
+            .checkbox{
+                label{
+                    font-weight: 600;
+                }
+            }
+        }
+        #step2{
+            .checkbox{
+                a{
+                    color: #007ac2;
+                }
+            }
+            .form-group{
+                span{
+                    color: #000;
+                }
+            }
+        }
+        #step3{
+            .rad{
+                margin-top:20px;
+                .radio{
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    margin-bottom: -1px;
+                }
+                .radio:hover,.radio:checked{
+                    border-top: 1px solid #ff6640;
+                    background-color:#ffd9d9;
+                }
+                
+            }
+            .submitOver{
+                text-align: center;
+                a{
+                    color: #fff;
+                }
+            }
+        } 
+         .submit{
+                text-align: center;
+                a.btn{
+                    color: #fff;
+                    background-color: #ccc;
+                }
+            }
+    }
+}

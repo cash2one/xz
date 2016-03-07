@@ -1,0 +1,52 @@
+@import "bootstrap";
+@import "base.scss";
+@import "admin";
+
+body {
+    background-color: #EBEAE8;
+}
+
+.text-muted {
+    color: #111;
+    font-weight: normal;
+    margin: 1em 0 2em;
+}
+form,
+.table-wrap {
+    padding: 2em;
+    background-color: #fff;
+}
+
+.btns-group {
+    margin: 3em auto;
+    .btn {
+        margin: 0 1em;
+    }
+}
+
+td {
+    img {
+        max-width: 60px;
+    }
+}
+
+.inp {
+    margin-bottom: 3em;
+    p {
+        margin: 0;
+    }
+}
+
+#ptype1wrap,
+#ptype2wrap {
+    display: none;
+}
+
+
+.medal-types-cont {
+    padding: 1em;
+    margin-bottom: 2em;
+    input, textarea {
+        margin-bottom: 1em;
+    }
+}

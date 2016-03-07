@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}
+    生成优惠码 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    {% load filters %}
+
+    <div class="page-header">
+        <form class="form-inline" method="post">
+            {% csrf_token %}
+            <select name="type">
+                {% for type in types %}
+                    <option value="{{ type.id }}" {% ifequal type_id type.id %}selected="selected"{% endifequal %}>{{ type.title }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" class="input-mini" style="width: 30px" name="count" value="{{ count }}"/>个
+            <br /><br />
+            备注：<input type="text" class="input-large" name="description" value="{{ description }}"/>
+            <br /><br />
+            <input type="submit" class="btn btn-primary" value="生成"/>
+        </form>
+    </div>
+
+    {% for code in codes %}
+    <div class="row">
+        <div class="span5" style="height: 30px">
+            <a target="_blank" href="{% url 'coupon_show' code %}">{{ code }}</a>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endblock %}
+
+

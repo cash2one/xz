@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}
+{{ the_user.username }} 的队伍 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<link href="/static/css/custom.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+    <div class="page-header">
+        <h2>
+            {{ the_user.username }}
+            <small>
+                {{ the_user.total_distance|to_distance }}公里&nbsp;{{ the_user.valid_distance|to_points }}<a target="_blank" href="{% url 'help_jifen' %}">积分</a>&nbsp;
+                {% if the_user.profile.city %}
+                    <a href="{% url 'city' the_user.profile.city.id %}" target="_blank">{{ the_user.profile.city.name }}</a>
+                {% endif %}
+            </small>
+        </h2>
+    </div>
+
+    <div class="row">
+        <div class="span4">
+            <ul class="nav nav-pills">
+                <li><a href="{% url 'user_new' the_user.encode_id %}">记录</a></li>
+                <li class="active"><a href="{% url 'user_lushus_new' the_user.encode_id %}">路书</a></li>
+                <li><a href="{% url 'user_location_new' the_user.encode_id %}">我的位置</a></li>
+            </ul>
+        </div>
+    </div>
+
+    {% for event in events %}
+        <div class="row" style="margin-top: 10px;">
+            <div class="span12">
+                <div style="width:105px;" class="float-left">
+                    <a href="{% url 'event_show' event.id %}" target="_blank"><img style="width:75;height:75;" class="thumbnail float-left" src="http://api.map.baidu.com/staticimage?center={{ event.longitude }},{{ event.latitude }}&markers={{ event.longitude }},{{ event.latitude }}&markerStyles=s,1,0xffffff&width=75&height=75&zoom=13"></a>
+                </div>
+                <div class="float-left">
+                    <a style="font-size:15px;" target="_blank" href="{% url 'event_show' event.id %}">{{ event.title }}</a>
+                    <div style="margin-top:5px; width:450px;">
+                        {{ lushu.description }}
+                    </div>
+                </div>
+                <div class="clearfix" style="margin-bottom: 10px;"></div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+

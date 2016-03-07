@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ topic.name }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+    <div class="page-header">
+        <h3>
+            {{ comment.topic.content }}
+        </h3>
+    </div>
+
+    <div class="row">
+        <div class="span10">
+            <form action="" method="post" class="form-horizontal">
+                <fieldset>
+                    {% csrf_token %}
+                    <div>
+                        <textarea rows="10" id="content" name="content" class="input-xlarge span10">{{ comment.content }}</textarea>
+                    </div>
+                    <br />
+                    <div>
+                        <input type="submit" value="提交" class="btn btn-primary">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

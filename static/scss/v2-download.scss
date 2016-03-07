@@ -1,0 +1,246 @@
+@import "var";
+
+/*动画*/
+
+@-webkit-keyframes downloadButton {
+    from {
+        -webkit-box-shadow: 0 0 1px 2px rgba(1, 1, 1, 0.1);
+    }
+    50% {
+        -webkit-box-shadow: 0 0 25px 6px rgba(1, 1, 1, 0.3);
+        ;
+    }
+    to {
+        -webkit-box-shadow: 0 0 1px 2px rgba(1, 1, 1, 0.1);
+    }
+}
+
+@keyframes downloadButton {
+    from {
+        box-shadow: 0 0 1px 2px rgba(1, 1, 1, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 25px 6px rgba(1, 1, 1, 0.3);
+        ;
+    }
+    to {
+        box-shadow: 0 0 1px 2px rgba(1, 1, 1, 0.1);
+    }
+}
+
+.masthead {
+    -webkit-animation: downloadButton 2.5s infinite;
+    animation: downloadButton 2.5s infinite;
+    -webkit-transition: none;
+    transition: none;
+}
+
+footer {
+    @include phone {
+        display: none;
+    }
+}
+
+
+/*
+* Nav
+*/
+
+.navbar-default {
+    position: absolute;
+    top: 0;
+    background: none;
+    box-shadow: none;
+    @include phone {
+        position: static;
+    }
+}
+
+.push-wrapper {
+    height: 100vh;
+    background-color: #4696e5;
+    background-image: url("http://cdn.bi-ci.com/dist_v2/image/download/overlay.png"), url("http://cdn.bi-ci.com/dist_v2/image/download/pattern-size.svg");
+    background-position: top left, center center;
+    background-attachment: fixed, fixed;
+    background-size: auto, cover;
+}
+
+#content {
+    width: 240px;
+    height: 500px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    @include desktop-lg {
+        height: 560px;
+    }
+    @include phone {
+        height: 260px;
+    }
+}
+
+.wrapL {
+    width: 100%;
+    text-align: center;
+    .logoV2 {
+        width: 120px;
+        height: 120px;
+        border-radius: 15px;
+    }
+    h1 {
+        font-weight: 100;
+        letter-spacing: 1px;
+        font-size: 32px;
+        color: #fff;
+    }
+    p {
+        font-size: 16px;
+        font-weight: 200;
+        color: #d0e4f8;
+    }
+    @include desktop-lg {
+        .logoV2 {
+            width: 150px;
+            height: 150px;
+        }
+        h1 {
+            font-size: 38px;
+        }
+        p {
+            font-size: 18px;
+        }
+    }
+    @include phone {
+        .logoV2 {
+            width: 100px;
+            height: 100px;
+            box-shadow: 0 0 10px 2px rgba(10, 10, 10, 0.2);
+            -webkit-animation: none;
+            animation: none;
+        }
+        h1 {
+            margin-top: 10px;
+            margin-bottom: 30px;
+            font-size: 24px;
+            letter-spacing: 0;
+        }
+    }
+}
+
+.wrapR {
+    width: 100%;
+    text-align: center;
+    .btn-group {
+        position: relative;
+        margin-top: 20px;
+        text-align: center;
+        width: 200px;
+        height: 52px;
+        margin-bottom: 10px;
+        line-height: 51px;
+        border: 2px solid #fff;
+        border: 2px solid rgba(255, 255, 255, .9);
+        font-size: 18px;
+        border-radius: 3px;
+        color: #fff;
+        &:before {
+            content: '立即下载';
+            position: absolute;
+            left: 0;
+            right: 0;
+            letter-spacing: 3px;
+            text-align: center;
+            color: #fff;
+        }
+        @include desktop-lg {
+            margin-top: 30px;
+            width: 230px;
+            height: 56px;
+            line-height: 55px;
+        }
+        .btn {
+            display: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            border-radius: 0;
+            width: 50%;
+            height: 50px;
+            line-height: 49px;
+            background: none;
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: 1px;
+            &:hover {
+                background: #fff;
+                background: rgba(255, 255, 255, .9);
+                color: #0c8fdc;
+            }
+            @include desktop-lg {
+                height: 52px;
+                line-height: 51px;
+            }
+        }
+        &:hover:before {
+            display: none;
+        }
+        &:hover .btn {
+            display: block;
+        }
+    }
+}
+
+.qr-download {
+    display: none;
+    position: relative;
+    width: 200px;
+    padding: 35px 20px 20px;
+    margin: 0 auto;
+    background-color: #fff;
+    &:before {
+        content: '手机扫一扫下载';
+        position: absolute;
+        text-align: center;
+        left: 0;
+        right: 0;
+        top: 10px;
+        font-size: 13px;
+        color: #111;
+        letter-spacing: 1px;
+    }
+    .qrcode-img {
+        width: 160px;
+        height: 160px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    h3 {
+        margin: 0 0 20px;
+        font-size: 16px;
+    }
+    @include desktop-lg {
+        width: 230px;
+        padding: 40px 20px 20px;
+        .qrcode-img {
+            width: 190px;
+            height: 190px;
+        }
+    }
+}
+
+.btn-download-mobile {
+    width: 100%;
+    max-width: 160px;
+    height: 50px;
+    padding: 0;
+    line-height: 49px;
+    margin: 10px auto 0;
+    font-size: 16px;
+    background: #fff;
+    background: rgba(255, 255, 255, .9);
+    border-radius: 2px;
+}

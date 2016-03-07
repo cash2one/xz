@@ -1,0 +1,229 @@
+@import "var";
+.color-xingzhe-blue {
+    color: $color-xingzhe-blue;
+}
+
+.data-font {
+    font-family: "Din Alternate", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+#map_canvas {
+    height: 600px;
+    transition: height .25s ease-out;
+    @include desktop-lg {
+        height: 800px;
+    }
+}
+
+#chart {
+    margin-top: 40px;
+}
+
+a.change-mapsize-btn {
+    overflow: hidden;
+    margin: 10px;
+    padding: 8px;
+    min-width: 26px;
+
+    text-align: center;
+    text-decoration: none;
+    color: #111;
+    font-size: 11px;
+    -webkit-user-select: none;
+    
+    border-radius: 2px;
+
+    -webkit-user-select: none;
+    -webkit-background-clip: padding-box;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    background-color: rgb(255, 255, 255);
+    background-clip: padding-box;
+
+}
+
+.workout-head {
+    padding: 20px 0 20px;
+    z-index: 99;
+    overflow: hidden;
+    .head {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .sport-type {
+        i {
+            font-size: 40px;
+            line-height: 1;
+            position: relative;
+            top: 7px;
+        }
+    }
+    .default-avatar {
+        width: 43px;
+        height: 43px;
+        margin-right: 5px;
+        background-color: #fff;
+        padding: 4px;
+        border: 1px solid #eee;
+    }
+    .workout-user {
+        color: #111;
+        font-size: 18px;
+        text-decoration: none;
+    }
+    .btn-group {
+        .btn {
+            padding: 6px;
+            color: #777;
+            font-size: 18px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .iconfont {
+            font-size: 18px;
+        }
+    }
+    .workout-id {
+        margin-right: 20px;
+        font-size: 16px;
+    }
+}
+
+h3.dataTitle {
+    font-weight: normal;
+    font-size: 20px;
+}
+
+.data-list {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 6px 8px;
+    overflow: hidden;
+    max-width: 700px;
+    top: 100px;
+    z-index: 99;
+
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.93);
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+
+    -webkit-user-select: none;
+    font-size: 11px;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    ul {
+        margin: 0;
+        padding: 0;
+        li {
+            list-style: none;
+            min-width: 120px;
+            min-height: 60px;
+            line-height: 1;
+            float: left;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin-right: 2px;
+            text-align: right;
+            padding: 13px 0 0;
+            .data {
+                float: left;
+                width: 100%;
+                font-size: 22px;
+                line-height: 1;
+                .iconfont {
+                    font-size: 16px;
+                    margin-right: 4px;
+                    position: relative;
+                    top: -3px;
+                }
+            }
+            .workout-distance {
+                font-size: 36px;
+                margin-right: 4px;
+                margin-left: 20px;
+            }
+            small {
+                color: #888;
+            }
+        }
+    }
+}
+
+.detail-data {
+    overflow: hidden;
+    margin-top: 25px;
+    h3 {
+        padding: 0 0 0 8px;
+        margin-bottom: 10px;
+        font-weight: normal;
+        font-size: 16px;
+    }
+    ul {
+        padding: 20px;
+        float: left;
+        list-style: none;
+        li {
+            margin-bottom: 15px;
+            small {
+                color: #888;
+                font-size: 12px;
+                vertical-align: middle;
+            }
+            div {
+                width: 100%;
+                font-size: 20px;
+                line-height: 16px;
+                color: #222;
+            }
+        }
+        .tit {
+            width: 100%;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            margin-bottom: 11px;
+        }
+    }
+}
+
+.urlqr {
+    position: relative;
+}
+
+#urlqr {
+    position: absolute;
+    margin: 10px;
+    padding: 10px;
+    width: 130px;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, .9);
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    .tit {
+        font-size: 12px;
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 4px;
+    }
+}
+
+.dataUploadTime {
+    margin-bottom: 30px;
+}
+
+// a[href^="http://maps.google.com/maps"] {
+//     display: none !important
+// }
+
+// a[href^="https://maps.google.com/maps"] {
+//     display: none !important
+// }
+
+.gmnoprint a,
+.gmnoprint span,
+.gm-style-cc {
+    display: none;
+}

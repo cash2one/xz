@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>修改优惠券</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <style type="text/css">
+    .container {
+        max-width: 60em;
+    }
+    
+    .header {
+        margin-bottom: 7em;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    
+    .header h3 {
+        padding-bottom: 19px;
+        margin-top: 19px;
+        margin-bottom: 0;
+        line-height: 40px;
+    }
+    
+    .btns-group {
+        margin: 3em auto;
+    }
+    
+    .form-group img {
+        display: block;
+        max-width: 250px
+    }
+    textarea{min-height: 120px}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="/get_coupons/"><i class="glyphicon glyphicon-list-alt"></i> 优惠券列表</a></li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">修改优惠券</h3>
+        </div>
+        <form id="myForm" class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="inputTitle">优惠券标题</label>
+                <input type="text" class="form-control" id="inputTitle" name="title" value="{{ coupon.title }}" placeholder="输入优惠券标题" required="required">
+            </div>
+            <div class="form-group">
+                <label for="inputDescription">优惠券描述</label>
+                <textarea class="form-control" id="inputDescription" name="description" placeholder="输入优惠券描述" maxlength="140" required="required">{{ coupon.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="inputCredits">需要积分</label>
+                <input type="number" class="form-control" id="inputCredits" name="credits" value="{{ coupon.credits }}" required="required" min="0" max="1000000000" step="1">
+            </div>
+            <div class="form-group">
+                <label for="inputStartTime">开始时间</label>
+                <input type="text" class="form-control" id="inputStartTime" name="start_time" value="{{ coupon.start_time }}" placeholder="2015-01-01" data-toggle="tooltip" data-placement="right" title="格式为:2015-01-01 (注意英文-)" required="required">
+                <span id="StartTimehelpBlock" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="inputEndTime">结束时间</label>
+                <input type="text" class="form-control" id="inputEndTime" name="end_time" value="{{ coupon.end_time }}" placeholder="2015-01-01" data-toggle="tooltip" data-placement="right" title="格式为:2015-01-01 (注意英文-)" required="required">
+                <span id="EndTimehelpBlock" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="inputUseRule">使用规则</label>
+                <textarea class="form-control" id="inputUseRule" name="use_rule" placeholder="输入使用规则描述" maxlength="300" >{{ coupon.use_rule }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="inputStock">库存 (默认库存为“－4”，代表“不限库存”)</label>
+                <input type="text" class="form-control" id="inputStock" value="{{ coupon.stock }}" name="stock" required="required">
+            </div>
+            <div class="form-group">
+                <label>是否删除</label>
+                <input type="hidden" id="deletedValHidden" value="{{ coupon.deleted }}">
+                <div id="radioGroup">
+                    <label class="radio-inline">
+                        <input type="radio" name="deleted" id="delete0" value="0"> 否
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="deleted" id="delete1" value="1"> 是
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="type">类型</label>
+                <input type="hidden" id="typeValHidden" value="{{coupon.type}}">
+                <select class="form-control" name="type" id="type" required="required">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inputFile">优惠券图片（暂不支持修改）</label>
+                <img src="http://xingzhe-img.b0.upaiyun.com/coupon/{{coupon.head_file_name}}" alt="优惠券图片" class="img-rounded">
+            </div>
+            <div class="form-group">
+                <label for="inputFile2">产品图片（暂不支持修改）</label>
+                <img src="http://xingzhe-img.b0.upaiyun.com/coupon/{{coupon.product_file_name}}" alt="产品图片" class="img-rounded">...
+            </div>
+            <div class="text-center btns-group">
+                <a href="/get_coupon/{{ coupon.id }}/" class="btn btn-link">不修改，返回查看此优惠券</a>
+                <button type="submit" id="buttonSubmit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> 确认修改</button>
+            </div>
+        </form>
+    </div>
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script>
+    // 时间戳转换函数
+    function datetime_to_unix(datetime) {
+        var tmp_datetime = datetime.replace(/:/g, '-');
+        tmp_datetime = tmp_datetime.replace(/ /g, '-');
+        var arr = tmp_datetime.split("-");
+        var now = new Date(Date.UTC(arr[0], arr[1] - 1, arr[2], arr[3] - 8, arr[4], arr[5]));
+        return parseInt(now.getTime() / 1000);
+    }
+
+    function unix_to_datetime(unix) {
+        var now = new Date(parseInt(unix) * 1000);
+        return now.toLocaleDateString("ja-JP");
+    }
+
+
+    var inputStartTime = document.querySelector('#inputStartTime'),
+        inputEndTime = document.querySelector('#inputEndTime'),
+        StartTimehelpBlock = document.querySelector('#StartTimehelpBlock'),
+        EndTimehelpBlock = document.querySelector('#EndTimehelpBlock');
+
+    //默认显示
+    StartTimehelpBlock.innerHTML = '此日期是 ' + unix_to_datetime(inputStartTime.value);
+    EndTimehelpBlock.innerHTML = '此日期是 ' + unix_to_datetime(inputEndTime.value);
+
+    inputStartTime.onchange = function(val) {
+        StartTimehelpBlock.innerHTML = '你填写的是：' + this.value;
+        inputStartTime.value = datetime_to_unix(String(inputStartTime.value) + ' 00:00:00');
+    }
+    inputEndTime.onchange = function(val) {
+        EndTimehelpBlock.innerHTML = '你填写的是：' + this.value;
+        inputEndTime.value = datetime_to_unix(String(inputEndTime.value) + ' 00:00:00');
+    }
+
+    // 显示已选“deletedResult”
+    var deletedValHidden = document.querySelector("#deletedValHidden").value;
+    console.log(typeof(deletedValHidden) + '/' +deletedValHidden);
+    if (deletedValHidden == "False") {
+        document.getElementById('delete0').checked=true;
+        // $("#delete0").attr('checked', 'checked');
+    } else if (deletedValHidden == "True") {
+        document.getElementById('delete1').checked = true;
+        // $("#delete1").attr('checked', 'checked');
+    } else {
+        console.log('错误');
+    };
+
+
+    // 显示已选“type”
+    var typeResult = parseInt(document.querySelector("#typeValHidden").value);
+    console.log('typeResult' + typeof(typeResult) + typeResult);
+    document.querySelector("#type").options[typeResult].selected = true;
+
+    // 判断库存修改
+    var mCouponStock = '{{ coupon.stock }}';
+        document.querySelector("#inputStock").onchange = function () {
+            if ({{ coupon.stock }} > -1 && deletedValHidden === "False") {
+                alert('不能修改');
+                console.log('不能修改');
+                document.querySelector("#inputStock").value = mCouponStock;
+                return false;    
+            }
+        };
+        // document.querySelector("#inputStock").setAttribute('disabled', 'disabled');
+        // document.querySelector("#inputStock").value = '{{ coupon.stock }}';
+
+    // 开始
+    window.addEventListener("load", function() {
+
+        // sendData
+        function sendData() {
+
+            // HMLHttpRequest
+            var XHR = new XMLHttpRequest();
+
+            var FD = new FormData(form);
+
+            var buttonSubmit = document.querySelector("#buttonSubmit");
+
+            // 数据成功发送并返回后执行的操作
+            XHR.addEventListener("load", function(event) {
+                console.log(XHR.responseText); //返回json
+                var jsonParseJson = JSON.parse(event.target.responseText); // 解析 json
+
+                // 根据json返回值进行的操作（成功添加/添加失败）
+                if (jsonParseJson.id) {
+                    console.log(jsonParseJson.id);
+                    buttonSubmit.setAttribute("class", "btn btn-success");
+                    buttonSubmit.disabled = "disabled";
+                    buttonSubmit.innerHTML = '添加成功！';
+                    // window.location.href = '/get_coupon/' + jsonParseJson.id + '/'; // 页面跳转到返回的 id URL
+                } else{
+                    console.log(jsonParseJson.error_msg);
+                    buttonSubmit.innerHTML = '<i class="glyphicon glyphicon-ok"></i> 确认添加';
+                    buttonSubmit.removeAttribute('disabled');
+                    alert('提交失败：' + jsonParseJson.error_msg);
+                };
+            });
+
+            // 发生错误时执行的操作
+            XHR.addEventListener("error", function(event) {
+                alert('发生未知错误，请尝试重新提交');
+            });
+
+            XHR.open("POST", "/edit_coupon/{{ coupon.id }}/");
+
+            XHR.send(FD);
+        }
+
+        var form = document.getElementById("myForm");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            buttonSubmit.innerHTML = '正在添加..';
+            buttonSubmit.disabled = "disabled";
+            sendData();
+        });
+    });
+
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ lushu.title }} 匹配路线结果 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+    <link href="/static/dist/css/combine/bootstrapbase.min.css" rel="stylesheet">
+<style type="text/css">
+    #matchResult {
+
+    }
+    #map-canvas {
+        width: 100%;
+        height: 82%;
+        min-height: 700px;
+        border-bottom: 40px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <ul>
+        <li>lushu.user.username^^^^^{{ lushu.user.username }}</li>
+        <li>lushu.distance^^^^^^^^^^{{ lushu.distance }}</li><li>{{ lushu.id }}</li>
+        <li>lushu.create_time^^^^^^^{{ lushu.create_time }}</li>
+        <li>lushu.title^^^^^^^^^^^^^{{ lushu.title }}</li>
+        <li>lushu.type^^^^^^^^^^^^^^{{ lushu.type }}</li>
+        <li>lushu.condition^^^^^^^^^{{ lushu.condition }}</li>
+        <li>lushu.uuid^^^^^^^^^^^^^^{{ lushu.uuid }}</li>
+        <li>lushu.start_latitude^^^^{{ lushu.start_latitude }}</li>
+        <li>lushu.start_longitude^^^{{ lushu.start_longitude }}</li>
+        <li>lushu.end_latitude^^^^^^{{ lushu.end_latitude }}</li>
+        <li>lushu.end_longitude^^^^^{{ lushu.end_longitude }}</li>
+        <li>lushu.download_time^^^^^{{ lushu.download_time }}</li>
+        <li>lushu.similarity_num^^^^{{ lushu.similarity_num }}</li>
+        <li>lushu.comment_num^^^^^^^{{ lushu.comment_num }}</li>
+
+    </ul>
+
+    <table id="matchResult" border="1" cellpadding="10">
+    <tr>
+        <th>workout_id</th>
+        <th>lushu_id</th>
+        <th>user_id</th>
+        <th>similarity</th>
+        <th>avg</th>
+        <th>distance</th>
+        <th>duration</th>
+        <th>circle</th>
+        <th>start_time</th>
+        <th>添加</th>
+        <th>移除</th>
+    </tr>
+    {% for i in lushu.similarity %}
+        <tr>
+            <td>{{ i.0 }}</td>
+            <td>{{ i.1 }}</td>
+            <td>{{ i.2 }}</td>
+            <td>{{ i.3 }}</td>
+            <td>{{ i.4 }}</td>
+            <td>{{ i.5 }}</td>
+            <td>{{ i.6 }}</td>
+            <td>{{ i.7 }}</td>
+            <td>{{ i.8|to_datetime }}</td>
+            <td><input class="addWorkout" type="button" value="添加" name="{{ i.0 }}"></td>
+            <td><a href="">移除</a> </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <div id="map-canvas"></div>
+
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="http://cdn.bi-ci.com/static/jquery/jquery-2.1.4.min.js"></script>
+    <script>
+    /*!
+        Author: hiwanz
+        Source: https://github.com/hiwanz/wgs2mars.js.git
+        Date: 2014-11-17 14:58:52
+        */
+        !function(a){function b(a,b,c,d){this.west=Math.min(a,c),this.north=Math.max(b,d),this.east=Math.max(a,c),this.south=Math.min(b,d)}function c(a,b,c){return a.west<=b&&a.east>=b&&a.north>=c&&a.south<=c}function d(a,b){for(var d=0;d<k.length;d++)if(c(k[d],a,b)){for(var e=0;e<l.length;e++)if(c(l[e],a,b))return!1;return!0}return!1}function e(a,b){var c=-100+2*a+3*b+.2*b*b+.1*a*b+.2*Math.sqrt(Math.abs(a));return c+=2*(20*Math.sin(6*a*h)+20*Math.sin(2*a*h))/3,c+=2*(20*Math.sin(b*h)+40*Math.sin(b/3*h))/3,c+=2*(160*Math.sin(b/12*h)+320*Math.sin(b*h/30))/3}function f(a,b){var c=300+a+2*b+.1*a*a+.1*a*b+.1*Math.sqrt(Math.abs(a));return c+=2*(20*Math.sin(6*a*h)+20*Math.sin(2*a*h))/3,c+=2*(20*Math.sin(a*h)+40*Math.sin(a/3*h))/3,c+=2*(150*Math.sin(a/12*h)+300*Math.sin(a/30*h))/3}function g(a,b){var c={};if(!d(a,b))return c={lat:b,lng:a};var g=e(a-105,b-35),k=f(a-105,b-35),l=b/180*h,m=Math.sin(l);m=1-j*m*m;var n=Math.sqrt(m);return g=180*g/(i*(1-j)/(m*n)*h),k=180*k/(i/n*Math.cos(l)*h),c={lat:b+g,lng:a+k}}var h=3.141592653589793,i=6378245,j=.006693421622965943,k=[new b(79.4462,49.2204,96.33,42.8899),new b(109.6872,54.1415,135.0002,39.3742),new b(73.1246,42.8899,124.143255,29.5297),new b(82.9684,29.5297,97.0352,26.7186),new b(97.0253,29.5297,124.367395,20.414096),new b(107.975793,20.414096,111.744104,17.871542)],l=[new b(119.921265,25.398623,122.497559,21.785006),new b(101.8652,22.284,106.665,20.0988),new b(106.4525,21.5422,108.051,20.4878),new b(109.0323,55.8175,119.127,50.3257),new b(127.4568,55.8175,137.0227,49.5574),new b(131.2662,44.8922,137.0227,42.5692)];a.transformFromWGSToGCJ=g}(window);
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+    var mapOptions = {
+        zoom: 11,
+        center: new google.maps.LatLng(30, 121)
+    };
+    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    var styleArray = [{
+        featureType: "poi.business",
+        elementType: "labels",
+        stylers: [{
+            visibility: "off"
+        }]
+    }];
+    map.setOptions({
+        styles: styleArray
+    });
+    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var labelIndex = 0;
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++ ) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    $(".addWorkout").on("click", function(event){
+        event.preventDefault();
+        console.log(this.name);
+        $.get('http://post.imxingzhe.com/api/v4/limit_trackpoints?workout_id=' + this.name, function(data){
+            console.log(data);
+
+            var workoutPointsLen = data.length;
+            var workoutPoints = [];
+            for (var i = 0; i < workoutPointsLen; i++){
+                var p = transformFromWGSToGCJ(data[i].lng, data[i].lat);
+                workoutPoints[i] = p;
+            }
+            var workoutPolyOptions = {
+                path: workoutPoints,
+                strokeColor: getRandomColor(),
+                strokeOpacity: 0.8,
+                strokeWeight: 3
+            };
+            var workoutPoly = new google.maps.Polyline(workoutPolyOptions);
+            workoutPoly.setMap(map);
+
+            var workoutStartPosition = new google.maps.LatLng(workoutPoints[0].lat, workoutPoints[0].lng);
+            var marker = new google.maps.Marker({
+                position: workoutStartPosition,
+                label: labels[labelIndex++ % labels.length],
+                map: map
+            });
+
+            var workoutEndPosition = new google.maps.LatLng(workoutPoints[workoutPointsLen-1].lat, workoutPoints[workoutPointsLen-1].lng);
+            var marker = new google.maps.Marker({
+                position: workoutEndPosition,
+                label: labels[labelIndex++ % labels.length],
+                map: map
+            });
+
+        });
+
+    });
+
+    $(function(){
+        var lushuGeo = {{ lushu_geo|safe }};
+        console.log(lushuGeo);
+        //var lushuGeoPoints = lushuGeo.features[0].geometry.coordinates;
+        var lushuGeoGpxpoints = lushuGeo.features[1].geometry.coordinates;
+        //var lushuGeoWaypoints = lushuGeo.features[2].geometry.coordinates;
+
+        var lushuStartPng = new google.maps.MarkerImage("http://cdn.bi-ci.com/xingzhesite/static/img/map-marker-icon-2.png", null, null, null, new google.maps.Size(60, 60));
+        var lushuEndPng = new google.maps.MarkerImage("http://cdn.bi-ci.com/xingzhesite/static/img/map-marker-icon-1.png", null, null, null, new google.maps.Size(60, 60));
+
+        var lushuGeoGpxpointsLen = lushuGeoGpxpoints.length;
+
+
+        //map.setCenter({lat: (lushuGeoGpxpoints[0].lat + lushuGeoGpxpoints[lushuGeoGpxpointsLen-1].lat) / 2, lng: (lushuGeoGpxpoints[0].lng + lushuGeoGpxpoints[lushuGeoGpxpointsLen-1].lng) / 2});
+        var latlngbounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < lushuGeoGpxpointsLen; i++) {
+            latlngbounds.extend(new google.maps.LatLng({lat: lushuGeoGpxpoints[i].lat, lng: lushuGeoGpxpoints[i].lng}));
+        }
+        map.fitBounds(latlngbounds);
+
+
+        var lushuStartPosition = new google.maps.LatLng(lushuGeoGpxpoints[0].lat, lushuGeoGpxpoints[0].lng);
+
+        var marker = new google.maps.Marker({
+            position: lushuStartPosition,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: '路书 Start',
+            icon: lushuStartPng
+        });
+        var lushuEndPosition = new google.maps.LatLng(lushuGeoGpxpoints[lushuGeoGpxpointsLen-1].lat, lushuGeoGpxpoints[lushuGeoGpxpointsLen-1].lng);
+
+        var marker = new google.maps.Marker({
+            position: lushuEndPosition,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: '路书 End',
+            icon: lushuEndPng
+        });
+
+        var lushuPolyOptions = {
+            path: lushuGeoGpxpoints,
+            strokeColor: '#0000ff',
+            strokeOpacity: 0.8,
+            strokeWeight: 3
+        };
+        var lushuPoly = new google.maps.Polyline(lushuPolyOptions);
+        lushuPoly.setMap(map);
+
+
+    });
+
+
+    </script>
+{% endblock %}

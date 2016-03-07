@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+    行者积分优惠 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<div class="container">
+<div class="row row-help">
+{% include "help_nav.html" %}
+    <ol class="breadcrumb visible-xs">
+    <li><a href="/">行者首页</a></li>
+    <li><small class="iconfont">&#xe61a;</small></li>
+      <li><a href="/help/">帮助中心</a></li>
+      <li><small class="iconfont">&#xe61a;</small></li>
+      <li class="active">积分相关问题</li>
+    </ol>
+<div class="col-md-10 main">
+    <h2>什么是行者积分？</h2>
+    <p>凭行者积分，在 <strong><a href="http://shop116176410.taobao.com/" target="_blank">行者官方淘宝店</a></strong> 购物可以优惠。</span></p>
+    <h2>行者积分的计算规则？</h2>
+    <p>行者的积分与运行有效里程直接相关，运动均速在45km/h以内的轨迹被视为有效，有效轨迹的距离综合即为积分。可使用积分在积分商城优惠换购行者官方淘宝店的骑行设备。</p>
+    <p>所有已经上传，没有删除和隐藏，并且平均速度小于40公里/小时的路线，计算路线的距离之和，即为积分。因为走路，跑步，骑行的平均速度大多数情况下都是小于40公里/小时，所以积分基本相当于有效运动距离之和。</p>
+    <p>用行者有优惠，多用行者记录吧 ^_^</p>
+    <p><img src="http://cdn.bi-ci.com/xingzhesite/static/img/brand_logos.png" class="img-responsive" alt="行者淘宝店所有品牌图片"></p>
+    <hr>
+    <p class="text-right"><a href="http://shop116176410.taobao.com/" target="_blank">行者官方淘宝店</a></p>
+</div>
+</div>
+</div>
+{% endblock %}

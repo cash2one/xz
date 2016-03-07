@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+{% block title %}
+{{ the_user.username }} 的记录 - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/user.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+{% load filters %}
+
+<div class="container">
+
+<div class="row">
+
+    <!-- 左栏 -->
+    <div class="col-md-4 wrap-left pinned">
+
+            <div class="user-info">
+                <img src="{{ the_user.pic_url }}!eventSmall" alt="{{ the_user.username }}的头像" class="default-avatar">
+                <p><span class="user-name">{{ the_user.username }}</span></p>
+                <p>
+                {% if the_user.city_id %}
+                    <a class="data-city" href="/profile/" target="_blank" data-toggle="tooltip" data-placement="left" title="点击修改我的城市"><i class="iconfont">&#xe60b;</i>{{ the_user.city_name }}</a>
+                {% endif %}
+
+                {% if sex = 1 and age %}
+                    <span class="age-and-sex sex-male"><i class="iconfont">&#xe62f;</i>{{ age }}</span> <!-- 男 -->
+                {% elif sex = 0 and age %}
+                    <span class="age-and-sex sex-female"><i class="iconfont">&#xe62e;</i>{{ age }}</span> <!-- 女 -->
+                {% else %}
+                {% endif %}
+
+                    <a class="data-jifen" target="_blank" href="{% url 'help_jifen' %}" data-toggle="tooltip" data-placement="right">{{ the_user.credits }}积分</a>
+                </p>
+                <hr> 
+
+                <div class="data-distance-title">有效里程（公里）</div>
+                <div class="data-distance data-font">{{ the_user.valid_distance|to_distance }}</div>
+
+                {% if status == 1 %}
+                    <div>
+                        <a class="admin-link btn btn-link" id="topicForbiddenBtn">[禁言Ta]</a>
+                        <a class="admin-link btn btn-link" data-toggle="modal" data-target=".bs-example-modal-lg">[私信Ta]</a>
+                    </div>
+                    
+                    <div class="modal fade bs-example-modal-lg text-left" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">私信Ta</h4>
+                          </div>
+                            <form method="post" style="margin:20px 30px 30px" id="msgForm" action="/im/{{ the_user.encode_id }}/message/">
+                                <div class="form-group">
+                                    <textarea name="content" id="msgContent" class="form-control" rows="7"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button id="msgBtn" type="submit" class="btn btn-default">发送</button>
+                                </div>
+                                
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                {% endif %}
+
+                <div class="user-nav">
+                    <ul class="nav">
+                        <li class="active"><a href="{% url 'user_new' the_user.encode_id %}">历史记录</a></li>
+                        <li><a href="{% url 'user_lushus_new' the_user.encode_id %}">我的路书</a></li>
+                        <li><a href="{% url 'user_location_new' the_user.encode_id %}">我的位置</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- user info end -->
+
+    </div>
+    <!-- 左栏结束 -->
+
+    <!-- 右栏 -->
+    <div class="col-md-8 wrap-right">
+
+        <div class="datas">
+        
+            <!-- 日期选择 -->
+            <div class="date-select">
+                <form class="form-inline" action="/api/v3/user_month_info/" method="get">
+                    <select class="form-control target" name="year">
+                      <option value="2015">2016</option>
+                      <option value="2015">2015</option>
+                      <option value="2014">2014</option>
+                      <option value="2013">2013</option>
+                      <option value="2012">2012</option>
+                    </select>
+                    年
+                    <select class="form-control target" name="month">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                    </select>
+                    月 统计数据<small></small>
+                </form>
+            </div>
+
+            <!-- 当月汇总 -->
+            <div class="month-data">
+                <div class="month-summary" id="monthSummary">
+                </div>
+            </div>
+
+             <div id="Alert" class="alert"></div>
+             <div id="Loading" class="loading"><img src="http://cdn.bi-ci.com/dist_v2/image/ajaxload.gif" alt="loading image"></div>
+
+            <!-- 当月纪录列表 -->
+            <ul class="workout-list row" id="workoutList"></ul>
+
+        </div>
+
+    </div>
+    <!-- 右栏结束 -->
+
+</div>
+
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script>
+$(function () {
+    // 添加随即背景
+    $(".user-info").addClass('user-info-bgi-' + Math.round( Math.random() * 3 ));
+})  
+
+var forbiddenURL = '/im/forbidden/' + '{{ the_user.encode_id }}' + '/';
+var msgFormURL = '/im/' + '{{ the_user.encode_id }}' + '/message/';
+var userID = '{{ the_user.encode_id }}';
+
+// 禁言
+$("#topicForbiddenBtn").on('click', function(event) {
+    event.preventDefault();
+    var r = confirm("真的要把此人禁言？");
+
+    if (r == true) {
+        $.ajax({
+            url: forbiddenURL,
+            type: 'POST',
+            data: {userID: userID},
+        })
+        .done(function() {
+            console.log("success");
+            alert("禁言成功！从现在开始禁言五天");
+        })
+        .fail(function(data) {
+            console.log(data);
+            alert(data.responseText);
+        })
+        .always(function() {
+            console.log("complete");
+        });
+    } else{
+        alert('未禁言');
+    };
+
+});
+
+// 私信
+$("#msgBtn").on('click', function(event) {
+    var msgContent = $("#msgContent").val();
+    var msgBtn = $("#msgBtn");
+    event.preventDefault();
+
+    $.ajax({
+        url: msgFormURL,
+        type: 'POST',
+        data: {content: msgContent}
+    })
+    .done(function(data) {
+        alert('发送成功！');
+        msgBtn.attr('disabled', 'disabled');
+    })
+    .fail(function(data) {
+        alert(data.responseText);
+    })
+});
+
+
+
+// 时间戳转换日期函数
+function formatDate(now) {     
+    var month = now.getMonth()+1;
+    var date = now.getDate();
+    var hour = now.getHours();
+    var minute = now.getMinutes();
+    var second=now.getSeconds();
+    if(hour < 10) hour = '0' + hour;
+    if(minute < 10) minute = '0' + minute;
+    if(second < 10) second = '0' + second;
+    return month + "月" + date + "日 " + hour + ":" + minute + ":" + second;     
+}
+
+// 时间格式化函数 s
+function transDurationData (e) {
+    var hours = parseInt( e / 3600 );
+    var minutes = parseInt( e / 60 ) % 60;
+    var seconds = e % 60;
+    return e = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+}
+
+// 总里程计算函数
+function transData (e) {
+    e = e / 1000;
+    if(e >= 1000) {
+        return Math.round(e);
+    } else {
+        return e.toFixed(2);
+    }
+}
+
+// 类型格式化字符串函数
+function sportType_func (e) {
+    if (e === 1) {
+         return e = '走路';
+    } else if (e === 2) {
+        return e = '跑步';
+    } else if (e === 3){
+        return e = '骑行';
+    } else {
+        return e = '未知方式';
+    }
+}
+
+// 类型格式化图标函数
+function sportTypeIcon_func (e) {
+    if (e === 1) {
+         return e = '&#xe613;';
+    } else if (e === 2) {
+        return e = '&#xe626;';
+    } else if (e === 3){
+        return e = '&#xe627;';
+    } else {
+        return e = '?';
+    }
+}
+
+var myDate = new Date(),
+    nowYear = myDate.getFullYear(), // 当前年
+    nowMonth = myDate.getMonth() + 1; // 当前月
+
+function getJsonDate (y,m) {
+    $.ajax({
+        url: '/api/v3/user_month_info/',
+        type: 'GET',
+        data: {year: y,month: m}
+    })
+
+    // 请求成功后处理返回数据
+    .done(function(data) {
+
+        var jsonArrayList = data.data.wo_info, // 当月纪录列表
+            // jsonArraySummary = data.data.st_info, // 当月信息汇总
+            jsonArrayListLength = jsonArrayList.length, // 当月数据条数
+            allSumDistance = 0, // 当月总里程
+            allSumDuration = 0; // 当月运动总时间
+
+        // 对列表按时间先后重新排序
+        jsonArrayList.sort(function(a, b) { return a.start_time < b.start_time ? 1 : -1;} );
+
+        // 判断此月有无纪录
+        if (jsonArrayListLength === 0) {
+            $("#Loading").hide();
+            $("#Alert").show().text('您 '+ y + ' 年 ' + m +' 月没有运动纪录，继续加油！');
+            $("#monthSummary").empty();
+            // return false;
+        } else{
+
+            $("#Alert").empty().hide();
+            $("#Loading").hide();
+
+            $("#monthSummary").append(
+                '<div class="row">' +
+                '<div class="wrap-summary-div wrap-sum-list-length col-md-4"><span class="data-font">' + jsonArrayListLength + '</span>次运动</div>' +
+                '<div class="wrap-summary-div wrap-sum-distance col-md-4"><span id="WordoutSumDistance" class="data-font"></span>公里</div>' +
+                '<div class="wrap-summary-div wrap-sum-duration col-md-4"><span id="WordoutSumDuration" class="data-font"></span>小时</div>' +
+                '</div>'
+            );
+
+            // 遍历展示纪录列表
+            for (var i = 0; i < jsonArrayList.length; i++) {
+
+                // console.log(jsonArrayList);
+
+                allSumDistance += Number(jsonArrayList[i].distance); // 计算当月总里程
+                allSumDuration += Number(jsonArrayList[i].duration); // 计算当月总时长
+
+                $("#WordoutSumDistance").text(transData(allSumDistance));
+                $("#WordoutSumDuration").text(transDurationData(allSumDuration));
+
+                $("#workoutList").append('<li>' +
+                    '<div class="icon"><i class="iconfont">' + sportTypeIcon_func(jsonArrayList[i].sport) + '</i></div>' +
+                    '<div class="wrap">' +
+                    '<a href="/xing/' + jsonArrayList[i].id + '/" target="_blank">' +
+                    '<h3>距离 <span class="data-font">' + transData(jsonArrayList[i].distance) + ' km</span>，' + //总距离
+                    '用时 <span class="data-font">' + transDurationData(jsonArrayList[i].duration) + '</span>' + // 用时
+                    '，均速 <span class="data-font">' + (((jsonArrayList[i].distance) / 1000) / ((jsonArrayList[i].duration) / 3600)).toFixed(2) + ' km/h</span></h3>' +
+                    '<p><i class="iconfont">&#xe630;</i>' + formatDate(new Date(jsonArrayList[i].start_time)) + '</p>' +
+                    '<p class="workout-title text-overflow">'+ jsonArrayList[i].title +'</p>' +
+                    '</a></div>' +
+                    '<div class="cadence-heart">' +
+                    '<i title="踏频" class="cadence' + jsonArrayList[i].cadence_source + '"></i>' +
+                    '<i title="心率" class="heart' + jsonArrayList[i].heart_source + '"></i>' +
+                    '</div>' +
+                    '</li>'
+                );
+            };
+
+        };
+
+    }) // done END
+
+    .fail(function() {
+        console.log("error");
+    })
+    .always(function() {
+        console.log("complete");
+    });
+
+}
+
+
+// 选择日期后，更新一次数据
+$('.target').change(function(e) {
+    e.preventDefault();
+
+    $("#Alert").empty().hide();
+    $("#Loading").show();
+
+    // 清空一次节点
+    $("#workoutList").empty();
+    $("#monthSummary").empty(); 
+
+    // 获取年份和月份
+    var yearVal = $('.target[name=year]').val(),
+        monthVal = $('.target[name=month]').val();
+
+    getJsonDate(yearVal,monthVal);
+
+});
+
+// 默认选中当月
+$('.target[name=month] option[value=' + nowMonth + ']').attr('selected', true);
+
+// 默认显示当月信息
+getJsonDate(nowYear,nowMonth);
+</script>
+
+
+{% endblock %}

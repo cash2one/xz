@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ user.name }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+
+    <div class="row">
+        <div class="span10">
+            <form action="" method="post" class="form-horizontal">
+                <fieldset>
+                    {% csrf_token %}
+                    <div>
+                        <input type="text" class="input-xlarge" id="email" name="email" value="{{ the_user.email }}" />
+                    </div>
+                    <br />
+                    <div>
+                        <input type="text" class="input-xlarge" id="username" name="username" value="{{ the_user.username }}" />
+                    </div>
+                    <br />
+                    <div>
+                        <input type="submit" value="提交" class="btn btn-primary" />
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

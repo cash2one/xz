@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    行者骑行软件
+{% endblock %}
+{% block css %}
+{% endblock %}
+
+{% block login %}
+    <ul class="nav pull-right">
+        <li><a target="_blank" href="{% url 'download' %}">下载行者骑行软件</a></li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+    <div class="row">
+        <div class="span10 well">
+            {% comment %}<div class="pull-right">
+            <h3 class="pull-right">“中国梦 ● 万里行“&nbsp;公益环保绿色骑行活动</h3><br />
+            <h3 class="pull-right">2014拉萨自行车挑战赛</h3>
+            </div>{% endcomment %}
+            <img src="/static/images/wlqx.jpg" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <form action="" method="post" class="form-horizontal">
+                <fieldset>
+                    {% csrf_token %}
+                    <legend>海选体能测试检录成功</legend>
+                    <div class="control-group">
+                        <label class="control-label" for="title">邮箱</label>
+                        <div class="controls">
+                            {{ user.email }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="title">昵称</label>
+                        <div class="controls">
+                            {{ user.username }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="title">真实姓名</label>
+                        <div class="controls">
+                            {{ wlqx.real_name }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="title">身份证号</label>
+                        <div class="controls">
+                            {{ wlqx.id_number }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="title">报名编号</label>
+                        <div class="controls">
+                            {{ wlqx.enroll_number }}
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

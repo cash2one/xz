@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>报名2015［行者力量］年度评选，数十万单车豪礼等你角逐！</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.7/css/sm.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/dist/css/xingzhe_power_vote.css">
+</head>
+
+<body>
+    <!-- 报名入口 -->
+    <div class="page page-current page-index" id='index'>
+        <div class="content">
+            <img src="http://cdn.bi-ci.com/dist_v2/image/pages/choice2015/vote_header.jpg" alt="年度最具影响力骑行领袖">
+            <div class="content-block">
+                <p>不管你是圈里红人或是骑行草根，不管你走过川藏线或只是上班通勤，只要你热爱单车，认可行者精神，坚持骑行的出行方式，都可以来报名参加，来角逐属于你的专属荣誉。</p>
+                <h2 class="t1 text-hide">一等奖</h2>
+                <ul>
+                    <li>
+                        <p>swift carbon 碳纤维车架<br>价值 ¥20,000</p>
+                        <p><small>Swift Carbon,DRAPAC车队赞助商，刚性十分出色，骑行踩踏感受能极佳。</small></p>
+                    </li>
+                    <li>
+                        <p>BORIS碳刀轮组<br>价值 ¥8,000</p>
+                        <p><small>BORIS是美国波特兰设计总部推出的最新品牌，这款轮组为吉伦-鑫振发洲际队御用55管胎版碳刀轮组</small></p>
+                    </li>
+                    <li>
+                        <p>iGPS码表 价值 ¥799</p>
+                    </li>
+                    <li>
+                        <p>加雪龙头灯+尾灯套装 价值 ¥200</p>
+                    </li>
+                    <li>
+                        <p>行者力量纪念T恤1件<small>（达恩运动提供）</small></p>
+                    </li>
+                    <li>
+                        <p>行者特质钛合金奖牌<small>（范·尼古拉斯提供）</small></p>
+                    </li>
+                    <li>
+                        <p>行者颁发的特制奖杯+荣誉证书+APP专属勋章</p>
+                    </li>
+                </ul>
+                <img src="http://cdn.bi-ci.com/dist_v2/image/pages/choice2015/vote_reward_1.jpg" alt="一等奖奖品">
+                <h2 class="t2 text-hide">二等奖</h2>
+                <ul>
+                    <li>
+                        <p>Motion 顶级车架<br>价值 ¥12,800</p>
+                        <p><small>先进的无皱褶成型法和真空朔实法确保每一寸的细节紧朔，强化型高刚性吊耳更能精确的落实每个变速间的毫米</small></p>
+                    </li>
+                    <li>
+                        <p>iGPS码表 价值 ¥799</p>
+                    </li>
+                    <li>
+                        <p>加雪龙头灯+尾灯套装 价值 ¥200</p>
+                    </li>
+                    <li>
+                        <p>行者力量纪念T恤1件<small>（达恩运动提供）</small></p>
+                    </li>
+                    <li>
+                        <p>行者特质钛合金奖牌<small>（范·尼古拉斯提供）</small></p>
+                    </li>
+                    <li>
+                        <p>行者颁发的特制奖杯+荣誉证书+APP专属勋章</p>
+                    </li>
+                </ul>
+                <img src="http://cdn.bi-ci.com/dist_v2/image/pages/choice2015/vote_reward_2.jpg" alt="二等奖奖品">
+                <h2 class="t3 text-hide">三等奖</h2>
+                <ul>
+                    <li>
+                        <p>JAVA铝合金山地车架<br>价值 ¥2,000</p>
+                        <p><small>JAVA（中文名佳沃）最初源自设计师名字的组合，团队来自意大利。这款山地车架来自JAVA旗下的Alpha系列，超轻铝合金设计，为你的旅途保驾护航</small></p>
+                    </li>
+                    <li>
+                        <p>iGPS码表 价值 ¥799</p>
+                    </li>
+                    <li>
+                        <p>加雪龙头灯+尾灯套装 价值 ¥200</p>
+                    </li>
+                    <li>
+                        <p>行者力量纪念T恤1件<small>（达恩运动提供）</small></p>
+                    </li>
+                    <li>
+                        <p>行者特质钛合金奖牌<small>（范·尼古拉斯提供）</small></p>
+                    </li>
+                    <li>
+                        <p>行者颁发的特制奖杯+荣誉证书+APP专属勋章</p>
+                    </li>
+                </ul>
+                <img src="http://cdn.bi-ci.com/dist_v2/image/pages/choice2015/vote_reward_3.jpg" alt="三等奖奖品">
+                <p><a href="#pageForm" class="button button-fill button-big">我要报名</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- 报名表单 -->
+    <div class="page" id="pageForm">
+        <header class="bar bar-nav">
+            <a href="#" class="back icon icon-left pull-left"></a>
+            <h1 class="title">填写报名信息</h1>
+        </header>
+        <div class="content">
+            <div class="list-block">
+                <ul>
+                    {% csrf_token %}
+                    <!-- Text inputs -->
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">姓名</div>
+                                <div class="item-input">
+                                    <input type="text" name="name" placeholder="真实姓名" maxlength="50" required>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">城市</div>
+                                <div class="item-input">
+                                    <input type="text" name="city" placeholder="如：上海市" maxlength="20" required>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">手机号</div>
+                                <div class="item-input">
+                                    <input type="tel" name="tel" placeholder="请务必填写正确"  maxlength="11" required>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">微信号</div>
+                                <div class="item-input">
+                                    <input type="text" name="wechatid" placeholder="选填，非昵称" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">QQ号</div>
+                                <div class="item-input">
+                                    <input type="number" name="qqid" placeholder="选填" maxlength="20">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="align-top">
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">一句话介绍</div>
+                                <div class="item-input">
+                                    <textarea name="summarytext" placeholder="必填，60字以内" maxlength="60" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="align-top">
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">参选理由</div>
+                                <div class="item-input">
+                                    <textarea class="hight-textarea" name="reasontext" placeholder="选填，完善资料有助于评选" maxlength="10000"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="align-top">
+                        <div class="item-content">
+                            <div class="item-inner item-inner-file">
+                                <div class="item-title">上传评选主图</div>
+                            </div>
+                        </div>
+                        <div class="row item-content item-file-wrap">
+                            <div id="fileWrap" class="col-100 item-inner file-input-wrap file-input-wrap-lg">
+                                <input type="file" id="file" class="file-input" accept="image/*">
+                                <label class="file-input-trigger icon icon-picture"></label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="align-top">
+                        <div class="item-content">
+                            <div class="item-inner item-inner-file">
+                                <div class="item-title">上传更多图片有助于评选（1-4张可选）</div>
+                            </div>
+                        </div>
+                        <div class="row item-content item-file-wrap">
+                            <div id="fileWrap2" class="col-50 item-inner file-input-wrap file-input-wrap-sm">
+                                <input type="file" id="file2" class="file-input" accept="image/*">
+                                <label class="file-input-trigger icon icon-picture"></label>
+                            </div>
+                            <div id="fileWrap3" class="col-50 item-inner file-input-wrap file-input-wrap-sm">
+                                <input type="file" id="file3" class="file-input" accept="image/*">
+                                <label class="file-input-trigger icon icon-picture"></label>
+                            </div>
+                        </div>
+                        <div class="row item-content item-file-wrap">
+                            <div id="fileWrap4" class="col-50 item-inner file-input-wrap file-input-wrap-sm">
+                                <input type="file" id="file4" class="file-input" accept="image/*">
+                                <label class="file-input-trigger icon icon-picture"></label>
+                            </div>
+                            <div id="fileWrap5" class="col-50 item-inner file-input-wrap file-input-wrap-sm">
+                                <input type="file" id="file5" class="file-input" accept="image/*">
+                                <label class="file-input-trigger icon icon-picture"></label>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <a id="submitBtn" data-vtype='0' class="button button-big button-fill">提交</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Popup -->
+    <div class="popup popup-result">
+        <img src="http://cdn.bi-ci.com/dist_v2/image/pages/choice2015/vote-result-bg.jpg" alt="行者力量">
+        <section>
+            <h3>您的申请我们已经收到！</h3>
+            <p><img src="http://cdn.bi-ci.com/dist_v2/image/pages/choice2015/vote_qrcode.png" alt="微信二维码"></p>
+            <p>关注行者公众号：imxingzhe</p>
+            <p>随时获取行者力量最新选票信息</p>
+            <p>有任何问题请留言<strong>行者官方公众号</strong></p>
+            <p>或联系邮箱：<a class="external" href="mailto:contact@imxingzhe.com">contact@imxingzhe.com</a></p>
+        </section>
+    </div>
+
+    <!-- 你的html代码 -->
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.7/js/sm.min.js' charset='utf-8'></script>
+    <script src="/static/dist/js/componet/canvasResize/binaryajax-min.js"></script>
+    <script src="/static/dist/js/componet/canvasResize/exif-min.js"></script>
+    <script src="/static/dist/js/componet/canvasResize/canvasResize-min.js"></script>
+    <script src="/static/dist/js/xingzhe_power_vote.js"></script>
+</body>
+
+</html>

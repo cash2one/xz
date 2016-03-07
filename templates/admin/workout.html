@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ workout.user.username }} {{ workout.sport|sport_to_string }}{{ workout.distance|to_distance }}公里，时间{{ workout.duration|to_duration }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<style type="text/css">
+	.table th, .table td {
+		text-align: center;
+	}
+</style>
+{% endblock %}
+{% block content %}
+<form action="" method="post" class="form-horizontal">
+<div class="row">
+    <div class="span5">
+	    <a href="{% url 'user_new' workout.user.encode_id %}">{{ workout.user.username }}</a>&nbsp;&nbsp;{{ workout.sport|sport_to_string }}{{ workout.distance|to_distance }}公里，时间{{ workout.duration|to_duration }}，平均速度{{ workout.avg_speed }}公里/小时
+    </div>  
+</div>
+<div class="row">
+    <div class="span5">
+        <a href="{% url 'user_new' workout.user.encode_id %}">{{ workout.user.username }}</a>&nbsp;&nbsp;{{ workout.sport|sport_to_string }}{{ new_distance1|to_distance }}公里，时间{{ new_duration1|to_duration }}，平均速度{{ new_avg_speed1 }}公里/小时
+        <a id="fix1" href="#">修复</a>
+    </div>  
+</div>
+<div class="row">
+    <div class="span5">
+        <a href="{% url 'user_new' workout.user.encode_id %}">{{ workout.user.username }}</a>&nbsp;&nbsp;{{ workout.sport|sport_to_string }}{{ new_distance2|to_distance }}公里，时间{{ new_duration2|to_duration }}，平均速度{{ new_avg_speed2 }}公里/小时
+        <a id="fix2" href="#">修复</a>
+    </div>  
+</div>
+<input type="hidden" name="type" id="type" />
+</form>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script  type="text/javascript">
+    $(function(){
+    	$("#fix1").click(function(){
+    		if(confirm("确定要修复吗？")){
+    			$("#type").val(1);
+    			$("form").submit();
+    		}
+    		return false;
+    	});
+    	$("#fix2").click(function(){
+            if(confirm("确定要修复吗？")){
+            	$("#type").val(2);
+                $("form").submit();
+            }
+            return false;
+        });
+    });
+</script>
+{% endblock %}

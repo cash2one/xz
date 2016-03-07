@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block css %}
+<link href="/static/dist/css/help.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    语音导航 - 行者骑行软件
+{% endblock %}
+{% block content %}
+    {% load filters %}
+
+<div class="container">
+            <div class="row row-help">
+            {% include "help_nav.html" with active=11 %}
+                <div class="col-md-9 main">
+                <h2>使用语音导航提示</h2>
+                    <h3>行者可以每隔一段时间或距离，进行语音提示</h3>
+
+                    <p>打开行者设置-语音提示，开启语音提示功能。</p>
+
+                    <p>语音提示是中文发音，所以需要安装中文语音包，常见的中文语音包是讯飞语音，以下是安装步骤：</p>
+                    <p><a target="_blank" href="http://apps.wandoujia.com/apps/com.iflytek.speechcloud/download">下载讯飞语音</a> </p>
+                    <p>安装成功后，打开，找到“设置”，勾选“开启系统合成设置“</p>
+                    <p>打开手机系统设置-“语音输入与输出”-“文字转语音设置”，选择“讯飞语音合成”,默认引擎“讯飞语音合成”, 语言“中文”。</p>
+                    <hr />
+
+                    {% comment %}<p>分别下载安装：<a target="_blank" href="http://www.mumayi.com/android-68137.html">讯飞TTS语音引擎语音包</a> &nbsp;和&nbsp; <a target="_blank" href="http://www.mumayi.com/android-68135.html">讯飞TTS语音引擎主程序</a></p>
+
+                    <h4>说明1：</h4>
+                    <p>以上两个安装包可能不支持4.0以上ROM，如果你的手机ROM是4.0以上，而且找到了可用的中文语音包，欢迎告诉我。</p>
+                    <p>以下是我找到的两个4.0以上版本可用的：</p>
+                    <p>http://www.miui.com/thread-648534-1-1.html <br />http://bbs.hiapk.com/thread-4585782-1-1.html</p>
+                    <br />
+                    <h4>说明2：</h4>
+                    <p>如果你的手机系统设置，没有文字转语音设置，可以<a target="_blank" href="http://www.appchina.com/app/ex.chinyang.android.xshortcut/">下载 xShortcut</a> 这个程序进行创建。</p>
+                    <p>打开程序后，依次输入：</p>
+                    <ul class="unstyled">
+                        <li>文字转语音</li>
+                        <li>com.android.settings</li>
+                        <li>com.android.settings.TextToSpeechSettings</li>
+                    </ul>
+                    <p>具体可以参考下图：<br /><img style="width:240px; height:400px" src="/static/images/screenshot/xshortcut_tts.png" title="TTS设置"/></p>
+                    <p>然后点击确定，就会在桌面创建一个 文字转语音 的快捷方式了。</p>
+                    <br />
+                    <h4>说明3：</h4>
+                    <p>如果以上方法都无法成功设置，可以搜索一下：手机型号+TTS</p>{% endcomment %}
+                </div>
+            </div>
+</div>
+
+{% endblock %}

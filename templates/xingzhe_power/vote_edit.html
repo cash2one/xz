@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+    <div>
+        {{ vote.id }}
+    </div>
+    <div>
+        {{ vote.header }}
+    </div>
+    <div>
+        {{ vote.footer }}
+    </div>
+    <div>
+        {{ vote.condition }}
+    </div>
+    <div>
+        {{ vote.start_time }}
+    </div>
+    <div>
+        {{ vote.end_time }}
+    </div>
+    <form method="post">
+        {% for content in vote.contents %}
+            <div>
+                <div>
+                    {{ content.title }}
+                </div>
+                <div>
+                    {{ content.type }}
+                </div>
+                <div>
+                    {{ content.max_choose }}
+                </div>
+                <ul>
+                    {% for option in content.contents %}
+                        <li>{{ option.name }}</li>
+                        <li>{{ option.num }}</li>
+                        <li>{{ option.avatar }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </form>
+</body>
+</html>

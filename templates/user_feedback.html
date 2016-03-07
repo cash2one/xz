@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% load filters %}
+
+{% block title %} 用户反馈 - 行者骑行软件 {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/dist/css/xzb.css">
+{% endblock %}
+
+{% block content %}
+
+{% load filters %}
+<div class="app-header">
+    <div class="container">
+        <h1 class="pull-left">用户反馈</h1>
+    </div>
+</div>
+<div class="container">
+    <section class="new-topic">
+        <header class="header">填写反馈</header>
+        <div class="row new-form">
+            <div class="col-md-12">
+                <form action="/help/user_feedback/" method="post">
+                    <div class="form-group">
+                        <label for="inputPhone">手机机型 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="inputPhone" placeholder="如：iPhone 6，魅族 MX5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputOS">手机系统版本 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="inputOS" placeholder="如：iOS 9.0.2，Android 5.0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputXzVersion">行者版本 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="inputXzVersion" placeholder="如：2.0" required>
+                    </div>
+                    <input type="hidden" name="phone_info"> {% csrf_token %}
+                    <div class="form-group">
+                        <label for="inputContent">反馈内容 <span class="text-danger">*</span></label>
+                        <textarea rows="12" id="inputContent" name="content" class="form-control input-xlarge" required maxlength="500"></textarea>
+                    </div>
+                    <button id="submitBtn" type="submit" class="btn btn-primary btn-lg">提交</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$("#submitBtn").on('click', function(event) {
+			event.preventDefault();
+
+			var phoneInfo = $("#inputPhone").val() + ',' + $("#inputOS").val() + ',' + $("#inputXzVersion").val(),
+                Content = $("#inputContent").val();
+
+            if ($("#inputPhone").val().length === 0 || $("#inputOS").val().length === 0 || $("#inputXzVersion").val().length === 0) {
+                alert('手机和行者版本信息不为空');
+                return false;
+            };
+
+            if (Content.length < 5) {
+                alert('反馈内容不能少于5个字');
+                $("#inputContent").focus();
+            } else{
+                $.ajax({
+                    url: '/help/user_feedback/',
+                    type: 'POST',
+                    data: {phone_info: phoneInfo, content: Content},
+                })
+                .done(function(st) {
+                    alert(st + '！感谢您的反馈。');
+                    console.log("success");
+                    window.location.assign('/');
+                })
+                .fail(function(st) {
+                    alert(st);
+                    console.log("error");
+                })
+                .always(function() {
+                    console.log("complete");
+                });
+            };
+			
+		});
+	});
+</script>
+{% endblock %}
+

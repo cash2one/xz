@@ -1,0 +1,348 @@
+{% extends "base-fluid.html" %}
+{% block title %}
+路书导航，骑行必备 - 行者路书 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+    <div class="modal" id="myModal" style="display: none;">
+        <div class="modal-header">
+            <h3>制作路书，请先登录</h3>
+        </div>
+        <div class="modal-body" style="max-height: 500px;">
+            <p>目前路书对服务器存储空间占用较多，所以暂时只对登录用户开放制作路书功能。</p>
+            <p style="text-align: center;"><a class="btn btn-primary" href="{% url 'userena_signin' %}">登录</a></p>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+    <div class="span8 offset1">
+        <p id="note" style="text-align: center; height: 18px;">
+            <span class="label label-important">在地图上点击鼠标右键，设置路书的起点和终点</span>
+        </p>
+    </div>
+</div>
+<div style="display: none">
+<form class="form-inline" id="searchContainer">
+    <div class="well well-small">
+    <input id="searchTxt" type="text" placeholder="输入地点">
+    <a id="searchBtn" class="btn btn-primary">查找</a>
+    </div>
+</form>
+</div>
+<div class="row-fluid">
+    <div class="span9">
+        <div id="map_canvas"></div>
+    </div>
+    <div class="span3">
+        <div class="row-fluid">
+            <div class="span12">
+                总距离：<span id="totalDistance">0</span>公里&nbsp;<a id="distanceTips" data-content="如果制作的路书距离过长，部分手机由于内存太小可能无法导入。另外，超长的路书在手机上加载的时候也会花费较长时间。<hr />建议将超长路书分段制作，每段距离500公里左右。"  href="#" data-original-title="关于超长路书">建议将超过500公里的路书分段制作！</a>
+            </div>
+        </div>
+        <form id="saveForm" class="form-horizontal" method="post" action="">
+            <fieldset>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <textarea rows="12" name="title" class="span12" placeholder="简要说明"></textarea>
+                    </div>
+                </div>
+                <input type="hidden" name="distance" />
+                <input type="hidden" name="points" />
+                <input type="hidden" name="waypoints" />
+                <br />
+                <div class="row-fluid">
+                    <div class="span12">
+                        <a id="export" class="btn btn-primary">保存</a>&nbsp;&nbsp;<a target="_blank" href="{% url 'lushu_help' %}">无法制作路书？</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<br />
+
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script type="text/javascript">
+
+    {% if not request.user.is_authenticated %}
+    $(function () {
+        $('#myModal').modal({
+            backdrop: true,
+            keyboard: false,
+            show: true
+        });
+        $('#myModal').on('hidden', function () {
+            location.href = "{% url 'userena_signin' %}";
+        });
+    });
+    {% endif %}
+</script>
+{% baidu_map_api %}
+<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+{% google_map_api %}
+<script  type="text/javascript">
+    var routeService;
+    var map;
+    var center;
+    var zoomLevel = 5;
+    var note = $("#note");
+    var allMarkers = [];
+    var infowindow;
+    var geocoder;
+    var geoMarker;
+
+    var startMarker, stopMarker;
+
+    $(init);
+
+    function init() {
+        initialize();
+        
+        $("#searchTxt").keypress(checkEnter);
+        $("#searchBtn").click(search);
+
+        $("input[name='points']").val('');
+        $("input[name='waypoints']").val('');
+        $("input[name='distance']").val(0);
+
+        $("#export").click(saveGps);
+
+        $("#distanceTips").popover({"placement": "bottom", trigger: "hover"});
+        $("#distanceTips").click(function () {
+            return false;
+        });
+
+    }
+
+    function initialize() {
+        var mapHeight = $(window).height() - 100;
+        $("#map_canvas").height(mapHeight);
+
+        map = new BMap.Map("map_canvas");
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]}));
+        map.enableScrollWheelZoom();
+
+        var city = new BMap.LocalCity();
+        city.get(function (result) {
+            map.centerAndZoom(result.center, result.level);
+        });
+
+        var searchControl = new SearchControl();
+        map.addControl(searchControl);
+
+        geocoder = new google.maps.Geocoder();
+
+        var rendererOptions = {
+            enableDragging: true,
+            map: map
+        };
+        routeService = new BMap.DrivingRoute(map, {
+            renderOptions: rendererOptions,
+            policy: BMAP_DRIVING_POLICY_AVOID_HIGHWAYS,
+            onSearchComplete: function (results) {
+                if (routeService.getStatus() == BMAP_STATUS_SUCCESS) {
+                    map.removeOverlay(startMarker);
+                    map.removeOverlay(stopMarker);
+                    note.html("路线已经生成，现在<span class='label label-important'>可以拖动起点，终点或者直接拖动路线</span>，即可按照自己的要求生成路线");
+
+                    var totalDistance = computeTotalDistance(results);
+                    $("#totalDistance").text(Math.round(totalDistance));
+                } else {
+                    //startMarker.addEventListener("dragend", drawRouteByMarker);
+                    //stopMarker.addEventListener("dragend", drawRouteByMarker);
+                    note.text("没有找到路线，请调整起点和终点，重新生成路线");
+                }
+            }
+        });
+        
+        var contentString = '<div><h4>内容</h4><div><textarea id="waypointContent" style="width:300px;height:150px;" placeholder="可输入100字"></textarea></div><div><a id="waypointSave" class="btn">保存</a><a id="waypointDelete" class="pull-right" href="#">刪除此备注</a></div></div>';
+
+        infowindow = new BMap.InfoWindow(contentString, {maxWidth: 400, enableMessage: false});
+        infowindow.addEventListener("open", function() {
+            $("#waypointContent").val(infowindow.marker.content);
+            $("#waypointSave").click(function() {
+                infowindow.marker.content = $("#waypointContent").val();
+                infowindow.marker.closeInfoWindow();
+                return false;
+            });
+            $("#waypointDelete").click(function() {
+                map.removeOverlay(infowindow.marker);
+                infowindow.marker.deleted = true;
+                return false;
+            });
+        });
+
+        var menu = new BMap.ContextMenu();
+        map.addContextMenu(menu);
+
+        menu.addItem(new BMap.MenuItem('设置此处为起点', function(latLng) {
+            if (startMarker == null) {
+                startMarker = new BMap.Marker(latLng, {
+                    icon: new BMap.Icon("/static/images/map/markers.png", new BMap.Size(40, 32), {offset: new BMap.Size(0, 0), imageOffset: new BMap.Size(0, 0)}),
+                    title : "开始",
+                    enableDragging : true
+                });
+                map.addOverlay(startMarker);
+                drawRouteByMarker();
+            } else {
+                startMarker.setPosition(latLng);
+                drawRouteByMarker();
+            }
+        }));
+
+        menu.addItem(new BMap.MenuItem('设置此处为终点', function(latLng) {
+            if (stopMarker == null) {
+                stopMarker = new BMap.Marker(latLng, {
+                    icon: new BMap.Icon("/static/images/map/markers.png", new BMap.Size(40, 32), {offset: new BMap.Size(0, 0), imageOffset: new BMap.Size(0, -34)}),
+                    title : "停止",
+                    enableDragging : true
+                });
+                map.addOverlay(stopMarker);
+                note.text("");
+                drawRouteByMarker();
+            } else {
+                stopMarker.setPosition(latLng);
+                drawRouteByMarker();
+            }
+        }));
+
+        menu.addSeparator();
+
+        menu.addItem(new BMap.MenuItem('添加备注', function(latLng) {
+            var marker = new BMap.Marker(latLng);
+            map.addOverlay(marker);
+            marker.enableDragging();
+
+            marker.addEventListener("click", function(e){
+                infowindow.marker = marker;
+                marker.openInfoWindow(infowindow);
+            });
+            infowindow.marker = marker;
+            marker.openInfoWindow(infowindow);
+
+            allMarkers.push(marker);
+        }));
+
+    }
+    
+    function checkEnter(event) {
+    	if(event.which == 13) {
+    	   event.preventDefault();
+    	   $("#searchBtn").click();
+    	}
+    }
+    
+    function search(event) {
+		var address = $("#searchTxt").val();
+		if(!address)
+		  return;
+        geocoder.geocode({"address": address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var ggPoint = new BMap.Point(results[0].geometry.location.lng(), results[0].geometry.location.lat());
+                BMap.Convertor.translate(ggPoint, 2, function(bdPoint) {
+                    map.setCenter(bdPoint);
+                    if (geoMarker == null) {
+                        geoMarker = new BMap.Marker(bdPoint);
+                        map.addOverlay(geoMarker);
+                    }
+                    geoMarker.setPosition(bdPoint);
+                });
+            } else if(status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+                alert("没有找到此地点在地图上的位置，请修改后重新搜索");
+            } else {
+                alert("出错啦，请重试: " + status);
+            }
+        });
+    }
+
+    function computeTotalDistance(results) {
+        var plan = results.getPlan(0);
+        return plan.getDistance(false) / 1000;
+    }
+
+    function saveGps() {
+        var results = routeService.getResults();
+        var markers = getValidMarkers();
+        if (!results && markers.length == 0) {
+            return;
+        }
+
+        var totalDistance = 0;
+        if (!!results) {
+            totalDistance = results.getPlan(0).getDistance(false);
+
+            //TODO: below is not migrated to baidu map
+            var beginLocation = startMarker.getPosition();
+            var endLocation = stopMarker.getPosition();
+
+            var points = [];
+            points.push(beginLocation.lat() + "," + beginLocation.lng());
+            for (var i = 0; i < legs.length; i++) {
+                for (var j = 0; j < legs[i].via_waypoints.length; j++) {
+                    var wp = legs[i].via_waypoints[j];
+                    points.push(wp.lat() + "," + wp.lng());
+                }
+            }
+            points.push(endLocation.lat() + "," + endLocation.lng());
+
+            $("input[name='points']").val(points.join(";"));
+        }
+
+        $("input[name='distance']").val(totalDistance);
+
+        if (markers.length != 0) {
+            var markersStrArr = [];
+            for (var i in markers) {
+                var m = markers[i];
+                var latlng = m.getPosition();
+                markersStrArr.push(latlng.lat() + "--+--" + latlng.lng() + "--+--" + (!!m.content ? m.content : ""));
+            }
+
+            $("input[name='waypoints']").val(markersStrArr.join("==+=="));
+        }
+
+        $("#saveForm").submit();
+    }
+
+    function getValidMarkers() {
+        var validMarkers = [];
+        for (var i in allMarkers) {
+            var marker = allMarkers[i];
+            if (marker.deleted != true) {
+                validMarkers.push(marker);
+            }
+        }
+        return validMarkers;
+    }
+
+    function drawRouteByMarker() {
+        if (startMarker != null && stopMarker != null) {
+            routeService.search(startMarker.getPosition(), stopMarker.getPosition());
+        }
+    }
+
+    function SearchControl() {
+        this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+        this.defaultOffset = new BMap.Size($("#map_canvas").width() / 2 - 150, 10);
+    }
+    SearchControl.prototype = new BMap.Control();
+    SearchControl.prototype.initialize = function (map) {
+        var div = $("#searchContainer").get(0);
+        map.getContainer().appendChild(div);
+        return div;
+    }
+</script>
+{% endblock %}

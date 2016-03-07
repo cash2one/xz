@@ -1,0 +1,265 @@
+@import "bootstrap";
+@import "base.scss";
+
+.loading-icon {
+    margin-left: 50%;
+    margin-top: 5%;
+    position: relative;
+    left: -20px;
+}
+
+.app-header {
+    border-bottom: 1px solid #eee;
+}
+
+.explore-nav-header {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    font-weight: normal;
+    .alist {
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        border-bottom: 2px solid #ccc;
+        background-color: rgba(0, 0, 0, 0.0313726);
+        a {
+            display: block;
+            color: #555;
+            &:hover {
+                color: $color-xingzhe-blue;
+                text-decoration: none;
+            }
+        }
+    }
+    .alist.active {
+        border-bottom: 2px solid $color-xingzhe-blue;
+    }
+}
+
+.pagination-wrap {
+    float: left;
+    position: relative;
+    left: 50%;
+    clear: both;
+    color: #999;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 6px 0px 6px 6px;
+    font-size: 13px;
+    > div {
+        position: relative;
+        left: -50%;
+    }
+    a {
+        float: left;
+        border: 1px solid #ccc;
+        display: inline;
+        padding: 5px 12px 5px 12px;
+        margin-right: 5px;
+        cursor: pointer;
+        background: #fff;
+        text-decoration: none;
+        color: #999;
+        &:hover {
+            border: 1px solid $color-xingzhe-blue;
+            background-color: rgb(0, 122, 194);
+            background-color: rgba(0, 122, 194, .9);
+            color: #fff;
+        }
+    }
+    span.disabled {
+        float: left;
+        display: inline;
+        padding: 5px 12px 5px 12px;
+        margin-right: 5px;
+        border: 1px solid #DFDFDF;
+        background-color: #FFF;
+        color: #DFDFDF;
+    }
+    span.curr {
+        float: left;
+        border: 1px solid $color-xingzhe-blue;
+        display: inline;
+        padding: 5px 12px 5px 12px;
+        margin-right: 5px;
+        color: $color-xingzhe-blue;
+    }
+    .spanDot {
+        float: left;
+        margin-right: 5px;
+        line-height: 24px;
+    }
+}
+
+.ranking-list {
+    ol {
+        float: left;
+        padding: 0;
+        list-style: none;
+        width: 100%;
+        .item {
+            border-bottom: 1px solid #eee;
+        }
+        .item.badges1 {
+            .badges {
+                color: #efa102;
+            }
+            .user-name {
+                color: #efa102;
+            }
+        }
+        .item.badges2 {
+            .badges {
+                color: #a58143;
+            }
+            .user-name {
+                color: #a58143;
+            }
+        }
+        .item.badges3 {
+            .badges {
+                color: #5b5243;
+            }
+            .user-name {
+                color: #5b5243;
+            }
+        }
+        .left {
+            padding-top: 0;
+            padding-bottom: 0;
+            height: 96px;
+            line-height: 96px;
+            .badges {
+                display: inline-block;
+                min-width: 30px;
+                margin-right: 10px;
+                color: #222;
+                font-size: 22px;
+            }
+            .default-avatar {
+                width: 56px;
+                height: 56px;
+                margin-right: 10px;
+                border: 0;
+                border-radius: 50%;
+            }
+            .user-name {
+                font-size: 22px;
+                color: #333;
+            }
+        }
+        .right {
+            padding-top: 0;
+            padding-bottom: 0;
+            height: 96px;
+            line-height: 96px;
+            text-align: right;
+            font-size: 16px;
+            .data-font {
+                margin-right: 2px;
+                font-size: 28px;
+                font-family: "Din Alternate", "Helvetica Neue", Helvetica, sans-serif;
+            }
+        }
+    }
+}
+
+.clubs-list {
+    .clubs-list-header {
+        p {
+            font-size: 16px;
+        }
+        .cl-rank {
+            max-width: 70px;
+        }
+        .cl-name {
+            .iconfont {
+                margin-left: 10px;
+            }
+        }
+        .cl-city {}
+        .cl-hotlevel {
+            p {
+                color: #EC8B16;
+            }
+            .iconfont {
+                color: #EC8B16;
+            }
+        }
+        .iconfont {
+            font-size: 22px;
+        }
+        @include phone {
+            p {
+                font-size: 13px;
+            }
+        }
+    }
+    ol {
+        float: left;
+        padding: 0;
+        list-style: none;
+        width: 100%;
+        .item {
+            height: 100px;
+            line-height: 100px;
+            border-bottom: 1px solid #eee;
+            @include phone {
+                font-size: 13px;
+            }
+        }
+    }
+    .club-avatar {
+        float: left;
+        margin-right: 20px;
+        img {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+        }
+        @include phone {
+            margin-right: .5em;
+            img {
+                width: 34px;
+                height: 34px;
+            }
+        }
+    }
+    h3 {
+        margin: 0;
+        font-size: 17px;
+        line-height: 100px;
+        font-weight: normal;
+        color: #111;
+        @include phone {
+            font-size: 14px;
+        }
+    }
+    .badge {
+        height: 100px;
+        max-width: 70px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .badge[data-badge="1"] {
+        font: 0/0 a;
+        color: transparent;
+        text-shadow: none;
+        background: transparent url("http://cdn.bi-ci.com/dist_v2/image/clubs/cup1.png") no-repeat center;
+        background-size: 50%;
+    }
+    .badge[data-badge="2"] {
+        font: 0/0 a;
+        color: transparent;
+        text-shadow: none;
+        background: transparent url("http://cdn.bi-ci.com/dist_v2/image/clubs/cup2.png") no-repeat center;
+        background-size: 50%;
+    }
+    .badge[data-badge="3"] {
+        font: 0/0 a;
+        color: transparent;
+        text-shadow: none;
+        background: transparent url("http://cdn.bi-ci.com/dist_v2/image/clubs/cup3.png") no-repeat center;
+        background-size: 50%;
+    }
+}

@@ -1,0 +1,11 @@
+*.pyc
+*.swp
+media/
+static/apk/baidu_ditu.apk
+.idea/
+.DS_Store
+static/scss/.sass-cache/*
+*.scssc
+static/config.codekit
+
+node_modules/

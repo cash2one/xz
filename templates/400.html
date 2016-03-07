@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+    请求参数有误 - 行者骑行软件
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="span10">
+        <p>当前请求无法被服务器理解或者参数有误</p>
+        <a href="{% url 'lushu_create' %}">点击返回</a>
+    </div>
+</div>
+
+{% endblock %}
+
+

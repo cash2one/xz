@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load forum_extras %}
+{% load i18n %}
+{% block title %}
+发布 - 行者骑行软件
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="span9">
+        <ul class="breadcrumb">
+            <li>
+                <a href="{% url djangobb:index %}">行者社区</a><span class="divider"> / </span>
+            </li>
+            <li>
+                {% link forum %}<span class="divider"> / </span>
+            </li>
+            <li>
+                发布
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span10">
+        <hr />
+        {% include "djangobb_forum/includes/post_form.html" %}
+    </div>
+</div>
+{% endblock %}

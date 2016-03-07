@@ -1,0 +1,519 @@
+
+@import "var";
+@font-face {
+    font-family: "iconfont";
+    src: url('http://cdn.bi-ci.com/dist_v2/font/iconfont/iconfont.eot');
+    /* IE9*/
+    src: url('http://cdn.bi-ci.com/dist_v2/font/iconfont/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('http://cdn.bi-ci.com/dist_v2/font/iconfont/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('http://cdn.bi-ci.com/dist_v2/font/iconfont/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('http://cdn.bi-ci.com/dist_v2/font/iconfont/iconfont.svg#iconfont') format('svg');
+    /* iOS 4.1- */
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: inherit;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// DIN Condensed Bold
+@font-face {
+    font-family: 'Din Alternate';
+    src: url('http://cdn.bi-ci.com/dist_v2/font/webfont/din_alternate_bold.eot');
+    src: url('http://cdn.bi-ci.com/dist_v2/font/webfont/din_alternate_bold.eot?#iefix') format('embedded-opentype'), url('http://cdn.bi-ci.com/dist_v2/font/webfont/din_alternate_bold.woff2') format('woff2'), url('http://cdn.bi-ci.com/dist_v2/font/webfont/din_alternate_bold.woff') format('woff'), url('http://cdn.bi-ci.com/dist_v2/font/webfont/din_alternate_bold.ttf') format('truetype'), url('http://cdn.bi-ci.com/dist_v2/font/webfont/din_alternate_bold.svg#din_alternatebold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/*
+ * 自定义
+ */
+
+html,
+body {
+    height: 100%;
+    background-color: #F2F2F2;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans;
+    @include phone {
+        font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+    }
+}
+
+.push-wrapper {
+    min-height: 100%;
+    margin: 0 auto -100px;
+    /* the bottom margin is the negative value of the footer's height */
+}
+
+.push {
+    height: 100px;
+    /* '.push' must be the same height as 'footer' */
+}
+
+@include phone {
+    .push-wrapper {
+        margin: 0 auto;
+    }
+    .push {
+        height: 0;
+    }
+}
+
+a {
+    cursor: pointer;
+    color: $color-xingzhe-blue;
+}
+
+mark {
+    background: #fffdd1;
+    border-bottom: 1px solid #ffedce;
+    padding: 2px;
+    margin: 0 5px;
+}
+
+.spaces {
+    display: inline-block;
+    width: 0;
+    padding: 0 .5em;
+}
+
+.absolute-center {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.popover {
+    color: #333;
+}
+
+.text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// 移除 HTML5 input 在 type="number" 时的上下小箭头
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/** tooltip **/
+.tooltip {
+  position: relative;
+}
+.tooltip::before,
+.tooltip::after {
+  position: absolute;
+  display: none;
+  opacity: 0.85;
+}
+.tooltip::before {
+  content: attr(title);
+  height: 32px;
+  line-height: 23px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.tooltip::after {
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  content: '';
+}
+
+.tooltip:hover::before,
+.tooltip:hover::after {
+  display: block;
+}
+
+.tooltip[data-placement="left"]::before {
+  top: -25%;
+  right: 100%;
+  margin-right: 10px;
+}
+.tooltip[data-placement="left"]::after {
+  border-left-color: #000;
+  border-right: none;
+  top: 50%;
+  right: 100%;
+  margin-top: -6px;
+  margin-right: 4px;
+}
+
+.tooltip[data-placement="right"]::before {
+  top: -25%;
+  left: 100%;
+  margin-left: 10px;
+}
+.tooltip[data-placement="right"]::after {
+  border-right-color: #000;
+  border-left: none;
+  top: 50%;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: 4px;
+}
+
+.tooltip[data-placement="top"]::before {
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 10px;
+}
+.tooltip[data-placement="top"]::after {
+  border-top-color: #000;
+  border-bottom: none;
+  bottom: 100%;
+  left: 50%;
+  margin-bottom: 4px;
+}
+
+.tooltip[data-placement="bottom"]::before {
+  top: 100%;
+  left: 0;
+  margin-top: 10px;
+}
+.tooltip[data-placement="bottom"]::after {
+  border-bottom-color: #000;
+  border-top: none;
+  top: 100%;
+  left: 10px;
+  margin-top: 4px;
+}
+
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.margin-bottom-10 {
+    margin-bottom: 10px;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    border-radius: 2px;
+}
+
+.thumbnail {
+    padding: 0;
+    border-radius: 1px;
+    border: 0;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    &:hover {
+        outline: 1px solid $color-xingzhe-blue;
+        text-decoration: none;
+    }
+    a {
+        color: #333;
+        text-decoration: none;
+        h3 {
+            font-weight: normal;
+        }
+    }
+}
+
+
+/*
+ * Nav
+ */
+
+.navbar-default {
+    margin: 0;
+    width: 100%;
+    z-index: 99;
+    background-color: $color-xingzhe-blue;
+    border: 0;
+    border-radius: 0;
+    color: $color-white;
+    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+    .navbar-brand {
+        font-size: 28px;
+        color: $color-white;
+        &:visited,
+        &:hover,
+        &:active {
+            color: $color-white;
+        }
+    }
+    .navbar-nav {
+        li {
+            position: relative;
+            a {
+                padding-top: 0;
+                padding-bottom: 0;
+                height: 58px;
+                line-height: 58px;
+                color: $color-white;
+                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+                &:hover,
+                &:focus {
+                    color: $color-white;
+                    text-shadow: none;
+                    background-color: rgba(255, 255, 255, .15);
+                }
+            }
+            .icon-lushu {
+                position: absolute;
+                font-size: 12px;
+                top: 15px;
+                right: 2px;
+                color: #f40;
+            }
+            @include phone {
+                width: 33.33%;
+                float: left;
+                text-align: center;
+                .user-name {
+                    display: none;
+                }
+            }
+        }
+        .new-nav {
+            &:after {
+                position: absolute;
+                background: #E13C38;
+                padding: 0 2px;
+                top: 2px;
+                right: 0;
+                font-size: 12px;
+                line-height: 1;
+                font-weight: 200;
+                border-radius: 2px;
+                color: #FFf;
+            }
+        }
+        .new-nav.new {
+            &:after {
+                content: 'new';
+            }
+        }
+        .active {
+            a,
+            a:hover,
+            a:focus {
+                color: $color-white;
+                background-color: transparent;
+            }
+        }
+        .dropdown-menu {
+            min-width: 100px;
+            background-color: $color-xingzhe-blue;
+            border-radius: 0;
+            border: none;
+            li {
+                a {
+                    height: 48px;
+                    line-height: 48px;
+                    text-align: center;
+                    &:hover {
+                        background-color: rgba(255, 255, 255, .15);
+                    }
+                }
+            }
+        }
+        li.open {
+            a,
+            a:focus {
+                background-color: $color-xingzhe-blue;
+                color: #fff;
+            }
+        }
+    }
+    .navbar-right {
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            margin-right: 5px;
+        }
+        .dropdown-menu {
+            li {
+                .iconfont {
+                    margin-right: 3px;
+                }
+                a {
+                    width: 100%;
+                    padding-left: 24px;
+                    padding-right: 24px;
+                    text-align: left;
+                }
+            }
+        }
+    }
+}
+.navbar-shadow {
+    box-shadow: 0 0 3px rgba(0, 0, 0, .14), 0 3px 6px rgba(0, 0, 0, .28);
+}
+
+@include desktop {
+    .dropdown {
+        &:hover {
+            .dropdown-menu {
+                display: block;
+            }
+        }
+    }
+}
+
+// Header
+.app-header {
+    margin-bottom: 50px;
+    padding: 20px 0;
+    background-color: #fff;
+    h1 {
+        margin-top: 10px;
+        font-weight: normal;
+        font-size: 22px;
+        a {
+            color: #555;
+            text-decoration: none;
+        }
+    }
+    @include phone {
+        margin-bottom: 20px;
+        padding: 10px 0;
+        h1 {
+            font-size: 18px;
+        }
+    }
+}
+
+
+/*
+ * Footer
+ */
+
+footer {
+    height: 100px;
+    line-height: 100px;
+    color: $color-white;
+    background-color: #3e3a39;
+    font-size: 14px;
+    a {
+        color: $color-white;
+        &:hover {
+            color: $color-white;
+            text-decoration: none;
+        }
+    }
+    .iconfont {
+        font-size: 18px;
+    }
+    .copy {
+        text-align: right;
+    }
+    @include phone {
+        line-height: 3;
+        text-align: center;
+        .copy {
+            text-align: center;
+            font-size: 10px;
+        }
+    }
+}
+
+// at Wechat
+.wx-mark {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    text-align: right;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, .92);
+    .iconfont {
+        font-size: 36px;
+        color: $color-blue;
+    }
+    strong {
+        color: $color-blue;
+    }
+}
+
+
+/* Loading icon */
+
+@keyframes loadrotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-icon {
+    font-size: 40px;
+    color: #aaa;
+    animation: loadrotate 800ms infinite linear;
+}
+
+
+
+/* server message tip */
+.serve-msg {
+    position: fixed;
+    z-index: 10001;
+    width: 100%;
+    height: 62px;
+    line-height: 62px;
+    left: 0;
+    right: 0;
+    top: -62px;
+    overflow: visible;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+    transition: all .2s;
+}
+.serve-msg.serve-msg-error {
+    top: 0;
+    background-color: #de4343;
+}
+.serve-msg.serve-msg-success {
+    top: 0;
+    background-color: #48bb5e;
+}
+.serve-msg.serve-msg-hide {
+    top: -62px;
+}
+

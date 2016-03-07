@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}
+    版块 - 行者骑行软件
+{% endblock %}
+
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% load filters %}
+<div class="container">
+
+    <div class="page-header">
+      <h1>版块 <small>行者骑行软件</small></h1>
+    </div>
+
+    <div class="btn-group btn-group-justified" role="group">
+            {% for channel in channels %}
+            <div class="btn-group btn-group-lg" role="group">
+                <a target="_blank" class="btn btn-default" href="{% url 'channel_show' channel.id %}">{{ channel.name }}</a>
+            </div>
+            {% endfor %}
+    </div>
+
+</div>
+
+
+{% endblock %}
+

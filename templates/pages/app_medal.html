@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>获得新勋章</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="static/dist/css/app_medal.css">
+</head>
+
+<body>
+    <div class="animateionBox">
+        <!-- 勋章图 -->
+        <img src="{{ medal_url }}" width="184px" height="184px" class="medal" />
+        <!-- 红色带 -->
+        <div class="modifyband mofify_band_{{ medal_type }} "></div>
+        <p class="medalDes">{{ medal_title }}</p>
+    </div>
+</body>
+
+</html>

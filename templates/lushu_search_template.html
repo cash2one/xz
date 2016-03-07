@@ -1,0 +1,24 @@
+{% load filters %}
+{% for lushu in lushus %}
+    {% cycle '<div class="row-fluid">' '' %}
+    <div class="span6"><a title="{{ lushu.title }}" target="_blank" href="{% url 'lushu_show' lushu.id %}"><img style="width:180px;height:180px;" class="thumbnail float-left" src="{% baidu_static_map %}width=180&height=180&pathStyles=0x3F9FD9,3,1&paths={% for p in lushu.points %}{{ p.longitude }},{{ p.latitude }}{% if not forloop.last %};{% endif %}{% endfor %}"></a></div>
+    {% cycle '' '</div>' %}
+{% endfor %}
+{% if not lushus|length|divisibleby:"2" %}
+    </div>
+{% endif %}
+{% if page == 0 and lushus|length == 0 %}
+    在选取的范围内没有搜到路书，请重新选取范围
+{% endif %}
+<ul class="pager">
+    {% if page > 0 %}
+    <li>
+        <a href="javascript:search({{ page|add:'-1' }})">上一页</a>
+    </li>
+    {% endif %}
+    {% if lushus|length == 10 %}
+    <li>
+        <a href="javascript:search({{ page|add:'1' }})">下一页</a>
+    </li>
+    {% endif %}
+</ul>

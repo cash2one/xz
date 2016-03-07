@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+
+    <script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+<script>
+$(function() {
+
+  var myLatlng2 = new google.maps.LatLng(32.363,120.044);
+  var myLatlng3 = new google.maps.LatLng(32.443,120.504);
+
+  var markerimg1 = 'static/img/map-marker-icon-1.png';
+  var markerimg2 = 'static/img/map-marker-icon-2.png';
+  var markerimg3 = 'static/img/map-marker-icon-3.png';
+
+  // 地图样式
+  var styleArray = [
+    {
+      featureType: "all",
+      stylers: [
+        { saturation: -80 }
+      ]
+    },{
+      featureType: "road.arterial",
+      elementType: "geometry",
+      stylers: [
+        { hue: "#00ffee" },
+        { saturation: 50 }
+      ]
+    },{
+      featureType: "poi.business",
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
+    }
+  ];
+
+  var mapOptions = {
+    zoom: 11,
+    center: new google.maps.LatLng(32.397, 120.244)
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+  var marker = new google.maps.Marker({
+    position: map.getCenter(),
+    map: map,
+    title: 'marker1',
+    icon: markerimg1
+  });
+  var marker2 = new google.maps.Marker({
+      position: myLatlng2,
+      map: map,
+      title: 'marker2',
+      icon: markerimg2
+  });
+  var marker3 = new google.maps.Marker({
+      position: myLatlng3,
+      map: map,
+      title: 'marker3',
+      icon: markerimg3
+  });
+
+  $("#btn").on('click', function() {
+    $.getJSON('/static/get_point.json', function(json) {
+        console.log(json[1].latitude);
+    })
+    .success(function() {
+      console.log('success');
+    })
+    .error(function() {
+      console.log('error');
+    });
+    
+  });
+
+
+  
+
+});
+</script>
+  </head>
+  <body>
+  <button id="btn">按钮</button>
+    <div id="map-canvas"></div>
+  </body>
+</html>

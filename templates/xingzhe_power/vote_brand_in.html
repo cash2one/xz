@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>2015［行者力量］年度评选进行中，投票也有海量奖品！</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm.min.css">
+    <link rel="stylesheet" type="text/css" href="static/dist/css/vote.css">
+</head>
+
+<body>
+    <!-- page list -->
+    <div class="page page-current" id="pageList" data-type="3">
+        <!-- content -->
+        <div class="content">
+            <img src="http://cdn.bi-ci.com/img/2015vote/vote-header-zhuangbei-bg.jpg">
+            <div class="content-padded">
+                <p>行者根据品牌知名度，市场占有率，门店覆盖程度，成长速度和空间等多个维度精心筛选提名了以下整车品牌。希望通过此项评选获知用户的部分骑行偏好，未来将结合品牌为用户推出更多服务和功能。排名不分先后。</p>
+                <p style="color:#f00">（套件、零件、配件、穿戴需各选择一个品牌才可投票。）</p>
+                <div class="list-block">
+                    {% csrf_token %}
+                    <div class="content-padded">
+                        <div class="list-container row">
+                            <header>套件品牌</header>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">714</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/2f8e4bf4-c5e1-4009-8c92-f1ee00627e42">
+                                    <h3 class="text-overflow">Campagnolo</h3>
+                                    <input type="radio" name="bandTj" id="" value="714">
+                                    <span class="voteNum" id="idp714"></span><small>票</small>
+                                </label>
+                            </div>
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">728</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/fecd2d01-d965-4825-b345-7f09d1e40857">
+                                    <h3 class="text-overflow">喜马诺</h3>
+                                    <input type="radio" name="bandTj" id="" value="728">
+                                    <span class="voteNum" id="idp728"></span><small>票</small>
+                                </label>
+                            </div>
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">729</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/23887447-0c33-45cd-8fa8-38ed0e2233e9">
+                                    <h3 class="text-overflow">速联</h3>
+                                    <input type="radio" name="bandTj" id="" value="729">
+                                    <span class="voteNum" id="idp729"></span><small>票</small>
+                                </label>
+                            </div>
+
+                        </div>
+
+
+                        <div class="list-container row">
+                            <header>零件品牌</header>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">769</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/8518f664-fc04-48f7-82e0-3f7bd60b3119">
+                                    <h3 class="text-overflow">DEDA</h3>
+                                    <input type="radio" name="bandLj" id="" value="769">
+                                    <span class="voteNum" id="idp769"></span><small>票</small>
+                                </label>
+                            </div>
+
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">768</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/66d713b7-8568-4dc2-9f13-004cc80c9925">
+                                    <h3 class="text-overflow">Controltech</h3>
+                                    <input type="radio" name="bandLj" id="" value="768">
+                                    <span class="voteNum" id="idp768"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">732</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/411cc521-6ee2-4bd8-b02c-5590369a92ae">
+                                    <h3 class="text-overflow">WTB</h3>
+                                    <input type="radio" name="bandLj" id="" value="732">
+                                    <span class="voteNum" id="idp732"></span><small>票</small>
+                                </label>
+                            </div>
+
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">716</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/6c6fc391-94f9-44f4-8c21-75140277b252">
+                                    <h3 class="text-overflow">马牌</h3>
+                                    <input type="radio" name="bandLj" id="" value="716">
+                                    <span class="voteNum" id="idp716"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">717</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/af1295a5-4ee2-4bb8-9a08-c50d46e5a54e">
+                                    <h3 class="text-overflow">DT Swiss</h3>
+                                    <input type="radio" name="bandLj" id="" value="717">
+                                    <span class="voteNum" id="idp717"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">718</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/f2201c53-f832-414e-b98c-e3399d866895">
+                                    <h3 class="text-overflow">飞贼</h3>
+                                    <input type="radio" name="bandLj" id="" value="718">
+                                    <span class="voteNum" id="idp718"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">719</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/5048b46d-480b-4d35-bba3-78063685d787">
+                                    <h3 class="text-overflow">FOX</h3>
+                                    <input type="radio" name="bandLj" id="" value="719">
+                                    <span class="voteNum" id="idp719"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">724</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/1d95451f-2762-42a4-aaea-ffedcb9b19f7">
+                                    <h3 class="text-overflow">FSA</h3>
+                                    <input type="radio" name="bandLj" id="" value="724">
+                                    <span class="voteNum" id="idp724"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">723</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/e0bb0e28-f3de-4ecc-822a-3d6b8f1b7c1a">
+                                    <h3 class="text-overflow">Fulcrum</h3>
+                                    <input type="radio" name="bandLj" id="" value="723">
+                                    <span class="voteNum" id="idp723"></span><small>票</small>
+                                </label>
+                            </div>
+
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">722</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/070fab7e-736a-4522-8542-6588f0e07ab4">
+                                    <h3 class="text-overflow">玛维克</h3>
+                                    <input type="radio" name="bandLj" id="" value="722">
+                                    <span class="voteNum" id="idp722"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">721</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/e117954a-df64-491b-8a28-3807b068397b">
+                                    <h3 class="text-overflow">玛吉斯</h3>
+                                    <input type="radio" name="bandLj" id="" value="721">
+                                    <span class="voteNum" id="idp721"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">720</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/9ef4e513-0a53-4769-8800-fcf3cac3bf3b">
+                                    <h3 class="text-overflow">Prologo</h3>
+                                    <input type="radio" name="bandLj" id="" value="720">
+                                    <span class="voteNum" id="idp720"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">733</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/84e699d8-2537-4a7e-bbd9-5dcffdd9a366">
+                                    <h3 class="text-overflow">浩盟</h3>
+                                    <input type="radio" name="bandLj" id="" value="733">
+                                    <span class="voteNum" id="idp733"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">725</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/1dabedb8-eee9-4d4f-85ae-e1f520c834a3">
+                                    <h3 class="text-overflow">Rockshox</h3>
+                                    <input type="radio" name="bandLj" id="" value="725">
+                                    <span class="voteNum" id="idp725"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">727</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/4eb09741-f615-44af-890f-d3e96413a5af">
+                                    <h3 class="text-overflow">Selle Royal</h3>
+                                    <input type="radio" name="bandLj" id="" value="727">
+                                    <span class="voteNum" id="idp727"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">730</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/30a91ae7-54fc-4425-b7b7-8f4cfa169eec">
+                                    <h3 class="text-overflow">三拓</h3>
+                                    <input type="radio" name="bandLj" id="" value="730">
+                                    <span class="voteNum" id="idp730"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">731</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/6aab052a-0e7a-4c04-8185-a49f2d0e3940">
+                                    <h3 class="text-overflow">Wellgo</h3>
+                                    <input type="radio" name="bandLj" id="" value="731">
+                                    <span class="voteNum" id="idp731"></span><small>票</small>
+                                </label>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="list-container row">
+                            <header>配件品牌</header>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">767</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/c13e64d7-2b86-45a7-8d12-8aeb92ccb678">
+                                    <h3 class="text-overflow">OGNS</h3>
+                                    <input type="radio" name="bandPj" id="" value="767">
+                                    <span class="voteNum" id="idp767"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">765</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/871ea8ba-2cd5-4374-a1bc-85dc6a9c0ff2">
+                                    <h3 class="text-overflow">Super-B</h3>
+                                    <input type="radio" name="bandPj" id="" value="765">
+                                    <span class="voteNum" id="idp765"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">767</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/0764a029-426e-4bfa-97ae-58a85f25a3e1">
+                                    <h3 class="text-overflow">Airace</h3>
+                                    <input type="radio" name="bandPj" id="" value="767">
+                                    <span class="voteNum" id="idp767"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">763</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/d2aa2697-d0ec-446f-82a8-3511eef5ac73">
+                                    <h3 class="text-overflow">加雪龙</h3>
+                                    <input type="radio" name="bandPj" id="" value="763">
+                                    <span class="voteNum" id="idp763"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">752</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/ca6cc172-b9e3-4c27-8e97-16af75f9f6ef">
+                                    <h3 class="text-overflow">iGPSport</h3>
+                                    <input type="radio" name="bandPj" id="" value="752">
+                                    <span class="voteNum" id="idp752"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">750</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/d8bf0671-1b79-453f-8f92-0efc8818ba6e">
+                                    <h3 class="text-overflow">Topeak</h3>
+                                    <input type="radio" name="bandPj" id="" value="750">
+                                    <span class="voteNum" id="idp750"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">759</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/d8bf0671-1b79-453f-8f92-0efc8818ba6e">
+                                    <h3 class="text-overflow">佳明</h3>
+                                    <input type="radio" name="bandPj" id="" value="759">
+                                    <span class="voteNum" id="idp750"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">749</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/d78da44b-9e02-457a-bede-6b598b22e15d">
+                                    <h3 class="text-overflow">顺东</h3>
+                                    <input type="radio" name="bandPj" id="" value="749">
+                                    <span class="voteNum" id="idp749"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">755</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/bc96812c-f08c-424e-a0ad-257f6da184d1">
+                                    <h3 class="text-overflow">百锐腾</h3>
+                                    <input type="radio" name="bandPj" id="" value="755">
+                                    <span class="voteNum" id="idp755"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">758</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/86b457e5-bba5-46e0-b6cd-8492dbd7ec1f">
+                                    <h3 class="text-overflow">驼峰</h3>
+                                    <input type="radio" name="bandPj" id="" value="758">
+                                    <span class="voteNum" id="idp758"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">760</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/187e516a-4752-4026-af37-640c91b343cc">
+                                    <h3 class="text-overflow">猫眼</h3>
+                                    <input type="radio" name="bandPj" id="" value="760">
+                                    <span class="voteNum" id="idp760"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">753</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/bcfb2a8a-7570-4ec5-8694-82c8cf969521">
+                                    <h3 class="text-overflow">赛领</h3>
+                                    <input type="radio" name="bandPj" id="" value="753">
+                                    <span class="voteNum" id="idp753"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">761</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/d844f0db-b20e-4a27-8f80-bed867472046">
+                                    <h3 class="text-overflow">Elite</h3>
+                                    <input type="radio" name="bandPj" id="" value="761">
+                                    <span class="voteNum" id="idp761"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">762</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/79f22d60-2a52-4cf4-8c5c-47b13205dc21">
+                                    <h3 class="text-overflow">终点线</h3>
+                                    <input type="radio" name="bandPj" id="" value="762">
+                                    <span class="voteNum" id="idp762"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">757</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/941e3435-4e2f-47cb-a098-326da522e015">
+                                    <h3 class="text-overflow">GIYO</h3>
+                                    <input type="radio" name="bandPj" id="" value="757">
+                                    <span class="voteNum" id="idp757"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">756</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/7b17c2dd-0893-4e0e-b714-d2de85b042e8">
+                                    <h3 class="text-overflow">雷音</h3>
+                                    <input type="radio" name="bandPj" id="" value="756">
+                                    <span class="voteNum" id="idp756"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">754</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/ea724e01-e456-485b-b4ec-5931207ebdfb">
+                                    <h3 class="text-overflow">Parktool</h3>
+                                    <input type="radio" name="bandPj" id="" value="754">
+                                    <span class="voteNum" id="idp754"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">751</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/7b7bbf19-363a-4a1d-9bcb-21315aedc61d">
+                                    <h3 class="text-overflow">西格玛</h3>
+                                    <input type="radio" name="bandPj" id="" value="751">
+                                    <span class="voteNum" id="idp751"></span><small>票</small>
+                                </label>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="list-container row">
+                            <header>服饰穿戴品牌</header>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">734</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/f514828f-b078-42a2-9e18-3d5f6876699a">
+                                    <h3 class="text-overflow">达恩</h3>
+                                    <input type="radio" name="bandCd" id="" value="734">
+                                    <span class="voteNum" id="idp734"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">746</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/a159565c-78e2-4c24-b9d6-e2c95ad50997">
+                                    <h3 class="text-overflow">拓步</h3>
+                                    <input type="radio" name="bandCd" id="" value="746">
+                                    <span class="voteNum" id="idp746"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">741</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/47b54d6a-7f9b-44d8-853c-936b57a4e2b8">
+                                    <h3 class="text-overflow">捷酷</h3>
+                                    <input type="radio" name="bandCd" id="" value="741">
+                                    <span class="voteNum" id="idp741"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">748</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/8645485b-f7b1-4f22-b62b-572d81a8d477">
+                                    <h3 class="text-overflow">蝎子</h3>
+                                    <input type="radio" name="bandCd" id="" value="748">
+                                    <span class="voteNum" id="idp748"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">737</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/91fe069a-d338-4d2f-9b06-4f14f691e2d2">
+                                    <h3 class="text-overflow">GIRO</h3>
+                                    <input type="radio" name="bandCd" id="" value="737">
+                                    <span class="voteNum" id="idp737"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">739</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/ec00d372-04d1-4a98-b984-ea8bcef704ba">
+                                    <h3 class="text-overflow">GUB</h3>
+                                    <input type="radio" name="bandCd" id="" value="739">
+                                    <span class="voteNum" id="idp739"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">742</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/36430984-f67e-474d-a0bb-6de12f76a125">
+                                    <h3 class="text-overflow">KASK</h3>
+                                    <input type="radio" name="bandCd" id="" value="742">
+                                    <span class="voteNum" id="idp742"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">740</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/f7e65e6d-af32-41f4-94da-1ed3703e1cc8">
+                                    <h3 class="text-overflow">Northwave</h3>
+                                    <input type="radio" name="bandCd" id="" value="740">
+                                    <span class="voteNum" id="idp740"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">738</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/536c41c7-a5e3-442c-a095-31453f771055">
+                                    <h3 class="text-overflow">欧克利</h3>
+                                    <input type="radio" name="bandCd" id="" value="738">
+                                    <span class="voteNum" id="idp738"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">744</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/3c58e031-730f-4359-be82-7d37fd83d6b6">
+                                    <h3 class="text-overflow">一字米</h3>
+                                    <input type="radio" name="bandCd" id="" value="744">
+                                    <span class="voteNum" id="idp744"></span><small>票</small>
+                                </label>
+                            </div>
+
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">736</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/d9c447df-481e-4fba-b0fe-be191acab4fc">
+                                    <h3 class="text-overflow">Rapha</h3>
+                                    <input type="radio" name="bandCd" id="" value="736">
+                                    <span class="voteNum" id="idp736"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">735</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/7f96dacf-db0f-4008-a174-8bb1ca4363ba">
+                                    <h3 class="text-overflow">森地客</h3>
+                                    <input type="radio" name="bandCd" id="" value="735">
+                                    <span class="voteNum" id="idp735"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">743</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/7e7bce12-3cd3-4075-aeb3-dbe21fe5d1d6">
+                                    <h3 class="text-overflow">SIDI</h3>
+                                    <input type="radio" name="bandCd" id="" value="743">
+                                    <span class="voteNum" id="idp743"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">745</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/13bb39d8-9deb-4463-b1c3-b4e450a055e6">
+                                    <h3 class="text-overflow">Spakct</h3>
+                                    <input type="radio" name="bandCd" id="" value="745">
+                                    <span class="voteNum" id="idp745"></span><small>票</small>
+                                </label>
+                            </div>
+
+                            <div class="vpcard col-50">
+                                <label>
+                                    <span class="idNum">747</span>
+                                    <img class="card-cover" src="http://static.imxingzhe.com/candidate/40c03ecb-d9dc-492e-b3ac-793120d7ef74">
+                                    <h3 class="text-overflow">X-Bionic</h3>
+                                    <input type="radio" name="bandCd" id="" value="747">
+                                    <span class="voteNum" id="idp747"></span><small>票</small>
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <p>
+                            <button class="vote-btn button button-big button-fill button-primary">选好了</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p><a href="/vote_list?type=0" class="linkToMainBtn">查看所有奖项</a></p>
+        </div>
+    </div>
+    <!-- popup vote -->
+    <div class="popup popup-captcha" id="popupCaptcha">
+        <div class="content-block">
+            <h3>请输入右侧验证码</h3>
+            <div class="row">
+                <div class="col-50">
+                    <input type="text" id="voteCaptchaInput">
+                </div>
+                <div class="col-50">
+                    <img id="voteCaptchaImg">
+                </div>
+            </div>
+            <div id="inputPhoneWrap">
+                <h3>填写手机号有机会获取丰厚奖品</h3>
+                <input type="tel" id="voteMobileInput">
+            </div>
+            <p><a class="button button-big button-fill button-primary" id="voteVerifyBtn">确认投票</a></p>
+        </div>
+        <a class="link close-popup"></a>
+    </div>
+
+    <!-- popup share -->
+    <div class="popup popup-share" id="popupShare">
+        <img src="http://cdn.bi-ci.com/img/2015vote/vote-share-head.jpg">
+        <div class="content-block">
+            <h3>据说投满四个奖项可以提高中奖概率哦！<h3>
+            <!-- tab-bar -->
+            <div class="content-padded">
+                <nav class="bar bar-tab">
+                    <a class="tab-item external" href="/vote_list?type=0">最具影响力<br>骑行领袖</a>
+                    <a class="tab-item external" href="/vote_list?type=1">最具人气<br>骑行俱乐部</a>
+                    <a class="tab-item external" href="/vote_list?type=2">最受欢迎<br>整车品牌</a>
+                    <a class="tab-item external" href="/vote_list?type=3">最受欢迎<br>装备品牌</a>
+                </nav>
+            </div>
+            <p><a class="link close-popup">关闭</a></p>
+        </div>
+        <img src="http://cdn.bi-ci.com/img/2015vote/vote-share-cont.jpg">
+        <p><a href="/vote_prizerule/">查看抽奖和奖品详情</a></p>
+    </div>
+
+
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script src="static/dist/js/plugins/echo.min.js"></script>
+    <script>
+      echo.init({
+        offset: 50
+      });
+  </script>
+    <script src="static/src/js/base64tocode.js"></script>
+    <script src="static/src/js/votedate.js"></script>
+    <script src="static/src/js/vote-list-pinpai.js"></script>
+
+</body>
+
+</html>

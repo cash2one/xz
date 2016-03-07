@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>赛事账号</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="/static/dist/css/competitions_h5.css">
+</head>
+
+<body>
+    <div class="page-group">
+        <div class="page page-current" id="xzCheck">
+            <header class="bar bar-nav">
+                <a class="icon icon-me pull-right"></a>
+                <h1 class="title">行者赛事</h1>
+            </header>
+            <div class="content">
+                <div class="content-block-title">验证手机号</div>
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input type="tel" placeholder="手机号码">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="hide item-get-code">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input get-code-input">
+                                        <input type="number" placeholder="验证码">
+                                        <a href="#" class="button get-code-btn">获取</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="hide item-password">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input type="password" placeholder="密码">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="content-padded tip hide">系统检测到此手机号已注册过行者帐号，可直接使用行者密码登录</div>
+                </div>
+                <div class="content-block">
+                    <a id="checkBtn" class="button button-big">验证</a>
+                    <a id="loginBtn" class="hide button button-big button-fill">行者登录</a>
+                </div>
+            </div>
+        </div>
+        <div class="popup popup-image-code">
+            <div class="content-block">
+                <p>获取图片验证码</p>
+                <p><a href="#" class="close-popup">关闭</a></p>
+            </div>
+        </div>
+    </div>
+    <textarea class="hide" hidden id="pubkey">{{ pk }}</textarea>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script src="/static/dist/js/componet/jsencrypt.min.js"></script>
+    <script>
+    // 正则验证手机号
+    var isPhone = function(str) {
+        var pattern = /^(13[0-9]|14[57]|15[0-9]|17[0-9]|18[0-9])\d{8}$/;
+        return pattern.test(str);
+    };
+
+    var mobile = $('input[type=tel]');
+
+    $(document).on('click', '.get-code-btn', function() {
+        $.popup('.popup-image-code');
+    });
+
+    $(document).on('click', '#checkBtn', function() {
+        var getURL = '/api/v4/competition_check?mobile=' + mobile.val();
+        if (isPhone(mobile.val()) === false) {
+            $.alert('请输入正确的手机号');
+        } else {
+            $.get(getURL, function(response) {
+                console.log(response);
+                if (response.status === 1) {
+                    $('.item-password').show();
+                    $('.tip').show();
+                    $("#checkBtn").hide();
+                    $('#loginBtn').removeClass('hide');
+                } else if (response.status === 0) {
+                    //非行者用户
+                    $('.item-get-code').show();
+                }
+
+            })
+        }
+    });
+
+    $(document).on('click', '#loginBtn', function(event) {
+        event.preventDefault();
+        var login_URL = '/api/v4/account/login'; // 行者登录接口
+
+        // 加密密码用的
+        function getCookie(cookieName) {
+            var strCookie = document.cookie;
+            var arrCookie = strCookie.split("; ");
+            for (var i = 0; i < arrCookie.length; i++) {
+                var arr = arrCookie[i].split("=");
+                if (cookieName === arr[0]) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+
+        var rd = getCookie("rd"),
+            pkey = $("#pubkey").val();
+
+            console.log(rd);
+            console.log(pkey);
+
+        if (isPhone(mobile.val()) === false) {
+            $.alert('请输入正确的手机号');
+        } else {
+            var safe_password = $("input[type=password]").val() + ";" + rd;
+            console.log(safe_password);
+            var encrypter = new JSEncrypt;
+            encrypter.setPublicKey(pkey);
+            safe_password = encrypter.encrypt(safe_password);
+            console.log(safe_password);
+            var loginDate = {
+                'account': mobile.val(),
+                'password': safe_password,
+                'source': 'web'
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: login_URL,
+                dataType: 'json',
+                contentType: "application/json",
+                data: JSON.stringify(loginDate),
+                success: function(data) {
+                    $.toast("登录成功！");
+                    setTimeout("location.reload()", 1000);
+                },
+                error: function(xhr) {
+                    $.toast(JSON.parse(xhr.response).error_message);
+                }
+            })
+        }
+    });
+    </script>
+</body>
+
+</html>

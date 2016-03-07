@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ workout.user.username }} #{{ workout.id }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/workout.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+<div class="container" style="position: relative;">
+
+    <div class="row">
+        <div class="workout-head">
+	       <div class="col-xs-8 head">
+                <a class="workout-user" href="{% url 'user_new' workout.user.encode_id %}" title="{{ workout.user.username }}" target="_blank">
+                    <img src="{{ pic_url }}" class="default-avatar" width="42" alt="{{ workout.user.username }}的头像">
+                    <span class="workout-username">{{ workout.user.username }}</span>
+                </a>
+                <strong class="workout-id data-font">#{{ workout.id }}</strong>
+                <span id="sportType" class="sport-type"></span>
+                <span>{{ workout.title }}</span>
+            </div>
+
+            <div class="col-xs-4 pull-right text-right">
+                {% comment %}
+                <a href="#" id="aOffset" class="btn btn-link">纠偏</a>
+                {% endcomment %}
+                <a href="#" id="toggleWorkout" class="btn btn-link">{% if workout.hidden %}公开{% else %}隐藏{% endif %}</a>
+                <a href="#" id="toggleDeleteWorkout" class="btn btn-link">{% if workout.deleted %}恢复{% else %}删除{% endif %}</a>
+                <a class="btn btn-link" id="exportGpx" href="{% url 'workout_gpx' workout.id %}">导出</a>
+        </div> 
+
+    </div>
+    </div>
+
+    <div class="data-list">
+            <ul>
+                <li><span class="workout-distance color-xingzhe-blue data-font workoutDistanceText"></span><small>km</small></li>
+                <li><div class="data"><i class="iconfont color-xingzhe-blue">&#xe622;</i><span class="workoutDurationText data-font"></span></div><small>运动时间</small></li>
+                <li><div class="data"><i class="iconfont color-xingzhe-blue">&#xe623;</i><span id="Calories" class="data-font"></span></div><small>卡路里</small></li>
+                <li><div class="data"><i class="iconfont color-xingzhe-blue">&#xe625;</i><span class="data-font">{{ workout.avg_speed }}</span></div><small>运动均速</small></li>
+                <li><div class="data"><i class="iconfont color-xingzhe-blue">&#xe624;</i><span class="data-font" id="elevationGainText"></span></div><small>累计上升</small></li>
+            </ul>
+    </div>
+
+    <div id="map_canvas"></div>
+    <a id="changeMapSize" class="change-mapsize-btn"><i class="iconfont">&#xe619;</i>放大高度</a>
+    <div class="urlqr">
+        <div id="urlqr" class="hidden-xs"><div class="tit">手机查看分享更方便</div></div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div id="chart" class="col-md-12" style="height:250px;"></div>
+    </div>
+
+    {% if workout.heart_source > 0 or workout.cadence_source > 0 %}
+    <div class="row">
+        <div id="chart2" class="col-md-12" style="height:250px;"></div>
+    </div>
+    {% endif %}
+
+<h3 class="dataTitle">数据</h3>
+<div class="detail-data row">
+<!--     <ul class="col-md-3 col-sm-6 col-xs-12">
+        <li class="tit">里程(km)</li>
+        <li><div class="workoutDistanceText data-font"></div><small>运动里程</small></li>
+    </ul> -->
+    <ul class="col-md-3 col-sm-6 col-xs-12">
+        <li class="tit">时间</li>
+        <li><div class="data-font workoutDurationText"></div><small>运动时间</small></li>
+        <li><div class="workoutTotalDurationText data-font"></div><small>全程时间</small></li>
+        <li><div class="data-font">{{ workout.start_time|to_datetime|date:"Y-m-d H:i:s" }}</div><small>开始时间</small></li>
+        <li><div class="data-font">{{ workout.end_time|to_datetime|date:"Y-m-d H:i:s" }}</div><small>结束时间</small></li>
+    </ul>
+    <ul class="col-md-3 col-sm-6 col-xs-12">
+        <li class="tit">速度</li>
+        <li><div class="data-font">{{ workout.avg_speed }} km/h</div><small>运动均速</small></li>
+        <li><div class="data-font workoutAverageSpeedText"></div><small>全程均速</small></li>
+        <li><div class="data-font">{{ max_speed }} km/h</div><small>最快速度</small></li>
+    </ul>
+    <ul class="col-md-3 col-sm-6 col-xs-12">
+        <li class="tit">海拔</li>
+        <li><div class="data-font">{{ workout.elevation_gain }}m</div><small>累计上升</small></li>
+        <li><div class="data-font">{{ workout.elevation_loss }}m</div><small>累计下降</small></li>
+        <li><div class="data-font">{{ min_altitude }}m ~ {{ max_altitude }}m</div><small>海拔范围</small></li>
+        <li><div class="data-font">{{ workout.min_grade }}% ~ {{ workout.max_grade }}%</div><small>坡度范围</small></li>
+    </ul>
+
+    <ul class="col-md-3 col-sm-6 col-xs-12">
+        <li class="tit">心率与踏率</li>
+        {% if workout.heart_source = 0 %}
+        <li><div class="data-font">-- bpm</div><small>最大心率</small></li>
+        <li><div class="data-font">-- bpm</div><small>平均心率</small></li>
+        {% elif workout.heart_source > 0 %}
+        <li><div class="data-font">{{ workout.max_heartrate }} bpm</div><small>最大心率</small></li>
+        <li><div class="data-font">{{ workout.avg_heartrate }} bpm</div><small>平均心率</small></li>
+        {% endif %}
+
+        {% if workout.cadence_source = 0 %}
+        <li><div class="data-font">-- rpm</div><small>最大踏频</small></li>
+        <li><div class="data-font">-- rpm</div><small>平均踏频</small></li>
+        {% elif workout.cadence_source > 0 %}
+        <li><div class="data-font">{{ workout.max_cadence }} rpm</div><small>最大踏频</small></li>
+        <li><div class="data-font">{{ workout.avg_cadence }} rpm</div><small>平均踏频</small></li>
+        {% endif %}
+    </ul>
+</div>
+
+<p class="dataUploadTime"><small class="pull-right" style="color:grey;font-size:10px;">数据上传时间：{{ workout.upload_time|date:'Y年m月d日 H:i' }}</small></p>
+
+<!--         <div class="modal" id="fixOffsetTips" style="display:none">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">关闭</a>
+                <h3>纠偏步骤：</h3>
+            </div>
+            <div class="modal-body" style="max-height: 500px;">
+                <p><span class="badge">1</span> 拖动地图上的开始图标<img src="/static/images/map/1.png" />到合适的位置。<p>
+                <p><span class="badge">2</span> 点击"纠偏"链接进行确认。</p>
+            </div>
+        </div> -->
+
+</div>
+
+{% endblock %}
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/jquery-qrcode/jquery.qrcode-0.11.0.min.js"></script>
+<script>
+$(function () {
+    // 显示tooltip
+    $('[data-toggle="tooltip"]').tooltip();
+
+    //生成当前页面的二维码
+    var URL = window.location.href;
+    $("#urlqr").qrcode({
+        "render": "canvas",
+        "size": 100,
+        "color": "#111",
+        "text": URL
+    });
+
+var workoutDistance = {{ workout.distance|to_distance }}; //总里程数，单位km
+var workoutSport = {{ workout.sport }}; //运动类型 123 //"{{ workout.sport|sport_to_string }}"
+var workoutDuration = {{ workout.duration }}; //运动时常，单位s
+
+var elevationGain = {{ workout.elevation_gain }}; //累计上升,单位m
+var elevationLoss = {{ workout.elevation_loss }}; //累计下降,单位m
+
+var workoutTotalDuration = parseInt(('{{ workout.end_time }}' - '{{ workout.start_time }}')/1000); //总时长：结束时间-开始时间 得到毫秒数/1000=s
+
+var Calories = $("#Calories"); //卡路里字段
+
+var sportType = '{{ workout.sport|sport_to_string }}'; //运动类型
+// 运动类型
+if (sportType === '骑行') {
+    $("#sportType").html('<i class="iconfont">&#xe627;</i>');
+} else if (sportType === '走路') {
+     $("#sportType").html('<i class="iconfont">&#xe613;</i>');
+} else if (sportType === '跑步') {
+    $("#sportType").html('<i class="iconfont">&#xe626;</i>');
+} else {
+    return false;
+}
+
+
+// 总里程计算函数
+function transData (e) {
+    if(e>=1000) {
+        return Math.round(e);
+    } else {
+        return e;
+    }
+}
+
+// 海拔高度格式化
+function transElevationData (e) {
+    e = Math.abs(e);
+    if(e>=1000) {
+        return (e/1000).toFixed(2) +'km';
+    } else {
+        return e+'m';
+    }
+}
+
+// 计算卡路里
+if (workoutSport == 1) {
+    Calories.text(Math.round(workoutDistance*56)); //走路
+} else if (workoutSport == 2){
+    Calories.text(Math.round(workoutDistance*70)); //跑步
+} else if (workoutSport == 3){
+    Calories.text(Math.round(workoutDistance*35)); //骑车
+}
+
+// 时间格式化 s
+function transDurationData (e) {
+    var hours = parseInt( e / 3600 );
+    var minutes = parseInt( e / 60 ) % 60;
+    var seconds = e % 60;
+    return e = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+}
+
+
+// 显示总里程
+$(".workoutDistanceText").text(transData(workoutDistance));
+//显示运动时间
+$(".workoutDurationText").text(transDurationData(workoutDuration));
+//显示总时间
+$(".workoutTotalDurationText").text(transDurationData(workoutTotalDuration));
+//显示累计上升
+$('#elevationGainText').text(transElevationData(elevationGain));
+//显示全程均速
+$(".workoutAverageSpeedText").text((workoutDistance/(workoutTotalDuration)*3600).toFixed(2) + ' km/h');
+
+
+console.log('Title: {{ workout.title }}');
+console.log('总时长:'+ workoutTotalDuration + 's');
+console.log('距离: {{ workout.distance }}');
+console.log('类型: {{ workout.sport|sport_to_string }}');
+console.log('起始时间: {{ workout.start_time|to_datetime|date:"Y-m-d H:i:s" }} ~ {{ workout.end_time|to_datetime|date:"Y-m-d H:i:s" }}');
+console.log('最快速度： {{ max_speed }}');
+console.log('运动时长:{{ workout.duration }}');
+console.log('平均速度{{ workout.avg_speed }}');
+
+console.log('累计上升, {{ workout.elevation_gain }}，累计下降, {{ workout.elevation_loss }}');
+console.log('海拔范围, {{ min_altitude }} ~ {{ max_altitude }}');
+console.log('坡度范围, {{ workout.min_grade }} ~ {{ workout.max_grade }}');
+
+console.log('最大心率, {{ workout.max_heartrate }}，平均心率, {{ workout.avg_heartrate }}');
+console.log('最大踏频, {{ workout.max_cadence }}，平均踏频, {{ workout.avg_cadence }}');
+
+console.log('心率状态: {{ workout.heart_source }}'); // 0:None; 1:bici cadence; 2: ble cadence
+console.log('踏频状态: {{ workout.cadence_source }}'); // 0:None; 1:bici heart; 2: ble cadence
+
+})
+</script>
+
+{% google_map_api %}
+<script src="/static/js/common.js"></script>
+<script>
+	var defaultLagLng = new google.maps.LatLng(37.51975069, 122.04547628);
+	var points = [defaultLagLng]; 
+	var speedData = [];
+	var altitudeData = [];
+    var distanceOfPoints = [0];
+	{% if trackpoints %}
+    points = [{% for p in trackpoints %}new google.maps.LatLng({{ p.latitude }},{{ p.longitude }}){% if not forloop.last %}, {% endif %}{% endfor %}];
+    speedData = [{% for p in trackpoints %}{{ p.speed }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    altitudeData = [{% for p in trackpoints %}{{ p.altitude }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    heartrateData = [{% for p in trackpoints %}{{ p.heartrate }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    cadenceData = [{% for p in trackpoints %}{{ p.cadence }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    timeData = [{% for p in trackpoints %}{{ p.time }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
+    var distance = 0;
+    for (var i = 1; i < points.length; i++) {
+        var pre = points[i-1];
+        var cur = points[i];
+        distance += getDistance(pre.lat(), pre.lng(), cur.lat(), cur.lng());
+        distanceOfPoints.push(round(distance / 1000, 1));
+    }
+    {% endif %}
+
+</script>
+
+<script>
+
+    var gpsStartPosition = new google.maps.LatLng({{ gpsStartPosition.latitude }}, {{ gpsStartPosition.longitude }});
+    var is_authenticated = {{ user.is_authenticated|yesno:"true, false" }};
+    var is_owner = {{ is_owner|yesno:"true, false" }};
+    var is_admin = {{ is_admin|yesno:"true, false" }};
+
+    var min_lat = {{ min_lat }};
+    var min_lng = {{ min_lng }};
+    var max_lat = {{ max_lat }};
+    var max_lng = {{ max_lng }};
+    var min_altitude = {{ min_altitude }};
+
+	function changeOffset() {
+		var gpsLat = gpsStartPosition.lat();
+        var gpsLng = gpsStartPosition.lng();
+        var lat = startPosition.lat();
+        var lng = startPosition.lng();
+        var newLat = startMarker.getPosition().lat();
+        var newLng = startMarker.getPosition().lng();
+        var gpsOffsetLat = newLat - gpsLat;
+        var gpsOffsetLng = newLng - gpsLng;
+        var offsetLat = newLat - lat;
+        var offsetLng = newLng - lng;
+        
+        if(!is_authenticated){
+            alert("还没有登录");
+        } else if(!is_owner && !is_admin) {
+            alert("只能纠偏自己上传的路线");
+        } else if(offsetLat == 0 && offsetLng == 0) {
+        	$("#fixOffsetTips").modal();
+        } else if(Math.abs(gpsOffsetLat) > 0.01 || Math.abs(gpsOffsetLng) > 0.01) {
+        	alert("请重新设置路线");
+        } else {
+        	$.ajax({
+                type: "POST",
+                url: "/api/fix_offset",
+                data: {
+                    id: "{{ workout.id }}",
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    offset_lat: gpsOffsetLat,
+                    offset_lng: gpsOffsetLng
+                }
+            }).success(function(msg) {
+                alert("纠偏成功");
+            }).error(function(){
+                alert("纠偏出错");
+            });
+        }
+        
+        return false;
+	}
+	
+	function onMarkerDragEnd(e) {
+	    var lat = startPosition.lat();
+        var lng = startPosition.lng();
+        var newLat = startMarker.getPosition().lat();
+        var newLng = startMarker.getPosition().lng();
+        var offsetLat = newLat - lat;
+        var offsetLng = newLng - lng;
+	
+	    route.setMap(null);
+	    
+	    var newPoints = [];
+	    for(var i = 0; i < points.length; i++) {
+	    	var p = points[i];
+	    	var newP = new google.maps.LatLng(p.lat() + offsetLat, p.lng() + offsetLng);
+	    	newPoints.push(newP);
+	    }
+	    route.setPath(newPoints);
+	    route.setMap(map);
+	    
+	    stopMarker.setPosition(new google.maps.LatLng(stopPosition.lat() + offsetLat, stopPosition.lng() + offsetLng));
+	}
+
+
+    var mapCanvasHeight = $("#map_canvas").height();
+
+    function changeMapSize () {
+        var mapCanvas = $("#map_canvas"),
+            curHeight = mapCanvas.height(),
+            changeMapSizeBtn = $("#changeMapSize");
+
+        if (curHeight !== 940) {
+            mapCanvas.height(940);
+            google.maps.event.trigger(map, 'resize');
+            changeMapSizeBtn.html('<i class="iconfont">&#xe618;</i>缩小高度');
+        } else if (curHeight === 940) {
+            mapCanvas.height(mapCanvasHeight);
+            google.maps.event.trigger(map, 'resize');
+            changeMapSizeBtn.html('<i class="iconfont">&#xe619;</i>放大高度');
+        }
+    }
+
+
+	function toggleWorkout() {
+		if(!is_authenticated){
+			alert("登录后才可以操作");
+		} else if(!is_owner) {
+			alert("只能对自己上传的路线进行操作");
+		} else if(confirm("确定要{% if workout.hidden %}显示{% else %}隐藏{% endif %}吗？")) {
+            $.ajax({
+                type: "POST",
+                url: "/api/toggle_workout",
+                data: {
+                	id: "{{ workout.id }}",
+                    csrfmiddlewaretoken: "{{ csrf_token }}" 
+                }
+            }).success(function(msg) {
+            	location.href = "{% url 'user_new' workout.user.encode_id %}";
+            }).error(function(){
+            	alert("出错了，刷新网页再试一下");
+            });
+		}
+		return false;
+	}
+
+    function toggleDeleteWorkout() {
+        if(!is_authenticated){
+            alert("登录后才可以操作");
+        } else if(!is_owner && !is_admin) {
+            alert("只能对自己上传的路线进行操作");
+        } else if(confirm("确定要{% if workout.deleted %}恢复吗？{% else %}删除吗？删除后无法恢复，并且暂时不支持重新上传！{% endif %}")) {
+            $.ajax({
+                type: "POST",
+                url: "/api/toggle_delete_workout",
+                data: {
+                    id: "{{ workout.id }}",
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }
+            }).success(function(msg) {
+                location.href = "{% url 'user_new' workout.user.encode_id %}";
+            }).error(function(){
+                alert("出错了，刷新网页再试一下");
+            });
+        }
+        return false;
+    }
+	
+	function exportCheck() {
+        if(!is_authenticated){
+            alert("登录后才可以导出");
+            return false;
+        } else if(!is_owner && !is_admin && {{ request.user.profile.valid_distance|to_points }} < 10) {
+            alert("至少10个积分才能导出别人的路线\r\n" + "当前积分：" + {{ request.user.profile.valid_distance|to_points }});
+            return false;
+        }
+        return true;
+	}
+	
+</script>
+
+{#<script src="http://libs.baidu.com/highcharts/2.2.5/highcharts.js"></script>#}
+<!-- <script src="http://code.highcharts.com/highcharts.js"></script> -->
+<script src="http://cdn.staticfile.org/highcharts/2.3.5/highcharts.min.js"></script>
+<!-- <script src="http://cdn.staticfile.org/highcharts/2.3.5/modules/exporting.min.js"></script> -->
+<script src="/static/js/workout.src.js"></script>
+{% endblock %}

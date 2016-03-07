@@ -1,0 +1,316 @@
+{% extends "root_admin.html" %}
+{% block css %}
+<link href="/static/dist/css/add_medal.css" rel="stylesheet"> 
+<link href="http://cdn.bootcss.com/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<style type="text/css">
+.pagination-wrap {
+  float: left;
+  position: relative;
+  left: 50%;
+  clear: both;
+  color: #999;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 6px 0px 6px 6px;
+  font-size: 13px; }
+  .pagination-wrap > div {
+    position: relative;
+    left: -50%; }
+  .pagination-wrap a {
+    float: left;
+    border: 1px solid #ccc;
+    display: inline;
+    padding: 5px 12px 5px 12px;
+    margin-right: 5px;
+    cursor: pointer;
+    background: #fff;
+    text-decoration: none;
+    color: #999; }
+    .pagination-wrap a:hover {
+      border: 1px solid #007ac2;
+      background-color: #007ac2;
+      background-color: rgba(0, 122, 194, 0.9);
+      color: #fff; }
+  .pagination-wrap span.disabled {
+    float: left;
+    display: inline;
+    padding: 5px 12px 5px 12px;
+    margin-right: 5px;
+    border: 1px solid #DFDFDF;
+    background-color: #FFF;
+    color: #DFDFDF; }
+  .pagination-wrap span.curr {
+    float: left;
+    border: 1px solid #007ac2;
+    display: inline;
+    padding: 5px 12px 5px 12px;
+    margin-right: 5px;
+    color: #007ac2; }
+  .pagination-wrap .spanDot {
+    float: left;
+    margin-right: 5px;
+    line-height: 24px; }    
+   .item{
+    text-align:center;
+   } 
+   .line{
+    line-height: 68px;
+   }
+   .anull,.anull:hover,.anull:active,.anull:visited{
+    text-decoration: none;
+   }
+   .pad0{
+     padding-right: 0; 
+   }
+   .pad2{
+     padding-right: 2px; 
+   }
+</style>
+{% endblock %}
+
+{% block container %}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <header class="header">
+                <h1 class="page-header">举报列表</h1>
+                <ol class="breadcrumb">
+                    <li><a href="#">后台首页</a></li>
+                    <li><a href="#">举报管理</a></li>
+                    <li class="active"><i class="fa fa-edit"></i>举报列表</li>
+                </ol>    
+            </header>
+            
+
+            <div class="block-shadow">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                              <ul style="list-style: none;">
+                                <li class="row" style="text-align: center;font-size: 18px;font-weight: bold;">
+                                    <div class="col-md-6" >举报内容</div>
+                                    <div class="col-md-6">被举报用户信息</div>
+                                </li>
+
+                                <li class="col-md-9"  style="text-align: center;font-weight: bold;">
+                                    <div class="col-md-2">举报类型</div>
+                                    <div class="col-md-6">举报详情</div>
+                                    <div class="col-md-2">举报次数</div>
+                                    <div class="col-md-2">操作</div>
+                                </li>
+
+                                <li class="col-md-3"  style="text-align: center;font-weight: bold;">
+                                    <div class="col-md-6">用户名</div>
+                                    <div class="col-md-6">举报次数</div>
+                                </li>
+                            </ul>    
+                            <ul style="list-style: none;    overflow: hidden;" id="reportList">
+
+                            </ul>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+            <div id="Pagination" class="hidden-xs pagination-wrap"></div>
+
+            <div id="paginationxs" class="visible-xs-block paginationxs-wrap">
+                <nav>
+                  <ul class="pager">
+                    <li class="previous disabled" id="previousStatus"><a id="previousLink"><span aria-hidden="true">&larr;</span> 上一页</a></li>
+                    <li class="text-center text-muted" id="pageNum">1</li>
+                    <li class="next"><a href="?page=2" id="nextLink">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+                  </ul>
+                </nav>
+            </div>
+
+            <div id="kkpager"></div>
+
+        </div>
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+           aria-labelledby="myModalLabel" aria-hidden="true">
+           <div class="modal-dialog">
+              <div class="modal-content">
+                 <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" 
+                       aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                       举报详情
+                    </h4>
+                 </div>
+                 <div class="modal-body">
+                     <p id＝"content"></p>
+                     <div id="pic_url"><img src="">
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" 
+                       data-dismiss="modal">关闭
+                    </button>
+                 </div>
+              </div>
+           </div>
+        </div><!-- /.modal -->
+    </div>
+{% endblock %}
+
+{% block js %}
+<script src="http://cdn.bi-ci.com/static/jquery/jquery-1.11.3.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/bootstrap/bootstrap-3.3.4.min.js"></script>
+<script src="http://cdn.bi-ci.com/static/kkpager/kkpager.min.js"></script>
+<script>
+//init
+$(function() {
+
+    var reportList = $("#reportList");
+
+    function loadList(e) {
+        $.ajax({
+                url: '/report_admin/',
+                type: 'GET',
+                data: {
+                    limit: 10, // 每页获取长度
+                    page: e, // 页码
+                }
+            })
+            .done(function(json) {
+                $("#loadingicon").hide();
+                var listdata = json.data;
+
+     
+
+
+                for (var i = 0; i < listdata.reported_content_info.length; i++) {
+
+                        
+
+                        n = e*20+i+1;
+                        var pic = listdata.reported_content_info[i].pic_url.split(',');
+                        var img='';
+                        for(var j=0;j<pic.length;j++){
+                          img += '<a target="_blank"  href="'+pic[j]+'"><img class="col-md-3" src="'+pic[j]+'"></a>'
+                        }
+                        reportList.append('<li class="col-md-12 item">' +
+                                      '<div class="col-md-9">' + 
+                                          '<div class="col-md-2 line">'+listdata.reported_content_info[i].type+'</div>'+
+                                          '<div class="col-md-6">'+
+                                            '<p class="content">'+listdata.reported_content_info[i].content+'</p>'+
+                                            '<div>'+img+'</div>'+
+                                          '</div>'+
+                                          '<div class="col-md-2 line">'+listdata.reported_content_info[i].count+'</div>'+
+                                          '<div class="col-md-2 line pad2">'+
+                                            '<a id="delete">删除</a>'+
+                                          '</div>'+
+                                      '</div>'+
+                                      '<div class="col-md-3">'+
+                                          '<div class="col-md-6 line pad0"><a class="anull" target="_blank" href="/im/'+listdata.reported_user_info[i].enuid+'/">'+listdata.reported_user_info[i].user_id+'</a></div>'+
+                                          '<div class="col-md-6 line"><a class="anull" target="_blank" href="/im/'+listdata.reported_user_info[i].enuid+'/">'+listdata.reported_user_info[i].count+'<a href=""></div>'+
+                                      '</div>'+
+                                  '</li>');
+                };
+
+                var deleteURL = '/report_admin/';  
+                //删除
+                $("#delete").on('click', function(event) {
+
+                    event.preventDefault();
+
+                    var index = $(this).parents('li').index();
+
+                    console.log(index);
+                  
+                    var r = confirm("真的要删除？");
+
+                    if (r == true) {
+                        $.ajax({
+                            url: deleteURL,
+                            type: 'POST',
+                            data: {
+                                   'type': listdata.reported_content_info[index].type,
+                                   'report_id': listdata.reported_content_info[index].reported_id
+                            },
+                        })
+                        .done(function() {
+                            console.log("success");
+                            alert("删除成功");
+                            reportList.children('li').eq(index).hide();
+                        })
+                        .fail(function(data) {
+                            console.log(data);
+                            alert(data.responseText);
+                        })
+                        .always(function() {
+                            console.log("complete");
+                        });
+                    } else{
+                        alert('未删除');
+                    };
+
+                }); 
+
+            })
+            .fail(function(data) {
+                console.log("error: " + data);
+            })
+    }
+    
+
+    // 判断页码状态
+    if (window.location.search.length === 0) {
+        // 第一页
+        loadList(0);
+        // 生成分页器
+        kkpager.generPageHtml({
+            pagerid: 'Pagination', // 分页展示控件容器ID
+            pno: 1, //当前页码
+            total: 50, //总页码
+            totalRecords: 500, //总数据条数
+            isShowCurrPage: false, // 显示当前页
+            isShowTotalPage: false, //总页数
+            isGoPage: false,
+            isShowFirstPageBtn: false, //显示首页按钮
+            getLink: function(e) {
+                return "?page=" + e;
+            }
+        });
+
+    } else{
+        // 非第一页
+        var pageno = window.location.search.slice(6);
+        loadList(pageno - 1);
+        // 生成分页器
+        kkpager.generPageHtml({
+            pagerid: 'Pagination', // 分页展示控件容器ID
+            pno: pageno, //当前页码
+            total: 50, //总页码
+            totalRecords: 500, //总数据条数
+            isShowCurrPage: false, // 显示当前页
+            isShowTotalPage: false, //总页数
+            isGoPage: false,
+            isShowFirstPageBtn: false, //显示首页按钮
+            getLink: function(e) {
+                return "?page=" + e;
+            }
+        });
+
+        var previousNum = parseInt(pageno) - 1,
+            nextNum = parseInt(pageno) + 1;
+
+        // 手机上的分页控件
+        if (pageno === '1') {
+            $("#pageNum").text('1');
+            $("#previousLink").removeAttr('href');
+            $("#previousStatus").attr('disabled', 'disabled');
+            $('#nextLink').attr('href', '?page=2');
+        } else {
+            $("#previousStatus").removeClass('disabled');
+            $("#pageNum").text(pageno);
+            $("#previousLink").attr('href', '?page=' + previousNum);
+            $('#nextLink').attr('href', '?page=' + nextNum);
+        };
+
+    };
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block title %}
+    {{ channel.name }} - 行者骑行软件
+{% endblock %}
+{% block css %}
+<link href="/static/dist/css/bootstrapbase.css" rel="stylesheet">
+<link href="/static/css/topic.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+
+<div class="container">
+    
+    <div class="row">
+        <ol class="breadcrumb">
+          <li><a href="/channels/">版块首页</a></li>
+          <li class="active">{{ topic.user.username }}的帖</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form action="" method="post" class="form-horizontal">
+                <fieldset>
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <textarea rows="20" id="content" name="content" maxlength="500" class="form-control">{{ topic.content }}</textarea>
+                    </div>
+                    <div class="form-group">
+                          <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
